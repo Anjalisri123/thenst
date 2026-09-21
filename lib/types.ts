@@ -1,4 +1,14 @@
-export type UserRole = "guard" | "hr" | "admin" | "superadmin" | "agency" | "intern";
+export type UserRole = 
+  | "guard" 
+  | "hr" 
+  | "admin" 
+  | "superadmin" 
+  | "agency" 
+  | "intern"
+  | "pilot"
+  | "educator"
+  | "researcher"
+  | "learner";
 
 export type UserStatus = "active" | "disabled" | "blocked" | "pending_verification";
 
