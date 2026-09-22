@@ -29,27 +29,27 @@ export default function HomePage() {
 
   const pillarDetails = {
     People: {
-      headline: "Discover professionals, experts and educators working across the security landscape.",
-      description: "From strategic analysts and field operators to academic instructors and autonomous systems specialists, connect with vetted practitioners.",
-      actionText: "Explore Professionals",
+      headline: "Discover security professionals, drone pilots, and certified instructors.",
+      description: "Connect with verified security guards, drone operators, researchers, and teachers ready to work and collaborate.",
+      actionText: "Browse Professionals",
       href: "/network"
     },
     Knowledge: {
-      headline: "Explore peer-reviewed research, intelligence, analysis and structured learning.",
-      description: "Access sovereign intelligence monographs, doctrinal analysis, emerging technology assessments, and certified professional curricula.",
-      actionText: "Explore Research Desk",
-      href: "/research"
+      headline: "Take practical online courses and read expert security reports.",
+      description: "Access step-by-step video lessons, verified certificates, drone training, and plain-language security guides.",
+      actionText: "Explore Courses & Research",
+      href: "/learn"
     },
     Organisations: {
-      headline: "Connect institutions, employers, research centers and professional entities.",
-      description: "Facilitate cross-sector collaboration between sovereign departments, defense technology innovators, academic institutions, and think tanks.",
+      headline: "Connect companies, security agencies, and training partners.",
+      description: "Help employers, security firms, tech builders, and schools find pre-screened talent and train their teams.",
       actionText: "Explore Organisations",
       href: "/about"
     },
     Opportunities: {
-      headline: "Discover careers, projects, collaboration, fellowships and ways to participate.",
-      description: "Find verified project briefs, research contributor calls, operational deployments, and strategic security fellowships.",
-      actionText: "Explore Opportunities",
+      headline: "Find jobs, flight missions, research projects, and training programs.",
+      description: "Browse verified job postings, field drone missions, paid research grants, and accredited internships.",
+      actionText: "Browse Opportunities",
       href: "/opportunities"
     }
   };
@@ -75,11 +75,11 @@ export default function HomePage() {
                 </span>
 
                 <h1 className="text-4xl sm:text-6xl lg:text-[74px] font-medium leading-[0.95] tracking-[-2.5px] mb-6 text-white">
-                  Security is a <em className="font-serif italic font-normal text-[#e5e3db]">collective</em> capability.
+                  Security is a <em className="font-serif italic font-normal text-[#e5e3db]">team</em> effort.
                 </h1>
 
                 <p className="text-base sm:text-lg text-[#c5c9ce] leading-relaxed max-w-[540px] mb-9 font-normal">
-                  The National Security Think Tank brings together professionals, researchers, educators, organisations and emerging capabilities to build knowledge, expertise and opportunity across the security landscape.
+                  The National Security Think Tank brings together security guards, drone pilots, researchers, educators, and companies to build real skills, share knowledge, and find careers.
                 </p>
 
                 {/* Hero Action Buttons */}
@@ -94,7 +94,7 @@ export default function HomePage() {
                     href="#where-do-you-fit"
                     className="inline-flex items-center justify-center min-h-[46px] px-6 text-xs font-semibold tracking-wider text-white border border-[#525965] hover:bg-white hover:text-[#171b22] transition-all duration-200 uppercase"
                   >
-                    Find Your Path
+                    Find Your Role
                   </a>
                 </div>
               </div>
@@ -121,18 +121,18 @@ export default function HomePage() {
 
               <div className="flex flex-col items-start">
                 <h2 className="text-3xl sm:text-5xl font-medium leading-[1.06] tracking-[-2px] text-[#171b22] mb-6 max-w-[760px]">
-                  A national security institution built around people, knowledge, organisations and opportunity.
+                  A complete platform for skills, training, research, and hiring.
                 </h2>
 
                 <p className="text-base sm:text-lg text-[#616872] leading-relaxed max-w-[650px] mb-8 font-sans">
-                  TheNST is a place to learn, research, connect and participate. It provides a clear path into the wider security landscape without asking visitors to already know where they belong.
+                  TheNST is an easy place to learn new skills, get your background verified, connect with employers, and discover career opportunities in security and defense.
                 </p>
 
                 <Link
                   href="/ecosystem"
                   className="inline-flex items-center gap-2 text-sm font-semibold text-[#d95325] hover:text-[#bc3f18] transition-colors border-b border-transparent hover:border-[#d95325] pb-0.5"
                 >
-                  Explore the ecosystem
+                  Explore the platform
                   <ArrowUpRight className="w-4 h-4" />
                 </Link>
               </div>

@@ -474,78 +474,116 @@ export const ORGANISATIONS: OrganisationEntity[] = [
 export const ROLE_COPY: Record<string, { title: string; subtitle: string; heroTitle: string; heroDesc: string; steps: { num: string; title: string; desc: string }[]; benefits: string[] }> = {
   "security-professional": {
     title: "Security Professional",
-    subtitle: "Analyst & Field Specialist",
-    heroTitle: "Build your verified security career path.",
-    heroDesc: "Connect with accredited institutions, verify your professional credentials, and access exclusive research and deployment opportunities.",
+    subtitle: "Guards & Security Officers",
+    heroTitle: "Build your security career with verified credentials.",
+    heroDesc: "Complete practical security training, get your background verified, and find hiring opportunities with top companies and agencies.",
     steps: [
-      { num: "01", title: "Create Your Account", desc: "Register your professional profile and state your core areas of focus." },
-      { num: "02", title: "Build Your Profile", desc: "Detail competencies, previous operational domain experience, and certifications." },
-      { num: "03", title: "Select Your Interests", desc: "Choose focus areas across cybersecurity, defense systems, or strategic intelligence." },
-      { num: "04", title: "Access TheNST Platform", desc: "Receive tailored briefings, course access, and project applications." },
-      { num: "05", title: "Participate & Connect", desc: "Engage with peers, apply to high-impact projects, and publish insights." }
+      { num: "01", title: "Create Your Account", desc: "Sign up and tell us about your experience and skills." },
+      { num: "02", title: "Complete Verification", desc: "Submit your background details and official identity documents." },
+      { num: "03", title: "Choose Your Training", desc: "Pick courses in site security, cyber safety, or emergency response." },
+      { num: "04", title: "Earn Certificates", desc: "Complete lessons, take quizzes, and earn your verified certificate." },
+      { num: "05", title: "Get Hired & Deploy", desc: "Connect directly with companies and agencies looking for trained staff." }
     ],
     benefits: [
-      "Institutional Professional Identity",
-      "Access to Curated Intelligence Desks",
-      "Direct Opportunity & Project Applications",
-      "Continuing Professional Education Pathways"
+      "Official Verified Profile",
+      "Government-Aligned Training",
+      "Direct Job & Hiring Access",
+      "Career Growth & Skill Badges"
     ]
   },
   "drone-pilot": {
-    title: "Drone Pilot & UAS Operator",
-    subtitle: "Aerial Capability Specialist",
-    heroTitle: "Deploy cutting-edge aerial capabilities.",
-    heroDesc: "Bring flight certifications, counter-UAS proficiency, and telemetry systems into national security and infrastructure operations.",
+    title: "Drone Pilot",
+    subtitle: "UAV Flight & Operations",
+    heroTitle: "Become a certified drone pilot and find flight missions.",
+    heroDesc: "Learn flight safety, camera and sensor handling, government airspace rules, and connect with companies hiring drone pilots.",
     steps: [
-      { num: "01", title: "Create Your Account", desc: "Establish your pilot identity and register your flying credentials." },
-      { num: "02", title: "Register Capabilities", desc: "Catalog airframe classes, thermal/sensor payloads, and BVLOS experience." },
-      { num: "03", title: "Select Mission Types", desc: "Identify operational interests across perimeter security, surveying, or tactical trials." },
-      { num: "04", title: "Access Platform Postings", desc: "Browse institutional briefs, field missions, and testing consortium calls." },
-      { num: "05", title: "Deploy & Collaborate", desc: "Participate in multi-operator frameworks, specialized courses, and trials." }
+      { num: "01", title: "Create Your Account", desc: "Sign up as a pilot and enter your flight experience." },
+      { num: "02", title: "Register Your Skills", desc: "List the drones you fly, camera types, and flight hours." },
+      { num: "03", title: "Choose Mission Types", desc: "Select areas like site security, mapping, surveying, or inspections." },
+      { num: "04", title: "Explore Open Missions", desc: "Browse open jobs, flight projects, and training courses." },
+      { num: "05", title: "Fly & Earn", desc: "Complete missions with verified companies and build your flying record." }
     ],
     benefits: [
-      "Verified Airframe & Operator Profile",
-      "BVLOS & Sensor Fusion Curricula",
-      "Institutional Field Mission Board",
-      "Direct Connection to Enterprise Consortia"
+      "Verified Pilot Profile",
+      "Flight Training & Exam Prep",
+      "Direct Access to Drone Jobs",
+      "Equipment & Mission Network"
     ]
   },
   "educator": {
-    title: "Educator & Course Creator",
-    subtitle: "Knowledge Domain Lead",
-    heroTitle: "Shape the next generation of security leadership.",
-    heroDesc: "Turn institutional doctrine, academic research, and field experience into structured accredited learning for security professionals.",
+    title: "Educator & Instructor",
+    subtitle: "Teachers & Trainers",
+    heroTitle: "Teach courses and share your security expertise.",
+    heroDesc: "Turn your practical knowledge and field experience into simple, accredited courses for students and working professionals.",
     steps: [
-      { num: "01", title: "Create Your Account", desc: "Join as an educator and state your academic and domain credentials." },
-      { num: "02", title: "Propose Curriculum", desc: "Draft course outlines, learning objectives, and modular syllabi." },
-      { num: "03", title: "Editorial Review", desc: "Collaborate with TheNST academic council for peer review and alignment." },
-      { num: "04", title: "Publish on TheNST Learn", desc: "Deploy your course to vetted practitioners and institutional learners." },
-      { num: "05", title: "Engage & Teach", desc: "Deliver masterclasses, evaluate assignments, and author accompanying briefs." }
+      { num: "01", title: "Create Your Account", desc: "Sign up as an educator and share your teaching background." },
+      { num: "02", title: "Submit Course Plan", desc: "Create a simple lesson outline and learning goals." },
+      { num: "03", title: "Course Review", desc: "Our team reviews your curriculum to ensure high quality." },
+      { num: "04", title: "Publish on TheNST", desc: "Your course goes live for thousands of students and teams." },
+      { num: "05", title: "Teach & Earn", desc: "Lead video classes, grade assignments, and earn royalties." }
     ],
     benefits: [
-      "Institutional Faculty Honorarium & Byline",
-      "Audience of Vetted Security Practitioners",
-      "Modern Learning Platform Tools",
-      "Editorial Collaboration with Research Desks"
+      "Instructor Pay & Royalties",
+      "Reach Thousands of Learners",
+      "Easy-to-Use Course Builder",
+      "Teaching Support & Feedback"
     ]
   },
   "organisation": {
-    title: "Organisation & Enterprise",
-    subtitle: "Institutional Partner",
-    heroTitle: "Procure capability with institutional assurance.",
-    heroDesc: "Deploy vetted security personnel, commission strategic research, and train your workforce through TheNST platform.",
+    title: "Companies & Agencies",
+    subtitle: "Employers & Partners",
+    heroTitle: "Hire verified security staff and train your team.",
+    heroDesc: "Find pre-screened security guards and drone pilots, train your workforce with online courses, and commission expert reports.",
     steps: [
-      { num: "01", title: "Institutional Onboarding", desc: "Register your organization profile and define compliance requirements." },
-      { num: "02", title: "Post Capability Requirements", desc: "Publish project briefs, fellowship calls, or open career placements." },
-      { num: "03", title: "Review Verified Talent", desc: "Evaluate vetted professionals and specialized practitioners." },
-      { num: "04", title: "Engage Research Desks", desc: "Commission specialized intelligence monographs and risk assessments." },
-      { num: "05", title: "Upskill Teams", desc: "Enrol workforce cohorts into structured courses on TheNST Learn." }
+      { num: "01", title: "Create Company Account", desc: "Register your company or security agency in minutes." },
+      { num: "02", title: "Post Job Openings", desc: "List the roles, skills, and number of people you need to hire." },
+      { num: "03", title: "Review Verified Candidates", desc: "Browse background-checked guards and certified drone pilots." },
+      { num: "04", title: "Train Your Team", desc: "Enroll your team in structured online courses and track progress." },
+      { num: "05", title: "Hire & Deploy", desc: "Message candidates directly and manage your workforce easily." }
     ],
     benefits: [
-      "Direct Access to Vetted Security Talent",
-      "Custom Intelligence Briefing Services",
-      "Enterprise Workforce Learning Cohorts",
-      "Standardized Institutional Contracting"
+      "Direct Access to Vetted Staff",
+      "Bulk Team Training Courses",
+      "Verified Background Checks",
+      "Simple Candidate Messaging"
+    ]
+  },
+  "researcher": {
+    title: "Researcher",
+    subtitle: "Analysis & Reports",
+    heroTitle: "Publish research and analyze security trends.",
+    heroDesc: "Share in-depth analysis on modern security, drone technology, cyber safety, and international defense topics.",
+    steps: [
+      { num: "01", title: "Create Your Account", desc: "Sign up as a researcher and share your areas of interest." },
+      { num: "02", title: "Submit Research Proposals", desc: "Share your research topics, papers, or case studies." },
+      { num: "03", title: "Peer Review", desc: "Collaborate with other experts to refine your paper." },
+      { num: "04", title: "Publish & Share", desc: "Publish your reports on TheNST for leaders and readers." },
+      { num: "05", title: "Join Projects", desc: "Participate in paid research fellowships and expert panels." }
+    ],
+    benefits: [
+      "Published Author Profile",
+      "Research Grants & Retainers",
+      "Access to Data & Experts",
+      "Wide Audience of Leaders"
+    ]
+  },
+  "learner": {
+    title: "Learner & Student",
+    subtitle: "Skills & Certifications",
+    heroTitle: "Learn in-demand security skills at your own pace.",
+    heroDesc: "Take practical courses in drone operations, security guard training, cyber defense, and AI technology.",
+    steps: [
+      { num: "01", title: "Create Your Account", desc: "Sign up for free and choose what you want to learn." },
+      { num: "02", title: "Explore Courses", desc: "Browse beginner to advanced courses with video lessons." },
+      { num: "03", title: "Learn Online", desc: "Watch lessons anytime, take quizzes, and track your progress." },
+      { num: "04", title: "Earn Certificates", desc: "Get an official certificate to prove your new skills." },
+      { num: "05", title: "Find Opportunities", desc: "Use your certificates to apply for jobs and internships." }
+    ],
+    benefits: [
+      "Self-Paced Video Lessons",
+      "Official Verified Certificates",
+      "Job & Internship Board",
+      "Support from Instructors"
     ]
   }
 };
