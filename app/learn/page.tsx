@@ -24,6 +24,34 @@ const CATEGORIES = [
 
 const LEVELS = ["All", "Foundational", "Intermediate", "Advanced"];
 
+const ONBOARDING_STEPS = [
+  {
+    step: "01",
+    title: "Create Your Account",
+    desc: "Establish your pilot identity and register your flying credentials."
+  },
+  {
+    step: "02",
+    title: "Register Capabilities",
+    desc: "Catalog airframe classes, thermal/sensor payloads, and BVLOS experience."
+  },
+  {
+    step: "03",
+    title: "Select Mission Types",
+    desc: "Identify operational interests across perimeter security, surveying, or tactical trials."
+  },
+  {
+    step: "04",
+    title: "Access Platform Postings",
+    desc: "Browse institutional briefs, field missions, and testing consortium calls."
+  },
+  {
+    step: "05",
+    title: "Deploy & Collaborate",
+    desc: "Participate in multi-operator frameworks, specialized courses, and trials."
+  }
+];
+
 const PLATFORM_PILLARS = [
   {
     num: "01",
@@ -117,12 +145,48 @@ export default function LearnPage() {
           </div>
         </section>
 
+        {/* 5-Step Process Section matching User Reference UI */}
+        <section className="bg-[#faf9f5] py-16 sm:py-20 border-b border-[#e5e3db]">
+          <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto">
+            <div className="mb-8">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-[#d95325] font-semibold mb-2 block">
+                Platform Workflow
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-medium tracking-tight text-[#171b22]">
+                5 Simple Steps to Get Started
+              </h2>
+            </div>
+
+            {/* Horizontal 5-Column Process Strip */}
+            <div className="border border-[#e5e3db] bg-[#faf9f5] grid grid-cols-1 md:grid-cols-5 divide-y md:divide-y-0 md:divide-x divide-[#e5e3db] shadow-sm">
+              {ONBOARDING_STEPS.map((item) => (
+                <div 
+                  key={item.step} 
+                  className="p-8 flex flex-col justify-between min-h-[260px] bg-[#faf9f5] hover:bg-white transition-colors"
+                >
+                  <span className="text-sm font-mono font-bold text-[#d95325] block mb-12">
+                    {item.step}
+                  </span>
+                  <div>
+                    <h3 className="text-base sm:text-[17px] font-semibold tracking-tight text-[#171b22] mb-2 leading-snug">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs sm:text-[13px] text-[#616872] leading-relaxed font-sans">
+                      {item.desc}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Platform Overview */}
-        <section className="bg-[#faf9f5] py-20 border-b border-[#e5e3db]">
+        <section className="bg-white py-20 border-b border-[#e5e3db]">
           <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto">
             <div className="max-w-2xl mb-14">
               <span className="text-[10px] font-mono uppercase tracking-widest text-[#d95325] font-semibold mb-2 block">
-                How It Works
+                What We Offer
               </span>
               <h2 className="text-3xl sm:text-4xl font-medium tracking-tight text-[#171b22] mb-4">
                 What You Can Do on TheNST
@@ -138,7 +202,7 @@ export default function LearnPage() {
                 return (
                   <div 
                     key={pillar.num} 
-                    className="bg-white border border-[#e5e3db] p-8 sm:p-10 flex flex-col justify-between hover:border-[#171b22]/40 transition-all duration-200 group"
+                    className="bg-[#faf9f5] border border-[#e5e3db] p-8 sm:p-10 flex flex-col justify-between hover:border-[#171b22]/40 transition-all duration-200 group"
                   >
                     <div>
                       <div className="flex items-center justify-between mb-6">
@@ -183,7 +247,7 @@ export default function LearnPage() {
         </section>
 
         {/* Catalog Section */}
-        <section className="bg-white py-16 sm:py-20 border-b border-[#e5e3db]">
+        <section className="bg-[#faf9f5] py-16 sm:py-20 border-b border-[#e5e3db]">
           <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 pb-6 border-b border-[#e5e3db] gap-4">
               <div>
@@ -209,7 +273,7 @@ export default function LearnPage() {
                   placeholder="Search by topic, keyword, or instructor..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 bg-[#f7f6f2] border border-[#e5e3db] text-xs text-[#171b22] placeholder:text-[#737a83] focus:outline-none focus:border-[#d95325] focus:bg-white transition-all font-sans"
+                  className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#e5e3db] text-xs text-[#171b22] placeholder:text-[#737a83] focus:outline-none focus:border-[#d95325] focus:bg-white transition-all font-sans"
                 />
               </div>
 
@@ -223,7 +287,7 @@ export default function LearnPage() {
                     className={`px-3 py-1.5 text-xs font-medium transition-all ${
                       selectedCat === cat
                         ? "bg-[#171b22] text-white"
-                        : "bg-[#f7f6f2] text-[#4f555d] hover:bg-[#e5e3db]"
+                        : "bg-white text-[#4f555d] border border-[#e5e3db] hover:bg-[#e5e3db]"
                     }`}
                   >
                     {cat}
@@ -258,7 +322,7 @@ export default function LearnPage() {
                 {filteredCourses.map((c) => (
                   <div
                     key={c.id}
-                    className="bg-[#faf9f5] border border-[#e5e3db] p-8 flex flex-col justify-between hover:border-[#171b22]/40 transition-all duration-200"
+                    className="bg-white border border-[#e5e3db] p-8 flex flex-col justify-between hover:border-[#171b22]/40 transition-all duration-200"
                   >
                     <div>
                       <div className="flex items-center justify-between mb-4">
@@ -303,7 +367,7 @@ export default function LearnPage() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-20 bg-[#faf9f5] border border-[#e5e3db] p-8">
+              <div className="text-center py-20 bg-white border border-[#e5e3db] p-8">
                 <BookOpen className="w-10 h-10 text-[#737a83] mx-auto mb-4 stroke-1" />
                 <h3 className="text-lg font-medium text-[#171b22] mb-2">No courses found</h3>
                 <p className="text-xs text-[#737a83] max-w-sm mx-auto mb-6">
@@ -324,7 +388,7 @@ export default function LearnPage() {
             )}
 
             {/* Educator Callout */}
-            <div className="mt-16 p-8 sm:p-12 bg-[#f7f6f2] border border-[#e5e3db] flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="mt-16 p-8 sm:p-12 bg-white border border-[#e5e3db] flex flex-col md:flex-row items-center justify-between gap-6">
               <div>
                 <span className="text-[10px] font-mono uppercase tracking-widest text-[#d95325] font-semibold mb-2 block">
                   Teach with Us
@@ -388,5 +452,6 @@ export default function LearnPage() {
     </div>
   );
 }
+
 
 

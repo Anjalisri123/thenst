@@ -98,17 +98,17 @@ export function RolePageView({ roleKey }: { roleKey: string }) {
             </div>
 
             {/* Timeline Row */}
-            <div className="grid grid-cols-1 md:grid-cols-5 divide-y md:divide-y-0 md:divide-x divide-[#e5e3db] border-y border-[#e5e3db] my-8 bg-[#faf9f5]">
+            <div className="border border-[#e5e3db] bg-[#faf9f5] grid grid-cols-1 md:grid-cols-5 divide-y md:divide-y-0 md:divide-x divide-[#e5e3db] my-8 shadow-sm">
               {role.steps.map((step) => (
-                <div key={step.num} className="p-6 md:p-8 flex flex-col justify-between min-h-[240px]">
-                  <span className="text-sm font-mono font-bold text-[#d95325] mb-6 block">
+                <div key={step.num} className="p-8 flex flex-col justify-between min-h-[260px] hover:bg-white transition-colors">
+                  <span className="text-sm font-mono font-bold text-[#d95325] block mb-12">
                     {step.num}
                   </span>
                   <div>
-                    <h3 className="text-base font-medium text-[#171b22] mb-2">
+                    <h3 className="text-base sm:text-[17px] font-semibold tracking-tight text-[#171b22] mb-2 leading-snug">
                       {step.title}
                     </h3>
-                    <p className="text-xs text-[#616872] leading-relaxed font-sans">
+                    <p className="text-xs sm:text-[13px] text-[#616872] leading-relaxed font-sans">
                       {step.desc}
                     </p>
                   </div>
