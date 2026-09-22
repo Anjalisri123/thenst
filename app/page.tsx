@@ -97,26 +97,6 @@ export default function HomePage() {
                     Find Your Path
                   </a>
                 </div>
-
-                {/* Hero Meta 4-Domain Strip */}
-                <div className="w-full border-t border-[#393e46] mt-16 pt-5 grid grid-cols-2 sm:grid-cols-4 gap-4 text-[#9299a2] text-[10px] font-mono tracking-widest uppercase">
-                  <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#d95325]" />
-                    <span>01 / People</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#d95325]" />
-                    <span>02 / Knowledge</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#d95325]" />
-                    <span>03 / Organisations</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#d95325]" />
-                    <span>04 / Opportunity</span>
-                  </div>
-                </div>
               </div>
 
               {/* Right Column: Interactive 2D/3D Capability Graph */}

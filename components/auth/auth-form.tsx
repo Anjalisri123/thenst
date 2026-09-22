@@ -147,9 +147,6 @@ export function AuthForm({ mode, role = "guard" }: AuthFormProps) {
                     <Link href="/" className="inline-flex items-baseline gap-0 text-[24px] font-medium tracking-[-1.1px] text-[#171b22] mb-3">
                         <span className="font-sans font-bold">The</span>
                         <span className="font-serif italic font-normal text-[28px] tracking-[-0.5px]">NST</span>
-                        <small className="text-[8px] tracking-[1.4px] text-[#737a83] ml-2.5 font-bold uppercase">
-                            INSTITUTIONAL
-                        </small>
                     </Link>
                     <h1 className="text-3xl font-medium tracking-tight text-[#171b22] mb-1">
                         {isResetMode ? "Reset Password" : (mode === "login" ? "Institutional Sign In" : "Create Account")}

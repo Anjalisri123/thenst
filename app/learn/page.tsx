@@ -2,10 +2,15 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { Search, BookOpen, Clock, User, ArrowRight, ArrowUpRight, CheckCircle2, Filter, Layers, GraduationCap } from "lucide-react";
+import { 
+  Search, BookOpen, Clock, User, ArrowRight, ArrowUpRight, 
+  CheckCircle2, Filter, Layers, GraduationCap, ShieldCheck, 
+  Plane, FileText, Building2, Users, Cpu, Award, Lock, Sparkles
+} from "lucide-react";
 import { Navbar } from "@/components/nst/navbar";
 import { Footer } from "@/components/nst/footer";
 import { COURSES, Course } from "@/lib/nst-data";
+import { useAuth } from "@/lib/auth-context";
 
 const CATEGORIES = [
   "All",
@@ -19,7 +24,54 @@ const CATEGORIES = [
 
 const LEVELS = ["All", "Foundational", "Intermediate", "Advanced"];
 
+const PLATFORM_PILLARS = [
+  {
+    num: "01",
+    icon: Plane,
+    title: "Autonomous Systems & Drone Piloting",
+    subtitle: "Tactical & BVLOS Flight Standards",
+    description: "Comprehensive qualification tracks for unmanned aerial systems (UAS), payload integration, beyond-visual-line-of-sight navigation, sensor telemetry, and airspace regulatory compliance.",
+    badge: "Operations",
+    href: "/drone-pilot"
+  },
+  {
+    num: "02",
+    icon: ShieldCheck,
+    title: "Security Professional & Guard Academy",
+    subtitle: "Kinetic & Non-Kinetic Protection",
+    description: "Standardized physical security, executive protection, asset surveillance, tactical response drills, and sovereign background-checked KYC certification for frontline security forces.",
+    badge: "Defense",
+    href: "/security-professional"
+  },
+  {
+    num: "03",
+    icon: FileText,
+    title: "Strategic Research & Monograph Doctrine",
+    subtitle: "Geopolitical & Technological Intelligence",
+    description: "Peer-reviewed strategic assessments, threat intelligence briefs, electronic warfare analysis, and algorithmic defense simulations authored by senior defense fellows.",
+    badge: "Intelligence",
+    href: "/research"
+  },
+  {
+    num: "04",
+    icon: Building2,
+    title: "Enterprise & MSME Workforce Pipeline",
+    subtitle: "Direct Talent Acquisition & Upskilling",
+    description: "Institutional portals connecting defense contractors, private security agencies, and MSME manufacturing cohorts with pre-screened, verified, and certified technical personnel.",
+    badge: "Industry",
+    href: "/organisation"
+  }
+];
+
+const ECOSYSTEM_STATS = [
+  { value: "100%", label: "Sovereign Verified Standards", detail: "Government-aligned & PSARA Compliant" },
+  { value: "48+", label: "Specialized Modules", detail: "Cyber, Tactical, UAS & Doctrine" },
+  { value: "3-Tier", label: "Audience Pricing Matrix", detail: "Students, MSMEs & Enterprise Teams" },
+  { value: "Direct", label: "Workforce Placements", detail: "Instant Agency & Employer Pipeline" }
+];
+
 export default function LearnPage() {
+  const { user } = useAuth();
   const [search, setSearch] = useState("");
   const [selectedCat, setSelectedCat] = useState("All");
   const [selectedLevel, setSelectedLevel] = useState("All");
@@ -39,24 +91,114 @@ export default function LearnPage() {
       <Navbar />
 
       <main className="flex-1">
-        {/* Intro (Dark Band) */}
+        {/* Hero Section */}
         <section className="bg-[#171b22] text-white pt-20 pb-24 border-b border-[#3b414a]">
           <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto">
             <span className="text-[11px] font-mono uppercase tracking-[2px] text-[#d95325] font-semibold mb-3 block">
-              TheNST / Learning & Professional Education
+              TheNST / Academy & Strategic Knowledge Hub
             </span>
-            <h1 className="text-4xl sm:text-6xl font-medium leading-[0.98] tracking-[-2.5px] text-white mb-6 max-w-[850px]">
-              Structured Curricula for the Security Profession.
+            <h1 className="text-4xl sm:text-6xl font-medium leading-[0.98] tracking-[-2.5px] text-white mb-6 max-w-[900px]">
+              The Sovereign Learning & Capability Infrastructure.
             </h1>
-            <p className="text-base sm:text-lg text-[#c5c9ce] leading-relaxed max-w-[640px] font-sans">
-              Rigorous, accredited courses covering doctrine, cyber warfare, autonomous systems, intelligence analysis and strategic geopolitics.
+            <p className="text-base sm:text-lg text-[#c5c9ce] leading-relaxed max-w-[720px] font-sans mb-10">
+              TheNST unifies structured defense curricula, autonomous systems training, vetted security workforce credentials, and tactical research into a single accredited ecosystem.
             </p>
+
+            {/* Quick Action Badges */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-[#3b414a]/80">
+              {ECOSYSTEM_STATS.map((stat, idx) => (
+                <div key={idx} className="p-4 bg-[#232830] border border-[#3b414a]/60">
+                  <div className="text-2xl font-mono font-bold text-white mb-1">{stat.value}</div>
+                  <div className="text-xs font-semibold text-[#d95325] uppercase tracking-wider mb-0.5">{stat.label}</div>
+                  <div className="text-[11px] text-[#8e95a0]">{stat.detail}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* Catalog Section */}
+        {/* Platform Overview: What The Web Platform Is Doing */}
+        <section className="bg-[#faf9f5] py-20 border-b border-[#e5e3db]">
+          <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto">
+            <div className="max-w-2xl mb-14">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-[#d95325] font-semibold mb-2 block">
+                Platform Architecture
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-medium tracking-tight text-[#171b22] mb-4">
+                What TheNST Ecosystem Delivers
+              </h2>
+              <p className="text-sm sm:text-base text-[#616872] leading-relaxed">
+                A multi-dimensional capability environment designed to qualify, certify, and deploy personnel across critical security domains.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {PLATFORM_PILLARS.map((pillar) => {
+                const IconComponent = pillar.icon;
+                return (
+                  <div 
+                    key={pillar.num} 
+                    className="bg-white border border-[#e5e3db] p-8 sm:p-10 flex flex-col justify-between hover:border-[#171b22]/40 transition-all duration-200 group"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center gap-3">
+                          <span className="flex h-10 w-10 items-center justify-center bg-[#171b22] text-white text-sm font-mono font-bold">
+                            {pillar.num}
+                          </span>
+                          <span className="text-[10px] font-mono uppercase tracking-widest text-[#737a83]">
+                            {pillar.badge}
+                          </span>
+                        </div>
+                        <div className="h-9 w-9 flex items-center justify-center text-[#171b22] group-hover:text-[#d95325] transition-colors">
+                          <IconComponent className="w-6 h-6" />
+                        </div>
+                      </div>
+
+                      <h3 className="text-xl sm:text-2xl font-medium tracking-tight text-[#171b22] mb-2">
+                        {pillar.title}
+                      </h3>
+                      <p className="text-xs font-mono text-[#d95325] mb-4">
+                        {pillar.subtitle}
+                      </p>
+                      <p className="text-xs sm:text-sm text-[#616872] leading-relaxed font-sans mb-8">
+                        {pillar.description}
+                      </p>
+                    </div>
+
+                    <div className="pt-4 border-t border-[#e5e3db]">
+                      <Link
+                        href={pillar.href}
+                        className="inline-flex items-center justify-between w-full text-xs font-semibold uppercase tracking-wider text-[#171b22] group-hover:text-[#d95325] transition-colors"
+                      >
+                        <span>Explore {pillar.badge} Domain</span>
+                        <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* Catalog Section: Structured Curricula */}
         <section className="bg-white py-16 sm:py-20 border-b border-[#e5e3db]">
           <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 pb-6 border-b border-[#e5e3db] gap-4">
+              <div>
+                <span className="text-[10px] font-mono uppercase tracking-widest text-[#d95325] font-semibold mb-2 block">
+                  Interactive Catalog
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-medium tracking-tight text-[#171b22]">
+                  Accredited Courses &amp; Certifications
+                </h2>
+              </div>
+              <p className="text-xs text-[#737a83] max-w-sm">
+                Enroll individually as a student, license for an MSME squad, or deploy enterprise team training.
+              </p>
+            </div>
+
             {/* Search & Filters */}
             <div className="flex flex-col lg:flex-row gap-6 items-stretch lg:items-center justify-between pb-8 mb-10 border-b border-[#e5e3db]">
               {/* Search Bar */}
@@ -64,7 +206,7 @@ export default function LearnPage() {
                 <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#737a83]" />
                 <input
                   type="text"
-                  placeholder="Search courses, keywords, topics..."
+                  placeholder="Search courses, skills, doctrine, instructors..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   className="w-full pl-10 pr-4 py-2.5 bg-[#f7f6f2] border border-[#e5e3db] text-xs text-[#171b22] placeholder:text-[#737a83] focus:outline-none focus:border-[#d95325] focus:bg-white transition-all font-sans"
@@ -153,7 +295,7 @@ export default function LearnPage() {
                         href={`/learn/${c.id}`}
                         className="inline-flex items-center justify-between w-full text-xs font-semibold uppercase tracking-wider text-[#d95325] hover:text-[#bc3f18]"
                       >
-                        <span>View Syllabus & Enrol</span>
+                        <span>View Syllabus &amp; Enrol</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </Link>
                     </div>
@@ -161,7 +303,6 @@ export default function LearnPage() {
                 ))}
               </div>
             ) : (
-              /* Realistic Empty State */
               <div className="text-center py-20 bg-[#faf9f5] border border-[#e5e3db] p-8">
                 <BookOpen className="w-10 h-10 text-[#737a83] mx-auto mb-4 stroke-1" />
                 <h3 className="text-lg font-medium text-[#171b22] mb-2">No courses found</h3>
@@ -186,13 +327,13 @@ export default function LearnPage() {
             <div className="mt-16 p-8 sm:p-12 bg-[#f7f6f2] border border-[#e5e3db] flex flex-col md:flex-row items-center justify-between gap-6">
               <div>
                 <span className="text-[10px] font-mono uppercase tracking-widest text-[#d95325] font-semibold mb-2 block">
-                  Faculty Collaboration
+                  Faculty &amp; Authoring Council
                 </span>
                 <h3 className="text-2xl font-medium tracking-tight text-[#171b22] mb-2">
-                  Are you a subject matter expert or experienced instructor?
+                  Are you a subject matter expert or defense instructor?
                 </h3>
                 <p className="text-xs sm:text-sm text-[#616872] leading-relaxed max-w-xl font-sans">
-                  Design and lead structured courses on TheNST Learn. Submit a course proposal to the academic council.
+                  Design and lead structured courses on TheNST Learn. Submit a course syllabus proposal for sovereign academic review.
                 </p>
               </div>
               <Link
@@ -204,9 +345,47 @@ export default function LearnPage() {
             </div>
           </div>
         </section>
+
+        {/* High-Impact Unified Action Section (Sign In, Register, Enter Platform) */}
+        <section className="bg-[#171b22] text-white py-20 border-t border-[#3b414a]">
+          <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto text-center">
+            <span className="text-[11px] font-mono uppercase tracking-[2px] text-[#d95325] font-semibold mb-3 block">
+              Access The Ecosystem
+            </span>
+            <h2 className="text-3xl sm:text-5xl font-medium tracking-tight text-white mb-6 max-w-2xl mx-auto">
+              Ready to Advance Your Defense &amp; Security Capabilities?
+            </h2>
+            <p className="text-sm sm:text-base text-[#c5c9ce] max-w-xl mx-auto mb-10 font-sans">
+              Create your sovereign profile to unlock course syllabi, verify operational credentials, or manage your organization&apos;s tactical talent.
+            </p>
+
+            {/* Unified Action Buttons */}
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <Link
+                href="/register"
+                className="inline-flex items-center justify-center min-h-[48px] px-8 text-xs font-semibold tracking-wider text-white bg-[#d95325] hover:bg-[#bc3f18] transition-all uppercase whitespace-nowrap shadow-md"
+              >
+                Register / Create Account →
+              </Link>
+              <Link
+                href="/sign-in"
+                className="inline-flex items-center justify-center min-h-[48px] px-8 text-xs font-semibold tracking-wider text-white bg-[#232830] hover:bg-[#2d343f] border border-[#3b414a] transition-all uppercase whitespace-nowrap"
+              >
+                Sign In to Account
+              </Link>
+              <Link
+                href={user ? "/dashboard" : "/sign-in?redirect=/dashboard"}
+                className="inline-flex items-center justify-center min-h-[48px] px-8 text-xs font-semibold tracking-wider text-[#171b22] bg-[#f7f6f2] hover:bg-white transition-all uppercase whitespace-nowrap"
+              >
+                Enter Platform
+              </Link>
+            </div>
+          </div>
+        </section>
       </main>
 
       <Footer />
     </div>
   );
 }
+

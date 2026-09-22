@@ -46,16 +46,13 @@ export function Navbar() {
   return (
     <header className="sticky top-0 left-0 w-full z-50 h-[72px] border-b border-[#e5e3db] bg-[#f7f6f2]/95 backdrop-blur-md">
       <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto h-full flex items-center justify-between gap-6">
-        {/* Institutional Logo */}
+        {/* Logo */}
         <Link
           href="/"
           className="flex items-baseline gap-0 text-[22px] font-medium tracking-[-1.1px] text-[#171b22] hover:opacity-90 transition-opacity flex-shrink-0"
         >
           <span className="font-sans font-bold">The</span>
           <span className="font-serif italic font-normal text-[26px] tracking-[-0.5px]">NST</span>
-          <small className="text-[8px] tracking-[1.4px] text-[#737a83] ml-2.5 font-bold uppercase hidden sm:inline-block">
-            INSTITUTIONAL
-          </small>
         </Link>
 
         {/* Desktop Navigation Links */}

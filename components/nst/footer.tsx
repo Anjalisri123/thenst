@@ -15,9 +15,6 @@ export function Footer() {
             <Link href="/" className="flex items-baseline gap-0 text-2xl font-medium tracking-tight text-white mb-4">
               <span className="font-sans font-bold">The</span>
               <span className="font-serif italic font-normal text-[28px] tracking-[-0.5px]">NST</span>
-              <small className="text-[8px] tracking-[1.4px] text-[#9299a2] ml-2.5 font-bold uppercase">
-                INSTITUTIONAL
-              </small>
             </Link>
             <p className="text-sm text-[#a2a8b2] leading-relaxed max-w-[340px] mb-6 font-sans">
               The National Security Think Tank brings together professionals, researchers, educators, organisations and emerging capabilities.
