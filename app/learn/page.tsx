@@ -28,46 +28,46 @@ const PLATFORM_PILLARS = [
   {
     num: "01",
     icon: Plane,
-    title: "Autonomous Systems & Drone Piloting",
-    subtitle: "Tactical & BVLOS Flight Standards",
-    description: "Comprehensive qualification tracks for unmanned aerial systems (UAS), payload integration, beyond-visual-line-of-sight navigation, sensor telemetry, and airspace regulatory compliance.",
-    badge: "Operations",
+    title: "Drone Piloting & Operations",
+    subtitle: "Flight Training & Rules",
+    description: "Learn how to fly drones safely, use sensors and cameras, follow government rules, and earn your official pilot qualification.",
+    badge: "Drone Training",
     href: "/drone-pilot"
   },
   {
     num: "02",
     icon: ShieldCheck,
-    title: "Security Professional & Guard Academy",
-    subtitle: "Kinetic & Non-Kinetic Protection",
-    description: "Standardized physical security, executive protection, asset surveillance, tactical response drills, and sovereign background-checked KYC certification for frontline security forces.",
-    badge: "Defense",
+    title: "Security Guards & Officers",
+    subtitle: "Protection & Safety",
+    description: "Complete practical training for security work. Learn site safety, emergency response, and complete your official background verification.",
+    badge: "Security",
     href: "/security-professional"
   },
   {
     num: "03",
     icon: FileText,
-    title: "Strategic Research & Monograph Doctrine",
-    subtitle: "Geopolitical & Technological Intelligence",
-    description: "Peer-reviewed strategic assessments, threat intelligence briefs, electronic warfare analysis, and algorithmic defense simulations authored by senior defense fellows.",
-    badge: "Intelligence",
+    title: "Security Research & Reports",
+    subtitle: "Expert Knowledge & Analysis",
+    description: "Read clear guides, threat updates, and technology research papers written by security and defense experts.",
+    badge: "Research",
     href: "/research"
   },
   {
     num: "04",
     icon: Building2,
-    title: "Enterprise & MSME Workforce Pipeline",
-    subtitle: "Direct Talent Acquisition & Upskilling",
-    description: "Institutional portals connecting defense contractors, private security agencies, and MSME manufacturing cohorts with pre-screened, verified, and certified technical personnel.",
-    badge: "Industry",
+    title: "Hiring & Team Training",
+    subtitle: "For Companies & Agencies",
+    description: "Companies and security agencies can find, hire, and train verified guards, drone pilots, and security staff.",
+    badge: "For Companies",
     href: "/organisation"
   }
 ];
 
 const ECOSYSTEM_STATS = [
-  { value: "100%", label: "Sovereign Verified Standards", detail: "Government-aligned & PSARA Compliant" },
-  { value: "48+", label: "Specialized Modules", detail: "Cyber, Tactical, UAS & Doctrine" },
-  { value: "3-Tier", label: "Audience Pricing Matrix", detail: "Students, MSMEs & Enterprise Teams" },
-  { value: "Direct", label: "Workforce Placements", detail: "Instant Agency & Employer Pipeline" }
+  { value: "100%", label: "Verified Certificates", detail: "Government-aligned & PSARA Compliant" },
+  { value: "48+", label: "Step-by-Step Lessons", detail: "Drones, Security, Cyber & AI" },
+  { value: "3-Tier", label: "Flexible Pricing", detail: "For Students, Small Teams & Companies" },
+  { value: "Direct", label: "Job Placement", detail: "Connect with Agencies & Employers" }
 ];
 
 export default function LearnPage() {
@@ -95,16 +95,16 @@ export default function LearnPage() {
         <section className="bg-[#171b22] text-white pt-20 pb-24 border-b border-[#3b414a]">
           <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto">
             <span className="text-[11px] font-mono uppercase tracking-[2px] text-[#d95325] font-semibold mb-3 block">
-              TheNST / Academy & Strategic Knowledge Hub
+              TheNST / Learning &amp; Training Hub
             </span>
             <h1 className="text-4xl sm:text-6xl font-medium leading-[0.98] tracking-[-2.5px] text-white mb-6 max-w-[900px]">
-              The Sovereign Learning & Capability Infrastructure.
+              Learn, Get Certified, and Build Your Career in Security.
             </h1>
             <p className="text-base sm:text-lg text-[#c5c9ce] leading-relaxed max-w-[720px] font-sans mb-10">
-              TheNST unifies structured defense curricula, autonomous systems training, vetted security workforce credentials, and tactical research into a single accredited ecosystem.
+              TheNST brings together simple drone training, verified security certifications, expert research, and direct hiring in one easy-to-use platform.
             </p>
 
-            {/* Quick Action Badges */}
+            {/* Quick Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-[#3b414a]/80">
               {ECOSYSTEM_STATS.map((stat, idx) => (
                 <div key={idx} className="p-4 bg-[#232830] border border-[#3b414a]/60">
@@ -117,18 +117,18 @@ export default function LearnPage() {
           </div>
         </section>
 
-        {/* Platform Overview: What The Web Platform Is Doing */}
+        {/* Platform Overview */}
         <section className="bg-[#faf9f5] py-20 border-b border-[#e5e3db]">
           <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto">
             <div className="max-w-2xl mb-14">
               <span className="text-[10px] font-mono uppercase tracking-widest text-[#d95325] font-semibold mb-2 block">
-                Platform Architecture
+                How It Works
               </span>
               <h2 className="text-3xl sm:text-4xl font-medium tracking-tight text-[#171b22] mb-4">
-                What TheNST Ecosystem Delivers
+                What You Can Do on TheNST
               </h2>
               <p className="text-sm sm:text-base text-[#616872] leading-relaxed">
-                A multi-dimensional capability environment designed to qualify, certify, and deploy personnel across critical security domains.
+                Everything you need to learn practical skills, get your credentials verified, and connect with real employers.
               </p>
             </div>
 
@@ -171,7 +171,7 @@ export default function LearnPage() {
                         href={pillar.href}
                         className="inline-flex items-center justify-between w-full text-xs font-semibold uppercase tracking-wider text-[#171b22] group-hover:text-[#d95325] transition-colors"
                       >
-                        <span>Explore {pillar.badge} Domain</span>
+                        <span>Learn More About {pillar.badge}</span>
                         <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                       </Link>
                     </div>
@@ -182,20 +182,20 @@ export default function LearnPage() {
           </div>
         </section>
 
-        {/* Catalog Section: Structured Curricula */}
+        {/* Catalog Section */}
         <section className="bg-white py-16 sm:py-20 border-b border-[#e5e3db]">
           <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto">
             <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 pb-6 border-b border-[#e5e3db] gap-4">
               <div>
                 <span className="text-[10px] font-mono uppercase tracking-widest text-[#d95325] font-semibold mb-2 block">
-                  Interactive Catalog
+                  Course Catalog
                 </span>
                 <h2 className="text-2xl sm:text-3xl font-medium tracking-tight text-[#171b22]">
-                  Accredited Courses &amp; Certifications
+                  Explore Courses &amp; Certifications
                 </h2>
               </div>
               <p className="text-xs text-[#737a83] max-w-sm">
-                Enroll individually as a student, license for an MSME squad, or deploy enterprise team training.
+                Learn as an individual student, train your team, or sign up your company.
               </p>
             </div>
 
@@ -206,7 +206,7 @@ export default function LearnPage() {
                 <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#737a83]" />
                 <input
                   type="text"
-                  placeholder="Search courses, skills, doctrine, instructors..."
+                  placeholder="Search by topic, keyword, or instructor..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   className="w-full pl-10 pr-4 py-2.5 bg-[#f7f6f2] border border-[#e5e3db] text-xs text-[#171b22] placeholder:text-[#737a83] focus:outline-none focus:border-[#d95325] focus:bg-white transition-all font-sans"
@@ -235,7 +235,7 @@ export default function LearnPage() {
             {/* Level Filter Sub-bar */}
             <div className="flex items-center justify-between pb-6 mb-8 text-xs font-mono text-[#737a83] border-b border-[#e5e3db]/60">
               <div className="flex items-center gap-3">
-                <span className="uppercase tracking-wider">Level Filter:</span>
+                <span className="uppercase tracking-wider">Level:</span>
                 {LEVELS.map((lvl) => (
                   <button
                     key={lvl}
@@ -295,7 +295,7 @@ export default function LearnPage() {
                         href={`/learn/${c.id}`}
                         className="inline-flex items-center justify-between w-full text-xs font-semibold uppercase tracking-wider text-[#d95325] hover:text-[#bc3f18]"
                       >
-                        <span>View Syllabus &amp; Enrol</span>
+                        <span>View Lessons &amp; Enroll</span>
                         <ArrowRight className="w-3.5 h-3.5" />
                       </Link>
                     </div>
@@ -307,7 +307,7 @@ export default function LearnPage() {
                 <BookOpen className="w-10 h-10 text-[#737a83] mx-auto mb-4 stroke-1" />
                 <h3 className="text-lg font-medium text-[#171b22] mb-2">No courses found</h3>
                 <p className="text-xs text-[#737a83] max-w-sm mx-auto mb-6">
-                  No curricula match your selected search terms or filters. Try adjusting your criteria.
+                  No courses match your search. Try clearing your filters.
                 </p>
                 <button
                   type="button"
@@ -318,7 +318,7 @@ export default function LearnPage() {
                   }}
                   className="px-4 py-2 bg-[#171b22] text-white text-xs font-semibold uppercase tracking-wider hover:bg-[#d95325] transition-colors"
                 >
-                  Reset All Filters
+                  Reset Filters
                 </button>
               </div>
             )}
@@ -327,13 +327,13 @@ export default function LearnPage() {
             <div className="mt-16 p-8 sm:p-12 bg-[#f7f6f2] border border-[#e5e3db] flex flex-col md:flex-row items-center justify-between gap-6">
               <div>
                 <span className="text-[10px] font-mono uppercase tracking-widest text-[#d95325] font-semibold mb-2 block">
-                  Faculty &amp; Authoring Council
+                  Teach with Us
                 </span>
                 <h3 className="text-2xl font-medium tracking-tight text-[#171b22] mb-2">
-                  Are you a subject matter expert or defense instructor?
+                  Are you an experienced instructor or security expert?
                 </h3>
                 <p className="text-xs sm:text-sm text-[#616872] leading-relaxed max-w-xl font-sans">
-                  Design and lead structured courses on TheNST Learn. Submit a course syllabus proposal for sovereign academic review.
+                  Create and teach practical courses on TheNST. Submit your course idea to our team.
                 </p>
               </div>
               <Link
@@ -346,20 +346,20 @@ export default function LearnPage() {
           </div>
         </section>
 
-        {/* High-Impact Unified Action Section (Sign In, Register, Enter Platform) */}
+        {/* Action Buttons Section */}
         <section className="bg-[#171b22] text-white py-20 border-t border-[#3b414a]">
           <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto text-center">
             <span className="text-[11px] font-mono uppercase tracking-[2px] text-[#d95325] font-semibold mb-3 block">
-              Access The Ecosystem
+              Join The Platform
             </span>
             <h2 className="text-3xl sm:text-5xl font-medium tracking-tight text-white mb-6 max-w-2xl mx-auto">
-              Ready to Advance Your Defense &amp; Security Capabilities?
+              Ready to Get Started?
             </h2>
             <p className="text-sm sm:text-base text-[#c5c9ce] max-w-xl mx-auto mb-10 font-sans">
-              Create your sovereign profile to unlock course syllabi, verify operational credentials, or manage your organization&apos;s tactical talent.
+              Create a free account to start learning, get your certificates verified, or find and hire trained professionals.
             </p>
 
-            {/* Unified Action Buttons */}
+            {/* Action Buttons */}
             <div className="flex flex-wrap items-center justify-center gap-4">
               <Link
                 href="/register"
@@ -371,7 +371,7 @@ export default function LearnPage() {
                 href="/sign-in"
                 className="inline-flex items-center justify-center min-h-[48px] px-8 text-xs font-semibold tracking-wider text-white bg-[#232830] hover:bg-[#2d343f] border border-[#3b414a] transition-all uppercase whitespace-nowrap"
               >
-                Sign In to Account
+                Sign In
               </Link>
               <Link
                 href={user ? "/dashboard" : "/sign-in?redirect=/dashboard"}
@@ -388,4 +388,5 @@ export default function LearnPage() {
     </div>
   );
 }
+
 
