@@ -295,27 +295,6 @@ export default function HomePage() {
                 </Link>
               </div>
             </div>
-
-            {/* Secondary Pathways Strip */}
-            <div className="border border-[#e5e3db] bg-[#f7f6f2] p-6 flex flex-wrap items-center justify-between gap-4 text-xs font-medium">
-              <span className="text-[#737a83] font-mono uppercase tracking-wider text-[11px]">
-                Additional Pathways:
-              </span>
-              <div className="flex flex-wrap items-center gap-6">
-                <Link href="/learn" className="text-[#171b22] hover:text-[#d95325] transition-colors">
-                  I want to learn →
-                </Link>
-                <Link href="/research" className="text-[#171b22] hover:text-[#d95325] transition-colors">
-                  I want to research →
-                </Link>
-                <Link href="/about" className="text-[#171b22] hover:text-[#d95325] transition-colors">
-                  I represent an organisation →
-                </Link>
-                <Link href="/opportunities" className="text-[#171b22] hover:text-[#d95325] transition-colors">
-                  I want to explore opportunities →
-                </Link>
-              </div>
-            </div>
           </div>
         </section>
 
