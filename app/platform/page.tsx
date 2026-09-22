@@ -271,10 +271,10 @@ export default function PlatformHubPage() {
                     </p>
                     <div className="flex items-center gap-3">
                       <Link
-                        href={`/opportunities/${OPPORTUNITIES[2].id}`}
+                        href={`/opportunities/${OPPORTUNITIES[0].id}`}
                         className="px-4 py-2 bg-[#d95325] hover:bg-[#bc3f18] text-white text-xs font-semibold uppercase tracking-wider transition-all"
                       >
-                        Submit Drone Capability Dossier →
+                        Apply for Drone Flight Mission →
                       </Link>
                     </div>
                   </div>
@@ -284,19 +284,19 @@ export default function PlatformHubPage() {
                   <div className="p-8 bg-[#faf9f5] border border-[#e5e3db]">
                     <div className="flex items-center justify-between mb-4">
                       <span className="text-[10px] font-mono uppercase tracking-widest text-[#d95325] font-semibold">
-                        Field Trials Board
+                        Open Drone Missions
                       </span>
                       <Compass className="w-4 h-4 text-[#737a83]" />
                     </div>
-                    <h3 className="text-lg font-medium text-[#171b22] mb-2">{OPPORTUNITIES[2].title}</h3>
+                    <h3 className="text-lg font-medium text-[#171b22] mb-2">{OPPORTUNITIES[0].title}</h3>
                     <p className="text-xs text-[#616872] leading-relaxed font-sans mb-4">
-                      {OPPORTUNITIES[2].description}
+                      {OPPORTUNITIES[0].description}
                     </p>
                     <Link
-                      href={`/opportunities/${OPPORTUNITIES[2].id}`}
+                      href={`/opportunities/${OPPORTUNITIES[0].id}`}
                       className="inline-flex items-center gap-1 text-xs font-semibold text-[#d95325] uppercase tracking-wider hover:underline"
                     >
-                      View Active Trial Brief <ArrowRight className="w-3.5 h-3.5" />
+                      View Mission Brief <ArrowRight className="w-3.5 h-3.5" />
                     </Link>
                   </div>
 

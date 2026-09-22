@@ -39,6 +39,7 @@ export interface Opportunity {
   description: string;
   requirements?: string[];
   compensation?: string;
+  payAmount?: number;
   deadline?: string;
 }
 
@@ -275,89 +276,148 @@ export const ARTICLES: Article[] = [
 
 export const OPPORTUNITIES: Opportunity[] = [
   {
-    id: "opp-research-strategic",
-    title: "Research Contributor — Strategic Affairs Desk",
-    organisation: "TheNST Research Desk",
-    type: "Collaboration",
-    category: "Research",
-    location: "Remote",
-    date: "Open for Q2",
-    description: "Seeking domain experts to author peer-reviewed intelligence monographs on maritime security and Indo-Pacific supply chains.",
-    requirements: [
-      "Advanced degree or 5+ years operational experience in strategic affairs or naval strategy",
-      "Demonstrated publication track record or policy briefing experience",
-      "Ability to meet rigorous editorial standards and review timelines"
-    ],
-    compensation: "Institutional Honorarium & Contributor Byline",
-    deadline: "Rolling Admissions"
-  },
-  {
-    id: "opp-course-reviewer",
-    title: "Technical Course Reviewer — Cybersecurity Operations",
-    organisation: "TheNST Learn",
-    type: "Participation",
-    category: "Education",
-    location: "Remote",
-    date: "Rolling Admissions",
-    description: "Peer-reviewing interactive curriculum and operational case studies for mid-career intelligence and security officers.",
-    requirements: [
-      "Proven expertise in offensive/defensive cyber operations or infrastructure security",
-      "Experience conducting red/blue team simulations or technical curricula development",
-      "Commitment to 4–6 hours of quarterly curriculum review"
-    ],
-    compensation: "Academic Retainer & Reviewer Credentials",
-    deadline: "Immediate"
-  },
-  {
-    id: "opp-uav-capability",
-    title: "UAV & Counter-UAS Field Capability Project",
-    organisation: "Institutional Partner Consortium",
+    id: "opp-drone-pilot",
+    title: "Drone Pilot — Site & Perimeter Inspection",
+    organisation: "AeroShield Drone Services",
     type: "Project",
-    category: "Projects",
-    location: "Hybrid / Test Ranges",
+    category: "Drone Operations",
+    location: "Hybrid / Field Sites",
     date: "Active Phase II",
-    description: "Field integration trials for long-range ISR drones, telemetry encryption, and tactical mesh relay nodes.",
+    description: "Fly camera drones to inspect security boundaries, record clear aerial footage, and check site perimeter safety.",
     requirements: [
-      "Valid commercial/tactical drone pilot certification (or equivalent UAS operations record)",
-      "Experience with autonomous flight controllers, thermal/EO payloads, and telemetry radios",
-      "Clean background record for access to field test facilities"
+      "Basic drone flying experience or drone pilot certificate",
+      "Ability to operate camera gimbal and monitor battery levels safely",
+      "Good communication skills to share flight logs with the ground team"
     ],
-    compensation: "Direct Contract / Project Stipend",
+    compensation: "₹50,000 / month",
+    payAmount: 50000,
     deadline: "15 April 2026"
   },
   {
-    id: "opp-fellowship-cyber",
-    title: "Senior Security Fellow — Critical Infrastructure",
+    id: "opp-security-supervisor",
+    title: "Security Supervisor — Campus & Facility Safety",
+    organisation: "ShieldPoint Security Solutions",
+    type: "Direct Placement",
+    category: "Security & Guarding",
+    location: "New Delhi",
+    date: "Immediate Hiring",
+    description: "Lead daily guard patrols, manage visitor check-in desks, and ensure prompt response to building safety alarms.",
+    requirements: [
+      "1-2 years experience in security guarding or team supervision",
+      "Clear verbal communication and calm emergency response",
+      "Familiarity with visitor log books and basic CCTV monitoring"
+    ],
+    compensation: "₹38,000 / month",
+    payAmount: 38000,
+    deadline: "30 April 2026"
+  },
+  {
+    id: "opp-cyber-trainer",
+    title: "Cyber Security Trainer — Beginner Workshops",
+    organisation: "TheNST Learning Desk",
+    type: "Participation",
+    category: "Training & Teaching",
+    location: "Remote",
+    date: "Rolling Admissions",
+    description: "Teach practical internet safety, strong password practices, and virus protection to beginners and college students.",
+    requirements: [
+      "Working knowledge of computer security, phishing protection, and firewalls",
+      "Friendly, encouraging communication style with beginners",
+      "Ability to conduct 2 live interactive video sessions each week"
+    ],
+    compensation: "₹45,000 / batch",
+    payAmount: 45000,
+    deadline: "Rolling"
+  },
+  {
+    id: "opp-threat-researcher",
+    title: "Threat News Analyst — Daily Safety Briefs",
+    organisation: "TheNST Research Desk",
+    type: "Collaboration",
+    category: "Research & Reports",
+    location: "Remote",
+    date: "Open for Q2",
+    description: "Track public news reports and regional security alerts, verify facts, and write brief, easy-to-read daily summaries.",
+    requirements: [
+      "Strong reading, fact-checking, and summary writing skills in English",
+      "Keen interest in current events, defense news, and safety trends",
+      "Ability to submit concise bullet-point morning briefings on time"
+    ],
+    compensation: "₹42,000 / month",
+    payAmount: 42000,
+    deadline: "Rolling"
+  },
+  {
+    id: "opp-security-fellow",
+    title: "Senior Defense & Safety Fellow",
     organisation: "TheNST Strategy Hub",
     type: "Fellowship",
     category: "Fellowship",
     location: "New Delhi / Hybrid",
     date: "Applications Open",
-    description: "Year-long residential and field fellowship researching power grid and financial telecommunications defence.",
+    description: "Lead research on power station safety, emergency communication backups, and national disaster preparedness.",
     requirements: [
-      "Demonstrated leadership in critical infrastructure security or cyber doctrine",
-      "Willingness to produce two major monographs and lead executive briefings",
-      "National security or enterprise institutional background"
+      "Background in engineering, risk management, or security policy",
+      "Ability to write 2 practical safety guides and lead discussions",
+      "Strong analytical mindset and interest in national infrastructure"
     ],
-    compensation: "Stipend + Full Research Grant Support",
+    compensation: "₹75,000 / month + Grant",
+    payAmount: 75000,
     deadline: "30 May 2026"
   },
   {
-    id: "opp-educator-drone",
-    title: "Lead Curriculum Designer — Drone Operations & Sensor Fusion",
-    organisation: "TheNST Learn",
-    type: "Collaboration",
-    category: "Education",
-    location: "Remote",
-    date: "Open for Q2",
-    description: "Design and record an accredited 6-week curriculum on tactical UAV mission planning, airspace compliance, and sensor analysis.",
+    id: "opp-cctv-technician",
+    title: "CCTV & Security Systems Technician",
+    organisation: "Apex Surveillance Networks",
+    type: "Direct Placement",
+    category: "Technical Support",
+    location: "Mumbai / On-site",
+    date: "Urgent Hiring",
+    description: "Install, test, and maintain security cameras, motion sensors, and recording monitors across office and industrial buildings.",
     requirements: [
-      "Extensive UAS flight operations and payload management experience",
-      "Pedagogical or instructor credentials in aviation or defence technology",
-      "Ability to create hands-on scenario-based course materials"
+      "Hands-on experience with CCTV camera wiring and network cables",
+      "Knowledge of DVR/NVR setup and basic WiFi router configuration",
+      "Willingness to visit client sites for maintenance and repairs"
     ],
-    compensation: "Course Creation Royalty & Retainer",
+    compensation: "₹32,000 / month",
+    payAmount: 32000,
+    deadline: "20 April 2026"
+  },
+  {
+    id: "opp-drone-data-annotator",
+    title: "Drone Video & Image Tagging Specialist",
+    organisation: "VisionAir AI Labs",
+    type: "Project",
+    category: "Drone Operations",
+    location: "Remote",
+    date: "New Opening",
+    description: "Label and tag objects in aerial drone videos (vehicles, buildings, boundaries) to train smart automated safety detection models.",
+    requirements: [
+      "Basic computer skills with careful attention to detail",
+      "Own a laptop/PC with reliable high-speed internet",
+      "No coding needed — complete step-by-step training provided"
+    ],
+    compensation: "₹28,000 / month",
+    payAmount: 28000,
     deadline: "Rolling"
+  },
+  {
+    id: "opp-emergency-response-trainer",
+    title: "First Aid & Emergency Response Coach",
+    organisation: "Community Guard Initiative",
+    type: "Participation",
+    category: "Training & Teaching",
+    location: "Bengaluru / On-site",
+    date: "Weekend Batches",
+    description: "Demonstrate practical first aid, CPR, fire extinguisher operation, and rapid building evacuation procedures to corporate teams.",
+    requirements: [
+      "Certified First Aid / Emergency Response instructor qualification",
+      "Confident and engaging speaker in group workshops",
+      "Available on select weekend mornings for hands-on drills"
+    ],
+    compensation: "₹35,000 / month",
+    payAmount: 35000,
+    deadline: "10 May 2026"
   }
 ];
 
