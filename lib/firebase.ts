@@ -12,7 +12,7 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "1:714457533865:web:697b58265fb9c3c5b248b8",
 };
 
-let app: any;
+let app: any = null;
 try {
   app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 } catch (error) {
@@ -20,24 +20,40 @@ try {
 }
 
 let authInstance: any = null;
-try {
-  if (app) {
-    if (typeof window !== "undefined") {
+
+function getClientAuth() {
+  if (typeof window === "undefined") {
+    return null;
+  }
+  if (!authInstance && app) {
+    try {
+      authInstance = initializeAuth(app, {
+        persistence: [indexedDBLocalPersistence, browserLocalPersistence],
+      });
+    } catch {
       try {
-        authInstance = initializeAuth(app, {
-          persistence: [indexedDBLocalPersistence, browserLocalPersistence],
-        });
-      } catch {
         authInstance = getAuth(app);
+      } catch (err) {
+        console.warn("Client auth initialization notice:", err);
       }
-    } else {
-      authInstance = getAuth(app);
     }
   }
-} catch (error) {
-  console.warn("Firebase auth initialization notice:", error);
-  authInstance = {} as any;
+  return authInstance;
 }
+
+// Safe proxy for auth: on client returns real auth; during SSR returns safe placeholder
+const safeAuth = new Proxy({} as any, {
+  get(target, prop, receiver) {
+    const clientAuth = getClientAuth();
+    if (clientAuth) {
+      const value = Reflect.get(clientAuth, prop, receiver);
+      return typeof value === "function" ? value.bind(clientAuth) : value;
+    }
+    if (prop === "currentUser") return null;
+    if (prop === "onAuthStateChanged") return (_auth: any, cb: any) => { if (typeof cb === "function") cb(null); return () => {}; };
+    return () => {};
+  },
+});
 
 let dbInstance: any = null;
 try {
@@ -59,8 +75,9 @@ try {
   storageInstance = {} as any;
 }
 
-export const auth = authInstance;
+export const auth = safeAuth;
 export const db = dbInstance;
 export const storage = storageInstance;
 export default app;
+
 
