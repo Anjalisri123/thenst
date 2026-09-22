@@ -344,7 +344,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         fullName,
         role,
       },
-    }).catch(err => console.error("Welcome email failed:", err));
+    }).catch(err => console.warn("Welcome email delivery note:", err));
   }
 
   async function signOutUser() {

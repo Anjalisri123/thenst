@@ -5,9 +5,12 @@ export interface Course {
   level: "Foundational" | "Intermediate" | "Advanced";
   duration: string;
   instructor: string;
+  instructorTitle?: string;
   description: string;
+  overview?: string;
   modules?: string[];
-  enrolled?: number;
+  prerequisites?: string;
+  format?: string;
 }
 
 export interface Article {
@@ -16,9 +19,13 @@ export interface Article {
   category: string;
   date: string;
   author: string;
+  authorRole?: string;
   readTime: string;
   summary: string;
+  content?: string[];
+  keyTakeaways?: string[];
   image?: string;
+  featured?: boolean;
 }
 
 export interface Opportunity {
@@ -29,8 +36,10 @@ export interface Opportunity {
   category: string;
   location: string;
   date: string;
-  description?: string;
+  description: string;
+  requirements?: string[];
   compensation?: string;
+  deadline?: string;
 }
 
 export interface Person {
@@ -39,8 +48,20 @@ export interface Person {
   role: string;
   affiliation: string;
   domain: string;
+  location?: string;
+  expertise?: string[];
   clearance?: string;
   initials: string;
+  bio?: string;
+}
+
+export interface OrganisationEntity {
+  id: string;
+  name: string;
+  type: string;
+  focusArea: string;
+  location: string;
+  description: string;
 }
 
 export const COURSES: Course[] = [
@@ -51,9 +72,17 @@ export const COURSES: Course[] = [
     level: "Foundational",
     duration: "6 weeks",
     instructor: "TheNST Learning Desk",
-    description: "An introductory pathway covering institutions, doctrine, intelligence frameworks and contemporary threat environments.",
-    modules: ["Core Doctrine & Legal Architectures", "State Actors & Asymmetric Vectors", "Strategic Decision-Making Under Crisis", "Institutional Coordination"],
-    enrolled: 1420
+    instructorTitle: "Senior Strategic Faculty",
+    description: "An introductory pathway covering institutions, intelligence frameworks, legal doctrines and contemporary multi-domain threat environments.",
+    overview: "This course establishes the essential conceptual frameworks and operational vocabulary of sovereign security. Participants examine constitutional architectures, state intelligence apparatuses, asymmetric threat vectors, and multi-agency crisis coordination.",
+    modules: [
+      "Constitutional Architectures & Command Authority",
+      "Intelligence Gathering Frameworks & OSINT Verification",
+      "Asymmetric Warfare & State-Sponsored Proxy Vectors",
+      "Crisis Decision Protocols & Inter-Agency Deconfliction"
+    ],
+    prerequisites: "None. Open to security professionals, researchers, and public policy practitioners.",
+    format: "Structured modular curriculum with case study reviews"
   },
   {
     id: "cyber-ops-strategic",
@@ -61,10 +90,18 @@ export const COURSES: Course[] = [
     category: "Cybersecurity",
     level: "Intermediate",
     duration: "8 weeks",
-    instructor: "TheNST Learning Desk",
+    instructor: "Cyber Strategy Group",
+    instructorTitle: "Principal Cyber Analysts",
     description: "Offensive and defensive digital capabilities, strategic deterrence, critical infrastructure resilience and command authority.",
-    modules: ["Threat Landscapes & State APTs", "Deterrence & Escalation Dynamics", "Critical Infrastructure Protocols", "Post-Incident Response Governance"],
-    enrolled: 890
+    overview: "A strategic-level examination of cyber power in modern statecraft. Focuses on critical national infrastructure defense, cyber deterrence doctrine, escalation management, and sovereign root-of-trust verification.",
+    modules: [
+      "State-Sponsored Threat Groups & Attribution Methodologies",
+      "Deterrence Dynamics & Thresholds of Armed Conflict",
+      "Critical National Infrastructure Defense & Redundancy",
+      "Incident Governance & High-Velocity Command Decisions"
+    ],
+    prerequisites: "Familiarity with IT fundamentals or institutional risk management.",
+    format: "Case analyses and scenario-based simulation drills"
   },
   {
     id: "ai-autonomy-stability",
@@ -72,10 +109,18 @@ export const COURSES: Course[] = [
     category: "Emerging Technology",
     level: "Advanced",
     duration: "10 weeks",
-    instructor: "TheNST Learning Desk",
-    description: "Autonomous weapons doctrine, algorithmic decision support in command hierarchies and international non-proliferation treaties.",
-    modules: ["Autonomous Decision-Making Models", "Machine Perception in Contested Spaces", "Verification & Treaties", "Ethical Command Chains"],
-    enrolled: 640
+    instructor: "Emerging Tech Policy Unit",
+    instructorTitle: "Technology & Geopolitics Fellows",
+    description: "Autonomous weapons doctrine, algorithmic decision support in command hierarchies and international non-proliferation frameworks.",
+    overview: "Analyzes the integration of machine learning and autonomous systems in defence operations. Explores algorithmic confidence thresholds, sensor fusion, human-machine teaming, and strategic stability implications.",
+    modules: [
+      "Machine Perception in Contested & Jammed Environments",
+      "Algorithmic Decision Support & Human-in-the-Loop Safeguards",
+      "Autonomous Swarm Architectures & Countermeasures",
+      "Treaty Frameworks, Norms & Verification Protocols"
+    ],
+    prerequisites: "Foundational background in national security or technical systems.",
+    format: "Seminar modules, policy drafting workshops, and guest lectures"
   },
   {
     id: "modern-defence-systems",
@@ -83,10 +128,18 @@ export const COURSES: Course[] = [
     category: "Defence Technology",
     level: "Intermediate",
     duration: "7 weeks",
-    instructor: "TheNST Learning Desk",
+    instructor: "Tactical Defense Advisory",
+    instructorTitle: "Defense Systems Engineers & Former Officers",
     description: "Air defence networks, electronic warfare spectra, radar architecture, counter-UAS and multi-domain integration.",
-    modules: ["EW Spectrum Mastery", "Integrated Air & Missile Defence", "Counter-UAS Sensor Fusion", "Interoperability Standards"],
-    enrolled: 1120
+    overview: "Provides a rigorous engineering and doctrinal primer on kinetic and electronic defence systems. Covers integrated air and missile defence, radar cross-section analysis, EW spectral superiority, and counter-drone systems.",
+    modules: [
+      "Electromagnetic Spectrum Dominance & Electronic Attack",
+      "Integrated Air & Missile Defence (IAMD) Sensor Meshes",
+      "Counter-UAS Detection, RF Interdiction & Kinetic Neutralization",
+      "Multi-Domain Command and Control (MDC2) Standards"
+    ],
+    prerequisites: "Engineering, defense, or analytical background recommended.",
+    format: "Technical walkthroughs and architectural case studies"
   },
   {
     id: "strategic-affairs-contested",
@@ -94,10 +147,18 @@ export const COURSES: Course[] = [
     category: "Strategic Affairs",
     level: "Intermediate",
     duration: "6 weeks",
-    instructor: "TheNST Learning Desk",
+    instructor: "Strategic Affairs Faculty",
+    instructorTitle: "Senior Geopolitical Fellows",
     description: "Great-power competition, maritime chokepoints, supply chain vulnerabilities and economic statecraft.",
-    modules: ["Indo-Pacific Maritime Corridors", "Resource Security & Sanctions", "Hybrid Warfare Interventions", "Alliance Geopolitics"],
-    enrolled: 970
+    overview: "Explores the shifting balance of power across the Indo-Pacific and Eurasian corridors. Assesses choke-point geography, semiconductor supply chains, weaponized interdependence, and alliance coordination.",
+    modules: [
+      "Indo-Pacific Maritime Corridors & Subsea Geopolitics",
+      "Critical Mineral & Semiconductor Supply Chain Security",
+      "Economic Statecraft, Sanctions & Financial Warfare",
+      "Deterrence Architecture in Multi-Polar Alignments"
+    ],
+    prerequisites: "Undergraduate degree or relevant professional experience.",
+    format: "Guided readings, analytical writing, and policy debates"
   },
   {
     id: "digital-infra-resilience",
@@ -105,11 +166,19 @@ export const COURSES: Course[] = [
     category: "AI & Technology",
     level: "Foundational",
     duration: "5 weeks",
-    instructor: "TheNST Learning Desk",
+    instructor: "Resilience Engineering Desk",
+    instructorTitle: "Infrastructure Security Specialists",
     description: "Subsea cabling, satellite constellations, sovereign cloud infrastructure and sovereign AI compute security.",
-    modules: ["Space & Satellite Ground Segments", "Undersea Fiber Protection", "Sovereign Compute & AI Clusters", "Continuity of Government Systems"],
-    enrolled: 780
-  },
+    overview: "Surveys physical and logical layers of national telecommunications and data storage. Teaches continuity-of-government frameworks, undersea cable surveillance, and sovereign data enclaves.",
+    modules: [
+      "Subsea Fiber Protection & Repair Contingencies",
+      "Low-Earth-Orbit Satellite Constellations & Ground Segments",
+      "Sovereign Cloud Enclaves & Hardware Root of Trust",
+      "Civil Protection & Post-Disruption Continuity Frameworks"
+    ],
+    prerequisites: "None.",
+    format: "Self-paced modules with periodic faculty evaluations"
+  }
 ];
 
 export const ARTICLES: Article[] = [
@@ -119,8 +188,21 @@ export const ARTICLES: Article[] = [
     category: "Strategic Affairs",
     date: "March 2026",
     author: "TheNST Research Desk",
+    authorRole: "Maritime Security Working Group",
     readTime: "12 min read",
-    summary: "An in-depth intelligence review of maritime surveillance networks, chokepoint control, and unmanned undersea deterrence.",
+    featured: true,
+    summary: "An in-depth intelligence review of maritime surveillance networks, chokepoint control, and unmanned undersea deterrence in the eastern maritime corridors.",
+    keyTakeaways: [
+      "Subsea sensor meshes are transitioning from acoustic hydrophone lines to autonomous seabed crawlers.",
+      "Chokepoint control in the Malacca and Sunda straits requires multilateral data sharing rather than unilateral patrols.",
+      "Commercial undersea fiber routes represent the primary asymmetric vulnerability in maritime communication architecture."
+    ],
+    content: [
+      "The maritime corridors of the Indo-Pacific have entered a period of structural competition characterized by dual-use commercial infrastructure, distributed sensor networks, and autonomous underwater systems.",
+      "Traditional blue-water surface supremacy is increasingly complicated by anti-access and area-denial (A2/AD) capabilities operating from littoral shores. In this contested domain, persistent subsurface surveillance has emerged as the decisive intelligence layer.",
+      "As sovereign nations deploy autonomous unmanned underwater vehicles (UUVs) to monitor critical subsea communication cables and seabed energy pipelines, the legal and operational thresholds of underwater sovereignty are being tested.",
+      "Strategic stability will depend on clear doctrines of maritime domain awareness (MDA) and verifiable communication protocols between sovereign naval commands."
+    ],
     image: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=1200&q=80"
   },
   {
@@ -129,18 +211,42 @@ export const ARTICLES: Article[] = [
     category: "Defence Technology",
     date: "February 2026",
     author: "Tactical Research Group",
+    authorRole: "Air Defence & Autonomy Fellows",
     readTime: "9 min read",
+    featured: false,
     summary: "Evaluating RF jamming, directed energy, and kinetic interceptors against coordinated autonomous drone swarms.",
+    keyTakeaways: [
+      "Single-frequency RF jamming is obsolete against autonomous, visual-inertial odometry swarms.",
+      "Layered defense requires acoustic, micro-Doppler radar, and optical tracking tied to AI classification.",
+      "Directed energy provides the lowest cost-per-intercept for high-density saturation attacks."
+    ],
+    content: [
+      "The proliferation of inexpensive, commercially derived unmanned aerial systems (UAS) has inverted the cost dynamics of low-altitude air defense.",
+      "Modern counter-UAS operations require an integrated sensor architecture that combines passive RF scanners, 3D radar, thermal imaging, and acoustic arrays into a unified tracking matrix.",
+      "Field trials indicate that autonomous swarm tactics will render single-point electronic countermeasures ineffective, necessitating hard-kill kinetic and directed-energy interception capabilities."
+    ],
     image: "https://images.unsplash.com/photo-1506947411487-a56738267384?crop=entropy&cs=srgb&fm=jpg&q=80&w=1400"
   },
   {
     id: "ai-command-decision",
     title: "Algorithmic Decision Support: Cognitive Load and Authority in High-Velocity Encounters",
-    category: "AI & Technology",
+    category: "Emerging Technology",
     date: "January 2026",
     author: "Emerging Tech Policy Unit",
+    authorRole: "Computational Strategy Working Group",
     readTime: "15 min read",
+    featured: false,
     summary: "Examining machine confidence thresholds, human-in-the-loop validation, and legal liability in real-time air defence.",
+    keyTakeaways: [
+      "Human cognitive capacity degrades during multi-vector hypersonic engagements, forcing reliance on algorithmic triage.",
+      "Confidence intervals must be explicitly visualised for commanding officers rather than binary recommendations.",
+      "Chain of command and legal accountability must remain strictly anchored to human decision authorities."
+    ],
+    content: [
+      "As engagement timelines compress from minutes to seconds, military decision-makers face severe cognitive overload.",
+      "Algorithmic decision support systems offer real-time threat prioritization, but introduce critical questions regarding automation bias and system opacity.",
+      "This monograph proposes an institutional framework for graduated human oversight based on verifiable model interpretability and strict boundary conditions."
+    ],
     image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80"
   },
   {
@@ -149,8 +255,20 @@ export const ARTICLES: Article[] = [
     category: "Cybersecurity",
     date: "January 2026",
     author: "National Resilience Group",
+    authorRole: "Supply Chain & Hardware Security Desk",
     readTime: "11 min read",
+    featured: false,
     summary: "Frameworks for silicon root-of-trust verification and cryptographic lifecycle protection for national hardware assets.",
+    keyTakeaways: [
+      "Unverified third-party IP cores in defence semiconductors represent covert backdoors.",
+      "Zero-trust silicon verification must accompany procurement from wafer fabrication to packaging.",
+      "National foundries and trusted packaging facilities are prerequisites for strategic autonomy."
+    ],
+    content: [
+      "Globalized semiconductor manufacturing creates pervasive opportunities for malicious hardware modification and counterfeit component insertion.",
+      "Protecting critical defence platforms requires rigorous physical inspection, side-channel verification, and cryptographically signed firmware roots of trust.",
+      "Institutions must develop trusted foundry consortia and standardized verification pipelines to ensure sovereign hardware integrity."
+    ],
     image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80"
   }
 ];
@@ -164,8 +282,14 @@ export const OPPORTUNITIES: Opportunity[] = [
     category: "Research",
     location: "Remote",
     date: "Open for Q2",
-    description: "Seeking domain experts to author intelligence monographs on maritime security and Indo-Pacific supply chains.",
-    compensation: "Institutional Honorarium"
+    description: "Seeking domain experts to author peer-reviewed intelligence monographs on maritime security and Indo-Pacific supply chains.",
+    requirements: [
+      "Advanced degree or 5+ years operational experience in strategic affairs or naval strategy",
+      "Demonstrated publication track record or policy briefing experience",
+      "Ability to meet rigorous editorial standards and review timelines"
+    ],
+    compensation: "Institutional Honorarium & Contributor Byline",
+    deadline: "Rolling Admissions"
   },
   {
     id: "opp-course-reviewer",
@@ -176,7 +300,13 @@ export const OPPORTUNITIES: Opportunity[] = [
     location: "Remote",
     date: "Rolling Admissions",
     description: "Peer-reviewing interactive curriculum and operational case studies for mid-career intelligence and security officers.",
-    compensation: "Academic Retainer"
+    requirements: [
+      "Proven expertise in offensive/defensive cyber operations or infrastructure security",
+      "Experience conducting red/blue team simulations or technical curricula development",
+      "Commitment to 4–6 hours of quarterly curriculum review"
+    ],
+    compensation: "Academic Retainer & Reviewer Credentials",
+    deadline: "Immediate"
   },
   {
     id: "opp-uav-capability",
@@ -186,8 +316,14 @@ export const OPPORTUNITIES: Opportunity[] = [
     category: "Projects",
     location: "Hybrid / Test Ranges",
     date: "Active Phase II",
-    description: "Integration trials for long-range ISR drones, telemetry encryption, and tactical mesh relay nodes.",
-    compensation: "Direct Contract"
+    description: "Field integration trials for long-range ISR drones, telemetry encryption, and tactical mesh relay nodes.",
+    requirements: [
+      "Valid commercial/tactical drone pilot certification (or equivalent UAS operations record)",
+      "Experience with autonomous flight controllers, thermal/EO payloads, and telemetry radios",
+      "Clean background record for access to field test facilities"
+    ],
+    compensation: "Direct Contract / Project Stipend",
+    deadline: "15 April 2026"
   },
   {
     id: "opp-fellowship-cyber",
@@ -198,7 +334,30 @@ export const OPPORTUNITIES: Opportunity[] = [
     location: "New Delhi / Hybrid",
     date: "Applications Open",
     description: "Year-long residential and field fellowship researching power grid and financial telecommunications defence.",
-    compensation: "Stipend + Grant Support"
+    requirements: [
+      "Demonstrated leadership in critical infrastructure security or cyber doctrine",
+      "Willingness to produce two major monographs and lead executive briefings",
+      "National security or enterprise institutional background"
+    ],
+    compensation: "Stipend + Full Research Grant Support",
+    deadline: "30 May 2026"
+  },
+  {
+    id: "opp-educator-drone",
+    title: "Lead Curriculum Designer — Drone Operations & Sensor Fusion",
+    organisation: "TheNST Learn",
+    type: "Collaboration",
+    category: "Education",
+    location: "Remote",
+    date: "Open for Q2",
+    description: "Design and record an accredited 6-week curriculum on tactical UAV mission planning, airspace compliance, and sensor analysis.",
+    requirements: [
+      "Extensive UAS flight operations and payload management experience",
+      "Pedagogical or instructor credentials in aviation or defence technology",
+      "Ability to create hands-on scenario-based course materials"
+    ],
+    compensation: "Course Creation Royalty & Retainer",
+    deadline: "Rolling"
   }
 ];
 
@@ -209,8 +368,11 @@ export const NETWORK_PEOPLE: Person[] = [
     role: "Senior Strategic Advisor",
     affiliation: "TheNST Research Desk",
     domain: "Strategic Affairs",
+    location: "New Delhi",
+    expertise: ["Maritime Strategy", "Indo-Pacific Geopolitics", "Chokepoint Security"],
     clearance: "Level 4 Verified",
-    initials: "VS"
+    initials: "VS",
+    bio: "Specializes in Indo-Pacific maritime security, naval doctrine, and multi-lateral security cooperation frameworks."
   },
   {
     id: "p-2",
@@ -218,26 +380,35 @@ export const NETWORK_PEOPLE: Person[] = [
     role: "Director of Field Operations",
     affiliation: "Tactical Defense Advisory",
     domain: "Defence Technology",
+    location: "Bengaluru",
+    expertise: ["Counter-UAS", "Border Surveillance", "Air Defence Integration"],
     clearance: "Level 5 Verified",
-    initials: "RN"
+    initials: "RN",
+    bio: "Over 25 years of command experience across integrated air defence, radar networks, and electronic warfare trials."
   },
   {
     id: "p-3",
     name: "Dr. Ananya Ray",
     role: "Lead Researcher — AI Governance",
     affiliation: "Emerging Tech Policy Unit",
-    domain: "AI & Technology",
+    domain: "Emerging Technology",
+    location: "Hyderabad",
+    expertise: ["Autonomous Weapons Norms", "Algorithmic Verification", "Human-Machine Teaming"],
     clearance: "Level 3 Verified",
-    initials: "AR"
+    initials: "AR",
+    bio: "Researches verification frameworks for autonomous algorithms and cognitive decision support in critical command systems."
   },
   {
     id: "p-4",
     name: "Karanbir S. Grewal",
     role: "Chief UAS Operations Lead",
     affiliation: "Aerial Capability Group",
-    domain: "Counter-UAS",
+    domain: "Drone Systems",
+    location: "Pune",
+    expertise: ["BVLOS Operations", "Thermal Payloads", "Tactical Mesh Relays"],
     clearance: "Level 4 Verified",
-    initials: "KG"
+    initials: "KG",
+    bio: "Commercial and tactical UAV pilot lead with extensive flight testing in contested RF and high-altitude environments."
   },
   {
     id: "p-5",
@@ -245,8 +416,11 @@ export const NETWORK_PEOPLE: Person[] = [
     role: "Principal Cyber Threat Analyst",
     affiliation: "Critical Infra Defense Hub",
     domain: "Cybersecurity",
+    location: "Mumbai",
+    expertise: ["SCADA/ICS Protection", "APT Threat Hunting", "Zero Trust Architecture"],
     clearance: "Level 5 Verified",
-    initials: "PD"
+    initials: "PD",
+    bio: "Leads investigations into state-sponsored threats targeting electrical transmission grids and financial clearing networks."
   },
   {
     id: "p-6",
@@ -254,8 +428,46 @@ export const NETWORK_PEOPLE: Person[] = [
     role: "Chair of Academic Council",
     affiliation: "TheNST Academic Board",
     domain: "National Security",
+    location: "New Delhi",
+    expertise: ["National Security Doctrine", "Inter-Agency Coordination", "Crisis Leadership"],
     clearance: "Council Board",
-    initials: "AM"
+    initials: "AM",
+    bio: "Former commander with wide experience across joint operations, strategic deterrence, and institutional education."
+  }
+];
+
+export const ORGANISATIONS: OrganisationEntity[] = [
+  {
+    id: "org-1",
+    name: "National Security Research Foundation",
+    type: "Research Think Tank",
+    focusArea: "Strategic Geopolitics & Foreign Policy",
+    location: "New Delhi",
+    description: "Independent institutional foundation producing strategic assessments and multilateral policy dialogue."
+  },
+  {
+    id: "org-2",
+    name: "Sovereign Cyber Resilience Institute",
+    type: "Technical Institute",
+    focusArea: "Critical Infrastructure Defence & Cryptography",
+    location: "Bengaluru",
+    description: "Collaborative research laboratory dedicated to safeguarding power grids, telecommunications, and banking."
+  },
+  {
+    id: "org-3",
+    name: "Autonomous Systems Flight Centre",
+    type: "Field Operations & Testing Hub",
+    focusArea: "UAV Capabilities, Sensor Fusion & BVLOS Trials",
+    location: "Pune",
+    description: "Dedicated flight testing range and engineering hub for next-generation unmanned aerial systems."
+  },
+  {
+    id: "org-4",
+    name: "Defence Electronics Consortium",
+    type: "Industry & Engineering Alliance",
+    focusArea: "Radar Systems, EW & Trusted Silicon",
+    location: "Hyderabad",
+    description: "Consortium of high-precision defense manufacturers, software architects, and verification labs."
   }
 ];
 
@@ -266,82 +478,74 @@ export const ROLE_COPY: Record<string, { title: string; subtitle: string; heroTi
     heroTitle: "Build your verified security career path.",
     heroDesc: "Connect with accredited institutions, verify your professional credentials, and access exclusive research and deployment opportunities.",
     steps: [
-      { num: "01", title: "Identity Verification", desc: "Submit cryptographic KYC & security clearances." },
-      { num: "02", title: "Capability Mapping", desc: "Benchmark competencies against national standards." },
-      { num: "03", title: "Advanced Learning", desc: "Complete specialized doctrine and operational coursework." },
-      { num: "04", title: "Direct Opportunity", desc: "Access high-security postings and institutional briefs." },
-      { num: "05", title: "Peer Network", desc: "Collaborate with verified practitioners and strategists." }
+      { num: "01", title: "Create Your Account", desc: "Register your professional profile and state your core areas of focus." },
+      { num: "02", title: "Build Your Profile", desc: "Detail competencies, previous operational domain experience, and certifications." },
+      { num: "03", title: "Select Your Interests", desc: "Choose focus areas across cybersecurity, defense systems, or strategic intelligence." },
+      { num: "04", title: "Access TheNST Platform", desc: "Receive tailored briefings, course access, and project applications." },
+      { num: "05", title: "Participate & Connect", desc: "Engage with peers, apply to high-impact projects, and publish insights." }
     ],
-    benefits: ["Verified Digital Badge", "Access to Closed Research Desks", "Direct Enterprise Postings", "Continuing Professional Education"]
+    benefits: [
+      "Institutional Professional Identity",
+      "Access to Curated Intelligence Desks",
+      "Direct Opportunity & Project Applications",
+      "Continuing Professional Education Pathways"
+    ]
   },
   "drone-pilot": {
     title: "Drone Pilot & UAS Operator",
     subtitle: "Aerial Capability Specialist",
     heroTitle: "Deploy cutting-edge aerial capabilities.",
-    heroDesc: "Bring flight certifications, counter-UAS proficiency, and telemetry systems into national security operations.",
+    heroDesc: "Bring flight certifications, counter-UAS proficiency, and telemetry systems into national security and infrastructure operations.",
     steps: [
-      { num: "01", title: "Flight Credentials", desc: "Validate DGCA/equivalent commercial and tactical flight logs." },
-      { num: "02", title: "Equipment Registry", desc: "Register airframe specs, sensors, and secure payloads." },
-      { num: "03", title: "Tactical Protocols", desc: "Certify in encrypted BVLOS, EW evasion, and swarm ops." },
-      { num: "04", title: "Mission Deployment", desc: "Bid on perimeter security and critical asset inspection tasks." },
-      { num: "05", title: "Fleet Management", desc: "Collaborate on multi-operator response frameworks." }
+      { num: "01", title: "Create Your Account", desc: "Establish your pilot identity and register your flying credentials." },
+      { num: "02", title: "Register Capabilities", desc: "Catalog airframe classes, thermal/sensor payloads, and BVLOS experience." },
+      { num: "03", title: "Select Mission Types", desc: "Identify operational interests across perimeter security, surveying, or tactical trials." },
+      { num: "04", title: "Access Platform Postings", desc: "Browse institutional briefs, field missions, and testing consortium calls." },
+      { num: "05", title: "Deploy & Collaborate", desc: "Participate in multi-operator frameworks, specialized courses, and trials." }
     ],
-    benefits: ["Airframe & Pilot Registry", "BVLOS & Tactical Simulation", "Rapid Deployment Roster", "Sensor Fusion Access"]
+    benefits: [
+      "Verified Airframe & Operator Profile",
+      "BVLOS & Sensor Fusion Curricula",
+      "Institutional Field Mission Board",
+      "Direct Connection to Enterprise Consortia"
+    ]
   },
   "educator": {
     title: "Educator & Course Creator",
     subtitle: "Knowledge Domain Lead",
     heroTitle: "Shape the next generation of security leadership.",
-    heroDesc: "Turn institutional doctrine, academic research, and field experience into certified structured curricula.",
+    heroDesc: "Turn institutional doctrine, academic research, and field experience into structured accredited learning for security professionals.",
     steps: [
-      { num: "01", title: "Faculty Accreditation", desc: "Submit academic and operational track records." },
-      { num: "02", title: "Course Proposal", desc: "Define syllabus, learning outcomes, and assessment rubrics." },
-      { num: "03", title: "Pedagogy Review", desc: "Collaborate with TheNST editorial council on peer review." },
-      { num: "04", title: "Cohort Launch", desc: "Deliver live masterclasses and structured modular courses." },
-      { num: "05", title: "Research Translation", desc: "Publish accompanying monographs and policy briefs." }
+      { num: "01", title: "Create Your Account", desc: "Join as an educator and state your academic and domain credentials." },
+      { num: "02", title: "Propose Curriculum", desc: "Draft course outlines, learning objectives, and modular syllabi." },
+      { num: "03", title: "Editorial Review", desc: "Collaborate with TheNST academic council for peer review and alignment." },
+      { num: "04", title: "Publish on TheNST Learn", desc: "Deploy your course to vetted practitioners and institutional learners." },
+      { num: "05", title: "Engage & Teach", desc: "Deliver masterclasses, evaluate assignments, and author accompanying briefs." }
     ],
-    benefits: ["Institutional Faculty Honorarium", "Global Practitioner Audience", "Digital Certification Engine", "Editorial Publishing Desk"]
+    benefits: [
+      "Institutional Faculty Honorarium & Byline",
+      "Audience of Vetted Security Practitioners",
+      "Modern Learning Platform Tools",
+      "Editorial Collaboration with Research Desks"
+    ]
   },
   "organisation": {
     title: "Organisation & Enterprise",
     subtitle: "Institutional Partner",
-    heroTitle: "Procure verified capability with sovereign assurance.",
-    heroDesc: "Deploy vetted security personnel, commission strategic research, and train your workforce through TheNST enterprise suite.",
+    heroTitle: "Procure capability with institutional assurance.",
+    heroDesc: "Deploy vetted security personnel, commission strategic research, and train your workforce through TheNST platform.",
     steps: [
-      { num: "01", title: "Corporate Verification", desc: "Verify organizational identity and compliance mandates." },
-      { num: "02", title: "Capability Requirement", desc: "Specify operational needs across personnel, tech, and intelligence." },
-      { num: "03", title: "Smart Matching", desc: "Identify top verified talent and research specialists instantly." },
-      { num: "04", title: "Direct Contracting", desc: "Secure agreements through standardized institutional frameworks." },
-      { num: "05", title: "Command Hub", desc: "Monitor workforce readiness and training analytics in real time." }
+      { num: "01", title: "Institutional Onboarding", desc: "Register your organization profile and define compliance requirements." },
+      { num: "02", title: "Post Capability Requirements", desc: "Publish project briefs, fellowship calls, or open career placements." },
+      { num: "03", title: "Review Verified Talent", desc: "Evaluate vetted professionals and specialized practitioners." },
+      { num: "04", title: "Engage Research Desks", desc: "Commission specialized intelligence monographs and risk assessments." },
+      { num: "05", title: "Upskill Teams", desc: "Enrol workforce cohorts into structured courses on TheNST Learn." }
     ],
-    benefits: ["Pre-vetted Security Staffing", "Custom Intelligence Briefings", "SLA & Compliance Guarantees", "Enterprise Learning Portal"]
-  },
-  "researcher": {
-    title: "Researcher & Analyst",
-    subtitle: "Intelligence Contributor",
-    heroTitle: "Publish high-impact strategic intelligence.",
-    heroDesc: "Contribute to peer-reviewed defense monographs, access proprietary open-source intelligence, and brief policy leaders.",
-    steps: [
-      { num: "01", title: "Analyst Registration", desc: "Submit research profile and methodological background." },
-      { num: "02", title: "Topic Working Groups", desc: "Join domain-focused desks in maritime, cyber, or AI." },
-      { num: "03", title: "Monograph Submission", desc: "Draft analytical papers with editorial support." },
-      { num: "04", title: "Policy Distribution", desc: "Disseminate findings to vetted institutional stakeholders." },
-      { num: "05", title: "Conference Briefings", desc: "Present insights at annual conclaves and closed roundtables." }
-    ],
-    benefits: ["Research Grants & Honoraria", "Verified Citations & DOI", "Access to Primary Threat Feeds", "Roundtable Privileges"]
-  },
-  "learner": {
-    title: "Learner & Student",
-    subtitle: "Aspiring Security Professional",
-    heroTitle: "Begin your journey into national security.",
-    heroDesc: "Access foundational courses, understand institutional doctrines, and find mentorship from seasoned defense leaders.",
-    steps: [
-      { num: "01", title: "Profile Creation", desc: "Set up your student profile and learning objectives." },
-      { num: "02", title: "Foundational Courses", desc: "Enrol in entry-level pathways on cyber, security, and geopolitics." },
-      { num: "03", title: "Interactive Labs", desc: "Engage with case studies, scenarios, and tactical simulations." },
-      { num: "04", title: "Credential Verification", desc: "Earn accredited certifications recognized across the domain." },
-      { num: "05", title: "Career Pathways", desc: "Connect with entry-level openings and fellowship programs." }
-    ],
-    benefits: ["Structured Curriculum", "Peer Study Groups", "Mentorship Access", "Accredited Certificates"]
+    benefits: [
+      "Direct Access to Vetted Security Talent",
+      "Custom Intelligence Briefing Services",
+      "Enterprise Workforce Learning Cohorts",
+      "Standardized Institutional Contracting"
+    ]
   }
 };

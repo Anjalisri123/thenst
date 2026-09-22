@@ -2,57 +2,34 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Search, BookOpen, Clock, FileText, ArrowRight, ArrowUpRight, ShieldCheck, Download, Share2, Loader2, CheckCircle2 } from "lucide-react";
+import { Search, BookOpen, Clock, FileText, ArrowRight, ArrowUpRight, Download, Share2, Tag } from "lucide-react";
 import { Navbar } from "@/components/nst/navbar";
 import { Footer } from "@/components/nst/footer";
 import { ARTICLES, Article } from "@/lib/nst-data";
-import { useAuth } from "@/lib/auth-context";
-import { db } from "@/lib/firebase";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { toast } from "sonner";
+
+const CATEGORIES = [
+  "All",
+  "Strategic Affairs",
+  "Defence Technology",
+  "Emerging Technology",
+  "Cybersecurity",
+  "National Security"
+];
 
 export default function ResearchPage() {
-  const router = useRouter();
-  const { user, profile } = useAuth();
-  const [selectedArticle, setSelectedArticle] = useState<Article | null>(null);
-  const [requesting, setRequesting] = useState(false);
-  const [requested, setRequested] = useState(false);
+  const [search, setSearch] = useState("");
+  const [selectedCat, setSelectedCat] = useState("All");
 
-  const handleRequestBriefingPack = async () => {
-    if (!selectedArticle) return;
+  const featuredArticle = ARTICLES.find((a) => a.featured) || ARTICLES[0];
 
-    if (!user) {
-      toast.info("Please sign in to request briefing packs");
-      router.push(`/login?redirect=/research`);
-      return;
-    }
-
-    try {
-      setRequesting(true);
-      await addDoc(collection(db, "requests"), {
-        type: "briefing_pack_request",
-        userId: user.uid,
-        userEmail: user.email,
-        userName: profile?.fullName || "Researcher",
-        articleId: selectedArticle.id,
-        articleTitle: selectedArticle.title,
-        category: selectedArticle.category,
-        author: selectedArticle.author,
-        status: "approved",
-        createdAt: new Date().toISOString(),
-        serverTimestamp: serverTimestamp(),
-      });
-
-      setRequested(true);
-      toast.success("Briefing pack request confirmed! Document access granted.");
-    } catch (err: any) {
-      console.error("Briefing pack request error:", err);
-      toast.error("Request failed: " + (err?.message || "Please try again"));
-    } finally {
-      setRequesting(false);
-    }
-  };
+  const filteredArticles = ARTICLES.filter((a) => {
+    const matchesCat = selectedCat === "All" || a.category === selectedCat;
+    const matchesSearch =
+      a.title.toLowerCase().includes(search.toLowerCase()) ||
+      a.summary.toLowerCase().includes(search.toLowerCase()) ||
+      a.category.toLowerCase().includes(search.toLowerCase());
+    return matchesCat && matchesSearch;
+  });
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f7f6f2] text-[#171b22]">
@@ -60,13 +37,13 @@ export default function ResearchPage() {
 
       <main className="flex-1">
         {/* Intro (Dark Band) */}
-        <section className="bg-[#171b22] text-white pt-16 pb-20 border-b border-[#3b414a]">
-          <div className="w-min(1220px,calc(100%-48px)) max-w-[1220px] mx-auto">
-            <span className="eyebrow text-[#d95325] font-semibold mb-3">
-              TheNST / Research Desk
+        <section className="bg-[#171b22] text-white pt-20 pb-24 border-b border-[#3b414a]">
+          <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto">
+            <span className="text-[11px] font-mono uppercase tracking-[2px] text-[#d95325] font-semibold mb-3 block">
+              TheNST / Research & Intelligence Desk
             </span>
-            <h1 className="text-4xl sm:text-6xl font-medium leading-[0.98] tracking-[-2.5px] text-white mb-5 max-w-[850px]">
-              Independent analysis. Rigorous inquiry.
+            <h1 className="text-4xl sm:text-6xl font-medium leading-[0.98] tracking-[-2.5px] text-white mb-6 max-w-[850px]">
+              Independent Analysis. Rigorous Inquiry.
             </h1>
             <p className="text-base sm:text-lg text-[#c5c9ce] leading-relaxed max-w-[640px] font-sans">
               Peer-reviewed intelligence briefs, doctrinal analyses, and technology assessments covering multi-domain security, autonomous systems, and strategic geopolitics.
@@ -74,193 +51,154 @@ export default function ResearchPage() {
           </div>
         </section>
 
-        {/* Featured Monograph & Archive */}
+        {/* Featured Monograph Spotlight */}
         <section className="bg-white py-16 border-b border-[#e5e3db]">
-          <div className="w-min(1220px,calc(100%-48px)) max-w-[1220px] mx-auto">
-            {/* Featured Monograph Banner */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 bg-[#171b22] text-white p-8 sm:p-12 mb-16 shadow-lg">
+          <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto">
+            <div className="text-[10px] font-mono uppercase tracking-widest text-[#737a83] mb-6 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#d95325]" />
+              <span>Editorially Highlighted · Featured Monograph</span>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-10 bg-[#171b22] text-white p-8 sm:p-12 border border-[#3b414a]">
               <div className="flex flex-col justify-center items-start">
-                <span className="eyebrow text-[#d95325] font-semibold mb-3">
-                  Lead Intelligence Monograph // Q1 2026
+                <span className="text-[10px] font-mono uppercase tracking-widest text-[#d95325] font-semibold mb-3">
+                  {featuredArticle.category} Desk
                 </span>
-                <h2 className="text-2xl sm:text-4xl font-medium leading-tight tracking-[-1.2px] text-white mb-4">
-                  {ARTICLES[0].title}
+                <h2 className="text-2xl sm:text-4xl font-medium leading-tight tracking-[-1px] text-white mb-4">
+                  {featuredArticle.title}
                 </h2>
                 <p className="text-sm text-[#b8bec5] leading-relaxed mb-6 font-sans">
-                  {ARTICLES[0].summary}
+                  {featuredArticle.summary}
                 </p>
-                <div className="flex items-center gap-4 text-xs font-mono text-[#9299a2] mb-8">
-                  <span>{ARTICLES[0].date}</span>
+
+                <div className="flex flex-wrap items-center gap-4 text-xs font-mono text-[#9299a2] mb-8 pb-4 border-b border-[#3b414a]/70 w-full">
+                  <span>Author: {featuredArticle.author}</span>
                   <span>•</span>
-                  <span>{ARTICLES[0].readTime}</span>
+                  <span>{featuredArticle.date}</span>
                   <span>•</span>
-                  <span className="text-[#d95325]">{ARTICLES[0].author}</span>
+                  <span>{featuredArticle.readTime}</span>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSelectedArticle(ARTICLES[0]);
-                    setRequested(false);
-                  }}
+
+                <Link
+                  href={`/research/${featuredArticle.id}`}
                   className="inline-flex items-center justify-center min-h-[44px] px-6 text-xs font-semibold tracking-wider text-white bg-[#d95325] hover:bg-[#bc3f18] uppercase transition-all"
                 >
-                  Read Complete Monograph
-                </button>
+                  Read Intelligence Monograph →
+                </Link>
               </div>
 
-              <div className="relative min-h-[280px]">
+              <div className="relative min-h-[280px] overflow-hidden border border-[#3b414a]">
                 <img
-                  src={ARTICLES[0].image}
-                  alt="Maritime Research"
+                  src={featuredArticle.image}
+                  alt={featuredArticle.title}
                   className="w-full h-full object-cover grayscale-[25%]"
                 />
               </div>
             </div>
-
-            {/* Research Archive Heading */}
-            <div className="flex items-center justify-between border-b border-[#e5e3db] pb-3 mb-8 text-[11px] font-mono uppercase tracking-widest text-[#737a83]">
-              <span>Research Monographs & Intelligence Briefs</span>
-              <span>Open-Access Repository</span>
-            </div>
-
-            {/* Article Rows */}
-            <div className="divide-y divide-[#e5e3db] border-t border-b border-[#e5e3db]">
-              {ARTICLES.map((article) => (
-                <div
-                  key={article.id}
-                  onClick={() => {
-                    setSelectedArticle(article);
-                    setRequested(false);
-                  }}
-                  className="py-8 flex flex-col md:flex-row justify-between md:items-center gap-6 group hover:bg-[#f7f6f2] px-4 -mx-4 transition-all duration-200 cursor-pointer"
-                >
-                  <div className="max-w-2xl">
-                    <div className="flex items-center gap-3 text-[10px] font-mono uppercase tracking-wider text-[#737a83] mb-2">
-                      <span className="text-[#d95325] font-semibold">{article.category}</span>
-                      <span>•</span>
-                      <span>{article.date}</span>
-                      <span>•</span>
-                      <span>{article.author}</span>
-                    </div>
-
-                    <h3 className="text-2xl font-medium tracking-tight text-[#171b22] group-hover:text-[#d95325] transition-colors mb-2">
-                      {article.title}
-                    </h3>
-
-                    <p className="text-xs text-[#737a83] leading-relaxed font-sans line-clamp-2">
-                      {article.summary}
-                    </p>
-                  </div>
-
-                  <div className="flex items-center gap-3 text-xs font-semibold text-[#d95325] uppercase tracking-wider whitespace-nowrap self-start md:self-auto">
-                    <span>Read Brief</span>
-                    <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </section>
 
-        {/* Article Reader Modal */}
-        {selectedArticle && (
-          <div className="fixed inset-0 z-50 bg-[#111419]/80 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white border border-[#e5e3db] max-w-3xl w-full max-h-[90vh] overflow-y-auto p-8 sm:p-12 shadow-2xl relative animate-in fade-in zoom-in-95">
-              <button
-                type="button"
-                onClick={() => setSelectedArticle(null)}
-                className="absolute top-6 right-6 text-[#737a83] hover:text-[#171b22] text-xl font-bold"
-              >
-                ✕
-              </button>
-
-              <span className="eyebrow text-[#d95325] font-semibold mb-2">
-                {selectedArticle.category} // TheNST Research Desk
-              </span>
-
-              <h2 className="text-2xl sm:text-3xl font-medium text-[#171b22] tracking-tight mb-4">
-                {selectedArticle.title}
-              </h2>
-
-              <div className="flex items-center gap-4 text-xs font-mono text-[#737a83] pb-4 mb-6 border-b border-[#e5e3db]">
-                <span>Author: {selectedArticle.author}</span>
-                <span>•</span>
-                <span>Date: {selectedArticle.date}</span>
-                <span>•</span>
-                <span>{selectedArticle.readTime}</span>
+        {/* Latest & Archive Section */}
+        <section className="bg-[#faf9f5] py-16 sm:py-20 border-b border-[#e5e3db]">
+          <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto">
+            {/* Search and Filters */}
+            <div className="flex flex-col lg:flex-row gap-6 items-stretch lg:items-center justify-between pb-8 mb-10 border-b border-[#e5e3db]">
+              <div className="relative flex-1 max-w-md">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#737a83]" />
+                <input
+                  type="text"
+                  placeholder="Search articles, monographs, keywords..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#e5e3db] text-xs text-[#171b22] placeholder:text-[#737a83] focus:outline-none focus:border-[#d95325] transition-all font-sans"
+                />
               </div>
 
-              {selectedArticle.image && (
-                <div className="mb-6 aspect-[16/9] w-full overflow-hidden bg-black">
-                  <img
-                    src={selectedArticle.image}
-                    alt={selectedArticle.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              )}
-
-              <div className="prose max-w-none text-sm leading-relaxed text-[#4f555d] space-y-4 font-sans mb-8">
-                <p className="font-semibold text-base text-[#171b22]">
-                  {selectedArticle.summary}
-                </p>
-                <p>
-                  Contemporary operational doctrines in the Indo-Pacific theatre increasingly require seamless sensor-to-shooter telemetry networks that can withstand aggressive electronic warfare countermeasures and multi-spectral jamming.
-                </p>
-                <p>
-                  As autonomous platforms proliferate across subsea, surface, and low-earth orbit domains, sovereign defense institutions must establish rigorous verification standards and cognitive-load reduction frameworks for strategic commanders.
-                </p>
-                <p>
-                  TheNST Research Desk continues to monitor open telemetry benchmarks, satellite positioning vulnerabilities, and supply chain interdictions across critical semiconductor clusters.
-                </p>
-              </div>
-
-              {requested && (
-                <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2 mb-6">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  <span>Briefing request logged in Firestore. Full confidential package sent to your dashboard.</span>
-                </div>
-              )}
-
-              <div className="flex items-center justify-between pt-6 border-t border-[#e5e3db]">
-                <button
-                  type="button"
-                  onClick={() => setSelectedArticle(null)}
-                  className="px-5 py-2 text-xs font-semibold text-[#737a83] hover:text-[#171b22] uppercase tracking-wider"
-                >
-                  Close Document
-                </button>
-                {!requested ? (
+              <div className="flex flex-wrap items-center gap-2">
+                {CATEGORIES.map((cat) => (
                   <button
+                    key={cat}
                     type="button"
-                    onClick={handleRequestBriefingPack}
-                    disabled={requesting}
-                    className="inline-flex items-center gap-2 px-6 py-2.5 text-xs font-semibold text-white bg-[#d95325] hover:bg-[#bc3f18] uppercase tracking-wider shadow-sm disabled:opacity-70"
+                    onClick={() => setSelectedCat(cat)}
+                    className={`px-3 py-1.5 text-xs font-medium transition-all ${
+                      selectedCat === cat
+                        ? "bg-[#171b22] text-white"
+                        : "bg-white text-[#4f555d] border border-[#e5e3db] hover:bg-[#e5e3db]"
+                    }`}
                   >
-                    {requesting ? (
-                      <>
-                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                        Logging Request...
-                      </>
-                    ) : (
-                      <>
-                        Request Full Briefing Pack
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </>
-                    )}
+                    {cat}
                   </button>
-                ) : (
-                  <Link
-                    href="/dashboard"
-                    className="inline-flex items-center gap-2 px-6 py-2.5 text-xs font-semibold text-white bg-[#171b22] uppercase tracking-wider shadow-sm"
-                  >
-                    View in Dashboard
-                  </Link>
-                )}
+                ))}
               </div>
             </div>
+
+            <div className="text-xs font-mono uppercase tracking-widest text-[#737a83] mb-6 flex items-center justify-between">
+              <span>Chronological Intelligence Stream ({filteredArticles.length})</span>
+              <span>Peer-Reviewed Institutional Publications</span>
+            </div>
+
+            {/* Articles List / Grid */}
+            {filteredArticles.length > 0 ? (
+              <div className="divide-y divide-[#e5e3db] border-t border-b border-[#e5e3db] bg-white">
+                {filteredArticles.map((article) => (
+                  <div
+                    key={article.id}
+                    className="p-6 sm:p-8 flex flex-col md:flex-row justify-between md:items-center gap-6 hover:bg-[#faf9f5] transition-colors group"
+                  >
+                    <div className="max-w-3xl">
+                      <div className="flex items-center gap-3 text-[10px] font-mono uppercase tracking-wider text-[#737a83] mb-2">
+                        <span className="text-[#d95325] font-semibold">{article.category}</span>
+                        <span>•</span>
+                        <span>{article.date}</span>
+                        <span>•</span>
+                        <span>{article.readTime}</span>
+                        <span>•</span>
+                        <span>{article.author}</span>
+                      </div>
+
+                      <Link
+                        href={`/research/${article.id}`}
+                        className="text-xl sm:text-2xl font-medium text-[#171b22] group-hover:text-[#d95325] transition-colors block mb-2"
+                      >
+                        {article.title}
+                      </Link>
+
+                      <p className="text-xs sm:text-sm text-[#616872] leading-relaxed font-sans">
+                        {article.summary}
+                      </p>
+                    </div>
+
+                    <Link
+                      href={`/research/${article.id}`}
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-[#171b22] group-hover:text-[#d95325] whitespace-nowrap self-start md:self-center transition-colors"
+                    >
+                      <span>Read Brief</span>
+                      <ArrowUpRight className="w-4 h-4" />
+                    </Link>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-20 bg-white border border-[#e5e3db] p-8">
+                <FileText className="w-10 h-10 text-[#737a83] mx-auto mb-4 stroke-1" />
+                <h3 className="text-lg font-medium text-[#171b22] mb-2">No articles found</h3>
+                <p className="text-xs text-[#737a83] max-w-sm mx-auto mb-6">
+                  No research monographs match your search criteria.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearch("");
+                    setSelectedCat("All");
+                  }}
+                  className="px-4 py-2 bg-[#171b22] text-white text-xs font-semibold uppercase tracking-wider hover:bg-[#d95325] transition-colors"
+                >
+                  Clear Filters
+                </button>
+              </div>
+            )}
           </div>
-        )}
+        </section>
       </main>
 
       <Footer />

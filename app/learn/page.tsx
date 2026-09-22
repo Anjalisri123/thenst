@@ -2,15 +2,10 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Search, BookOpen, Clock, User, ArrowRight, ArrowUpRight, CheckCircle2, Filter, Loader2 } from "lucide-react";
+import { Search, BookOpen, Clock, User, ArrowRight, ArrowUpRight, CheckCircle2, Filter, Layers, GraduationCap } from "lucide-react";
 import { Navbar } from "@/components/nst/navbar";
 import { Footer } from "@/components/nst/footer";
 import { COURSES, Course } from "@/lib/nst-data";
-import { useAuth } from "@/lib/auth-context";
-import { db } from "@/lib/firebase";
-import { collection, addDoc, doc, setDoc, serverTimestamp } from "firebase/firestore";
-import { toast } from "sonner";
 
 const CATEGORIES = [
   "All",
@@ -22,286 +17,193 @@ const CATEGORIES = [
   "AI & Technology"
 ];
 
+const LEVELS = ["All", "Foundational", "Intermediate", "Advanced"];
+
 export default function LearnPage() {
-  const router = useRouter();
-  const { user, profile } = useAuth();
   const [search, setSearch] = useState("");
   const [selectedCat, setSelectedCat] = useState("All");
-  const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
-  const [enrolling, setEnrolling] = useState(false);
-  const [enrolledSuccess, setEnrolledSuccess] = useState(false);
+  const [selectedLevel, setSelectedLevel] = useState("All");
 
   const filteredCourses = COURSES.filter((c) => {
     const matchesCat = selectedCat === "All" || c.category === selectedCat;
+    const matchesLevel = selectedLevel === "All" || c.level === selectedLevel;
     const matchesSearch =
       c.title.toLowerCase().includes(search.toLowerCase()) ||
       c.description.toLowerCase().includes(search.toLowerCase()) ||
       c.category.toLowerCase().includes(search.toLowerCase());
-    return matchesCat && matchesSearch;
+    return matchesCat && matchesLevel && matchesSearch;
   });
-
-  const handleEnrol = async () => {
-    if (!selectedCourse) return;
-
-    if (!user) {
-      toast.info("Please sign in to enrol in this course");
-      router.push(`/login?redirect=/learn`);
-      return;
-    }
-
-    try {
-      setEnrolling(true);
-      // Create or update enrollment record in Firestore
-      const enrollmentRef = doc(db, "enrollments", `${user.uid}_${selectedCourse.id}`);
-      await setDoc(
-        enrollmentRef,
-        {
-          userId: user.uid,
-          userEmail: user.email,
-          userName: profile?.fullName || "Student",
-          courseId: selectedCourse.id,
-          courseTitle: selectedCourse.title,
-          category: selectedCourse.category,
-          level: selectedCourse.level,
-          duration: selectedCourse.duration,
-          status: "active",
-          progress: 0,
-          enrolledAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-        },
-        { merge: true }
-      );
-
-      setEnrolledSuccess(true);
-      toast.success(`Successfully enrolled in ${selectedCourse.title}!`);
-    } catch (err: any) {
-      console.error("Enrollment error:", err);
-      toast.error("Failed to enrol: " + (err?.message || "Please try again"));
-    } finally {
-      setEnrolling(false);
-    }
-  };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f7f6f2] text-[#171b22]">
       <Navbar />
 
       <main className="flex-1">
-        {/* Page Intro Banner (Dark Band) */}
-        <section className="bg-[#171b22] text-white pt-16 pb-20 border-b border-[#3b414a]">
-          <div className="w-min(1220px,calc(100%-48px)) max-w-[1220px] mx-auto">
-            <span className="eyebrow text-[#d95325] font-semibold mb-3">
-              TheNST / Learn
+        {/* Intro (Dark Band) */}
+        <section className="bg-[#171b22] text-white pt-20 pb-24 border-b border-[#3b414a]">
+          <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto">
+            <span className="text-[11px] font-mono uppercase tracking-[2px] text-[#d95325] font-semibold mb-3 block">
+              TheNST / Learning & Professional Education
             </span>
-            <h1 className="text-4xl sm:text-6xl font-medium leading-[0.98] tracking-[-2.5px] text-white mb-5 max-w-[850px]">
-              Structured learning for the national security profession.
+            <h1 className="text-4xl sm:text-6xl font-medium leading-[0.98] tracking-[-2.5px] text-white mb-6 max-w-[850px]">
+              Structured Curricula for the Security Profession.
             </h1>
             <p className="text-base sm:text-lg text-[#c5c9ce] leading-relaxed max-w-[640px] font-sans">
-              From foundations of national security to cyber deterrence, electronic warfare and AI strategic stability. Built by practitioners and sovereign research faculty.
+              Rigorous, accredited courses covering doctrine, cyber warfare, autonomous systems, intelligence analysis and strategic geopolitics.
             </p>
           </div>
         </section>
 
-        {/* Course Catalog & Filter Section */}
-        <section className="bg-white py-16 border-b border-[#e5e3db]">
-          <div className="w-min(1220px,calc(100%-48px)) max-w-[1220px] mx-auto">
-            {/* Search Controls */}
-            <div className="flex items-center border-b border-[#171b22] pb-3.5 mb-6 gap-3">
-              <Search className="w-5 h-5 text-[#737a83]" />
-              <input
-                type="text"
-                placeholder="Search courses, modules, or technology areas..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full bg-transparent border-0 outline-none text-lg text-[#171b22] placeholder:text-[#737a83]/60 font-sans"
-              />
+        {/* Catalog Section */}
+        <section className="bg-white py-16 sm:py-20 border-b border-[#e5e3db]">
+          <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto">
+            {/* Search & Filters */}
+            <div className="flex flex-col lg:flex-row gap-6 items-stretch lg:items-center justify-between pb-8 mb-10 border-b border-[#e5e3db]">
+              {/* Search Bar */}
+              <div className="relative flex-1 max-w-md">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[#737a83]" />
+                <input
+                  type="text"
+                  placeholder="Search courses, keywords, topics..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 bg-[#f7f6f2] border border-[#e5e3db] text-xs text-[#171b22] placeholder:text-[#737a83] focus:outline-none focus:border-[#d95325] focus:bg-white transition-all font-sans"
+                />
+              </div>
+
+              {/* Category Pills */}
+              <div className="flex flex-wrap items-center gap-2">
+                {CATEGORIES.map((cat) => (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => setSelectedCat(cat)}
+                    className={`px-3 py-1.5 text-xs font-medium transition-all ${
+                      selectedCat === cat
+                        ? "bg-[#171b22] text-white"
+                        : "bg-[#f7f6f2] text-[#4f555d] hover:bg-[#e5e3db]"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
             </div>
 
-            {/* Category Filter Chips */}
-            <div className="flex flex-wrap gap-2 mb-12">
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat}
-                  type="button"
-                  onClick={() => setSelectedCat(cat)}
-                  className={`px-3.5 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-150 ${
-                    selectedCat === cat
-                      ? "bg-[#171b22] text-white border border-[#171b22]"
-                      : "bg-transparent text-[#737a83] border border-[#e5e3db] hover:border-[#171b22] hover:text-[#171b22]"
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
-            </div>
-
-            {/* Heading Summary */}
-            <div className="flex items-center justify-between border-b border-[#e5e3db] pb-3 mb-8 text-[11px] font-mono uppercase tracking-widest text-[#737a83]">
-              <span>Showing {filteredCourses.length} Structured Pathways</span>
-              <span>All Courses Certified</span>
+            {/* Level Filter Sub-bar */}
+            <div className="flex items-center justify-between pb-6 mb-8 text-xs font-mono text-[#737a83] border-b border-[#e5e3db]/60">
+              <div className="flex items-center gap-3">
+                <span className="uppercase tracking-wider">Level Filter:</span>
+                {LEVELS.map((lvl) => (
+                  <button
+                    key={lvl}
+                    type="button"
+                    onClick={() => setSelectedLevel(lvl)}
+                    className={`px-2 py-0.5 transition-colors ${
+                      selectedLevel === lvl ? "text-[#d95325] font-bold underline" : "hover:text-[#171b22]"
+                    }`}
+                  >
+                    {lvl}
+                  </button>
+                ))}
+              </div>
+              <span>Showing {filteredCourses.length} of {COURSES.length} Courses</span>
             </div>
 
             {/* Course Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-[#e5e3db] border border-[#e5e3db]">
-              {filteredCourses.map((course) => (
-                <div
-                  key={course.id}
-                  onClick={() => {
-                    setSelectedCourse(course);
-                    setEnrolledSuccess(false);
-                  }}
-                  className="bg-white p-7 sm:p-8 flex flex-col justify-between min-h-[340px] hover:bg-[#efede6] transition-all duration-200 cursor-pointer group"
-                >
-                  <div>
-                    <div className="flex items-center justify-between text-[10px] font-mono uppercase tracking-wider text-[#737a83] mb-8">
-                      <span className="text-[#d95325] font-semibold">{course.category}</span>
-                      <span>{course.level}</span>
+            {filteredCourses.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {filteredCourses.map((c) => (
+                  <div
+                    key={c.id}
+                    className="bg-[#faf9f5] border border-[#e5e3db] p-8 flex flex-col justify-between hover:border-[#171b22]/40 transition-all duration-200"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-[10px] font-mono uppercase tracking-widest text-[#d95325] font-semibold">
+                          {c.category}
+                        </span>
+                        <span className="text-[10px] font-mono text-[#737a83] uppercase">
+                          {c.level}
+                        </span>
+                      </div>
+
+                      <h3 className="text-xl font-medium tracking-tight text-[#171b22] mb-3">
+                        {c.title}
+                      </h3>
+
+                      <p className="text-xs text-[#616872] leading-relaxed font-sans mb-6">
+                        {c.description}
+                      </p>
+
+                      <div className="space-y-1.5 mb-6 text-[11px] font-sans text-[#737a83] border-t border-[#e5e3db] pt-4">
+                        <div className="flex items-center justify-between">
+                          <span>Duration:</span>
+                          <span className="font-mono text-[#171b22]">{c.duration}</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span>Instructor:</span>
+                          <span className="font-mono text-[#171b22]">{c.instructor}</span>
+                        </div>
+                      </div>
                     </div>
 
-                    <h3 className="text-2xl font-medium tracking-[-0.8px] text-[#171b22] group-hover:text-[#d95325] transition-colors mb-3 leading-snug">
-                      {course.title}
-                    </h3>
-
-                    <p className="text-xs text-[#737a83] leading-relaxed line-clamp-3 font-sans">
-                      {course.description}
-                    </p>
+                    <div className="pt-4 border-t border-[#e5e3db]">
+                      <Link
+                        href={`/learn/${c.id}`}
+                        className="inline-flex items-center justify-between w-full text-xs font-semibold uppercase tracking-wider text-[#d95325] hover:text-[#bc3f18]"
+                      >
+                        <span>View Syllabus & Enrol</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+                    </div>
                   </div>
-
-                  <div>
-                    <div className="flex items-center gap-4 text-[11px] font-mono text-[#737a83] pt-6 mb-4 border-t border-[#e5e3db]">
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-3 h-3" /> {course.duration}
-                      </span>
-                      <span>•</span>
-                      <span>{course.instructor}</span>
-                    </div>
-
-                    <div className="flex items-center justify-between text-xs font-semibold text-[#d95325] uppercase tracking-wider">
-                      <span>Course Syllabus & Enrol</span>
-                      <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Educator Banner Strip */}
-        <section className="bg-[#171b22] text-white py-16 border-t border-[#3b414a]">
-          <div className="w-min(1220px,calc(100%-48px)) max-w-[1220px] mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
-            <div>
-              <span className="eyebrow text-[#d95325] font-semibold mb-2">
-                CONTRIBUTE CURRICULA
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-medium text-white mb-2">
-                Are you a domain expert or defense educator?
-              </h2>
-              <p className="text-sm text-[#c5c9ce] max-w-[520px]">
-                Create accredited masterclasses and course tracks on TheNST Learn. Reach officers, analysts and researchers across institutions.
-              </p>
-            </div>
-            <Link
-              href="/educator"
-              className="inline-flex items-center justify-center min-h-[44px] px-6 text-xs font-semibold tracking-wider text-white bg-[#d95325] hover:bg-[#bc3f18] transition-all uppercase whitespace-nowrap"
-            >
-              Become an Educator
-            </Link>
-          </div>
-        </section>
-
-        {/* Course Detail / Enrolment Modal */}
-        {selectedCourse && (
-          <div className="fixed inset-0 z-50 bg-[#111419]/80 backdrop-blur-sm flex items-center justify-center p-4">
-            <div className="bg-white border border-[#e5e3db] max-w-2xl w-full p-8 sm:p-10 shadow-2xl relative animate-in fade-in zoom-in-95">
-              <button
-                type="button"
-                onClick={() => setSelectedCourse(null)}
-                className="absolute top-6 right-6 text-[#737a83] hover:text-[#171b22] text-xl font-bold"
-              >
-                ✕
-              </button>
-
-              <span className="eyebrow text-[#d95325] font-semibold mb-2">
-                {selectedCourse.category} // {selectedCourse.level}
-              </span>
-
-              <h2 className="text-2xl sm:text-3xl font-medium text-[#171b22] tracking-tight mb-4">
-                {selectedCourse.title}
-              </h2>
-
-              <p className="text-sm text-[#737a83] leading-relaxed mb-6 font-sans">
-                {selectedCourse.description}
-              </p>
-
-              <div className="flex items-center gap-6 text-xs font-mono text-[#737a83] pb-4 mb-6 border-b border-[#e5e3db]">
-                <span>Duration: {selectedCourse.duration}</span>
-                <span>Instructor: {selectedCourse.instructor}</span>
+                ))}
               </div>
-
-              {selectedCourse.modules && (
-                <div className="mb-8">
-                  <h4 className="text-xs font-mono uppercase tracking-widest text-[#171b22] font-semibold mb-3">
-                    Curriculum Modules:
-                  </h4>
-                  <ul className="space-y-2">
-                    {selectedCourse.modules.map((m, i) => (
-                      <li key={i} className="flex items-start gap-2 text-xs text-[#4f555d] font-sans">
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#d95325] mt-0.5 flex-shrink-0" />
-                        <span>{m}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {enrolledSuccess && (
-                <div className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold flex items-center gap-2 mb-6">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                  <span>Enrolment registered successfully in Firestore!</span>
-                </div>
-              )}
-
-              <div className="flex items-center justify-between pt-4 border-t border-[#e5e3db]">
+            ) : (
+              /* Realistic Empty State */
+              <div className="text-center py-20 bg-[#faf9f5] border border-[#e5e3db] p-8">
+                <BookOpen className="w-10 h-10 text-[#737a83] mx-auto mb-4 stroke-1" />
+                <h3 className="text-lg font-medium text-[#171b22] mb-2">No courses found</h3>
+                <p className="text-xs text-[#737a83] max-w-sm mx-auto mb-6">
+                  No curricula match your selected search terms or filters. Try adjusting your criteria.
+                </p>
                 <button
                   type="button"
-                  onClick={() => setSelectedCourse(null)}
-                  className="px-5 py-2.5 text-xs font-semibold text-[#737a83] hover:text-[#171b22] uppercase tracking-wider"
+                  onClick={() => {
+                    setSearch("");
+                    setSelectedCat("All");
+                    setSelectedLevel("All");
+                  }}
+                  className="px-4 py-2 bg-[#171b22] text-white text-xs font-semibold uppercase tracking-wider hover:bg-[#d95325] transition-colors"
                 >
-                  Close
+                  Reset All Filters
                 </button>
-                {enrolledSuccess ? (
-                  <Link
-                    href="/dashboard"
-                    className="inline-flex items-center gap-2 px-6 py-2.5 text-xs font-semibold text-white bg-[#171b22] uppercase tracking-wider shadow-sm"
-                  >
-                    Go to My Learning
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={handleEnrol}
-                    disabled={enrolling}
-                    className="inline-flex items-center gap-2 px-6 py-2.5 text-xs font-semibold text-white bg-[#d95325] hover:bg-[#bc3f18] uppercase tracking-wider shadow-sm disabled:opacity-70"
-                  >
-                    {enrolling ? (
-                      <>
-                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                        Registering...
-                      </>
-                    ) : (
-                      <>
-                        Enrol in Pathway
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </>
-                    )}
-                  </button>
-                )}
               </div>
+            )}
+
+            {/* Educator Callout */}
+            <div className="mt-16 p-8 sm:p-12 bg-[#f7f6f2] border border-[#e5e3db] flex flex-col md:flex-row items-center justify-between gap-6">
+              <div>
+                <span className="text-[10px] font-mono uppercase tracking-widest text-[#d95325] font-semibold mb-2 block">
+                  Faculty Collaboration
+                </span>
+                <h3 className="text-2xl font-medium tracking-tight text-[#171b22] mb-2">
+                  Are you a subject matter expert or experienced instructor?
+                </h3>
+                <p className="text-xs sm:text-sm text-[#616872] leading-relaxed max-w-xl font-sans">
+                  Design and lead structured courses on TheNST Learn. Submit a course proposal to the academic council.
+                </p>
+              </div>
+              <Link
+                href="/educator"
+                className="inline-flex items-center justify-center min-h-[44px] px-6 text-xs font-semibold tracking-wider text-white bg-[#171b22] hover:bg-[#d95325] transition-all uppercase whitespace-nowrap shadow-sm"
+              >
+                Become an Educator →
+              </Link>
             </div>
           </div>
-        )}
+        </section>
       </main>
 
       <Footer />
