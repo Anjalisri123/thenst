@@ -35,15 +35,89 @@ export default function SignInPage() {
     { id: "Learner", desc: "Acquire foundational and advanced security competencies." },
   ];
 
-  const interestOptions = [
-    "National Security",
-    "Cybersecurity",
-    "Defence Technology",
-    "AI & Autonomy",
-    "Drone / UAV Systems",
-    "Strategic Affairs",
-    "Critical Infrastructure"
-  ];
+  const ROLE_INTERESTS: Record<string, { subtitle: string; options: string[] }> = {
+    "Security Professional": {
+      subtitle: "Choose security areas and responsibilities you want to work or specialize in:",
+      options: [
+        "Facility & Campus Security",
+        "CCTV & Camera Monitoring",
+        "Emergency Response & First Aid",
+        "Guard Team Supervision",
+        "Access Control & Checkpoints",
+        "Fire Safety & Evacuation Drills",
+        "VIP & Event Protection",
+        "Incident Reporting & Patrols"
+      ]
+    },
+    "Drone Pilot": {
+      subtitle: "Choose drone flight operations and field missions you want to take on:",
+      options: [
+        "Aerial Perimeter Inspection",
+        "Site Mapping & 3D Surveying",
+        "Thermal & Night Camera Flights",
+        "Drone Flight Controls & Safety",
+        "Drone Video & Data Tagging",
+        "Long-Range Flight Operations",
+        "Counter-Drone Detection Systems",
+        "Drone Maintenance & Battery Care"
+      ]
+    },
+    "Educator": {
+      subtitle: "Choose topics you want to teach or create learning materials for:",
+      options: [
+        "Security Guard Fundamentals",
+        "Cyber Safety for Beginners",
+        "Drone Flight Training & Rules",
+        "First Aid & CPR Workshops",
+        "Password & Online Threat Defense",
+        "Workplace Safety & Fire Drills",
+        "Curriculum & Lesson Planning",
+        "Student Mentoring & Certification"
+      ]
+    },
+    "Organisation": {
+      subtitle: "Choose security solutions and staffing services your organization needs:",
+      options: [
+        "Hiring Verified Security Guards",
+        "Booking Drone Inspection Flights",
+        "Upgrading CCTV & Camera Systems",
+        "Training Staff in Cyber Safety",
+        "Facility Safety & Risk Audits",
+        "24/7 Emergency Response Setup",
+        "Security Supervisor Placements",
+        "Safety Compliance Certification"
+      ]
+    },
+    "Researcher": {
+      subtitle: "Choose research fields and analysis topics for your briefings:",
+      options: [
+        "Daily Threat News Tracking",
+        "Cyber Attack Trends & Defense",
+        "Power Grid & Infrastructure Safety",
+        "Regional & Maritime Security",
+        "AI & Automated Threat Detection",
+        "Satellite & Communication Protection",
+        "Defense Technology Case Studies",
+        "Safety Policy Briefs & Summaries"
+      ]
+    },
+    "Learner": {
+      subtitle: "Choose practical skills and courses you want to learn:",
+      options: [
+        "Cyber Defense Basics",
+        "Drone Flying & Camera Controls",
+        "Security Guarding Essentials",
+        "First Aid & Emergency Response",
+        "Safe Online Habits & Passwords",
+        "CCTV Setup & Troubleshooting",
+        "Building a Security Resume",
+        "Earning Skill Certificates"
+      ]
+    }
+  };
+
+  const currentInterestData = ROLE_INTERESTS[selectedRole] || ROLE_INTERESTS["Security Professional"];
+  const interestOptions = currentInterestData.options;
 
   const toggleInterest = (topic: string) => {
     if (selectedInterests.includes(topic)) {
@@ -268,11 +342,14 @@ export default function SignInPage() {
               {onboardingStep === 2 && (
                 <div className="space-y-6">
                   <div>
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[#fff3ee] border border-[#ffd5c4] text-[#d95325] text-[10px] font-mono font-semibold uppercase tracking-wider mb-2">
+                      <span>{selectedRole} Track</span>
+                    </div>
                     <h2 className="text-xl font-medium tracking-tight text-[#171b22] mb-1">
                       What are you interested in?
                     </h2>
-                    <p className="text-xs text-[#737a83] font-sans">
-                      Choose domain areas to curate your research monographs and learning recommendations.
+                    <p className="text-xs text-[#737a83] font-sans leading-relaxed">
+                      {currentInterestData.subtitle}
                     </p>
                   </div>
 
