@@ -32,8 +32,18 @@ type PlatformRole = "security-professional" | "drone-pilot" | "educator" | "orga
 
 export default function PlatformHubPage() {
   const { user, profile, loading } = useAuth();
-  const [activeRole, setActiveRole] = useState<PlatformRole>("security-professional");
-  const [activeTab, setActiveTab] = useState<string>("overview");
+  const isAdmin = profile?.role === "admin" || profile?.role === "superadmin";
+
+  const roleTabs = [
+    { id: "security-professional" as PlatformRole, label: "Security Professional", icon: ShieldCheck },
+    { id: "drone-pilot" as PlatformRole, label: "Drone Pilot", icon: Compass },
+    { id: "educator" as PlatformRole, label: "Educator", icon: BookOpen },
+    { id: "organisation" as PlatformRole, label: "Organisation", icon: Building2 },
+    ...(isAdmin ? [{ id: "admin" as PlatformRole, label: "Admin Console", icon: Lock }] : []),
+  ];
+
+  // If user is not admin and activeRole is admin, fallback to security-professional
+  const currentActiveRole = activeRole === "admin" && !isAdmin ? "security-professional" : activeRole;
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f7f6f2] text-[#171b22]">
@@ -80,21 +90,15 @@ export default function PlatformHubPage() {
               <span className="text-xs font-mono uppercase tracking-wider text-[#9299a2] mr-2">
                 Active View:
               </span>
-              {[
-                { id: "security-professional", label: "Security Professional", icon: ShieldCheck },
-                { id: "drone-pilot", label: "Drone Pilot", icon: Compass },
-                { id: "educator", label: "Educator", icon: BookOpen },
-                { id: "organisation", label: "Organisation", icon: Building2 },
-                { id: "admin", label: "Admin Console", icon: Lock },
-              ].map((r) => {
+              {roleTabs.map((r) => {
                 const Icon = r.icon;
-                const isActive = activeRole === r.id;
+                const isActive = currentActiveRole === r.id;
                 return (
                   <button
                     key={r.id}
                     type="button"
                     onClick={() => {
-                      setActiveRole(r.id as PlatformRole);
+                      setActiveRole(r.id);
                       setActiveTab("overview");
                     }}
                     className={`inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all ${
@@ -116,7 +120,7 @@ export default function PlatformHubPage() {
         <section className="bg-white py-12 sm:py-16 border-b border-[#e5e3db]">
           <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto">
             {/* ROLE 1: SECURITY PROFESSIONAL */}
-            {activeRole === "security-professional" && (
+            {currentActiveRole === "security-professional" && (
               <div className="space-y-10">
                 <div className="p-6 bg-[#faf9f5] border border-[#e5e3db] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                   <div>
@@ -235,7 +239,7 @@ export default function PlatformHubPage() {
             )}
 
             {/* ROLE 2: DRONE PILOT */}
-            {activeRole === "drone-pilot" && (
+            {currentActiveRole === "drone-pilot" && (
               <div className="space-y-10">
                 <div className="p-6 bg-[#faf9f5] border border-[#e5e3db] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                   <div>
@@ -323,7 +327,7 @@ export default function PlatformHubPage() {
             )}
 
             {/* ROLE 3: EDUCATOR */}
-            {activeRole === "educator" && (
+            {currentActiveRole === "educator" && (
               <div className="space-y-10">
                 <div className="p-6 bg-[#faf9f5] border border-[#e5e3db] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                   <div>
@@ -407,7 +411,7 @@ export default function PlatformHubPage() {
             )}
 
             {/* ROLE 4: ORGANISATION */}
-            {activeRole === "organisation" && (
+            {currentActiveRole === "organisation" && (
               <div className="space-y-10">
                 <div className="p-6 bg-[#faf9f5] border border-[#e5e3db] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                   <div>
@@ -459,8 +463,8 @@ export default function PlatformHubPage() {
               </div>
             )}
 
-            {/* ROLE 5: ADMIN */}
-            {activeRole === "admin" && (
+            {/* ROLE 5: ADMIN (Visible to Admins and Superadmins only) */}
+            {isAdmin && currentActiveRole === "admin" && (
               <div className="space-y-10">
                 <div className="p-6 bg-[#faf9f5] border border-[#e5e3db] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                   <div>

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu, X, ChevronDown, User, ArrowRight, LogOut, LayoutDashboard } from "lucide-react";
+import { Menu, X, ChevronDown, User, ArrowRight, LogOut, LayoutDashboard, Lock } from "lucide-react";
 import { useAuth } from "@/lib/auth-context";
 import { toast } from "sonner";
 
@@ -133,6 +133,15 @@ export function Navbar() {
                     <LayoutDashboard className="w-3.5 h-3.5 text-[#737a83]" />
                     <span>Personalized Platform</span>
                   </Link>
+                  {(profile.role === "admin" || profile.role === "superadmin") && (
+                    <Link
+                      href="/dashboard/superadmin"
+                      className="flex items-center gap-2 px-4 py-2 text-xs text-[#d95325] hover:bg-[#fff3ee] font-semibold"
+                    >
+                      <Lock className="w-3.5 h-3.5 text-[#d95325]" />
+                      <span>Admin Console</span>
+                    </Link>
+                  )}
                   <button
                     type="button"
                     onClick={handleSignOut}
