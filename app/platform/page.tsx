@@ -32,6 +32,9 @@ type PlatformRole = "security-professional" | "drone-pilot" | "educator" | "orga
 
 export default function PlatformHubPage() {
   const { user, profile, loading } = useAuth();
+  const [activeRole, setActiveRole] = useState<PlatformRole>("security-professional");
+  const [activeTab, setActiveTab] = useState<string>("overview");
+
   const isAdmin = profile?.role === "admin" || profile?.role === "superadmin";
 
   const roleTabs = [
