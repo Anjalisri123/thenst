@@ -24,34 +24,6 @@ const CATEGORIES = [
 
 const LEVELS = ["All", "Foundational", "Intermediate", "Advanced"];
 
-const ONBOARDING_STEPS = [
-  {
-    step: "01",
-    title: "Create Your Account",
-    desc: "Establish your pilot identity and register your flying credentials."
-  },
-  {
-    step: "02",
-    title: "Register Capabilities",
-    desc: "Catalog airframe classes, thermal/sensor payloads, and BVLOS experience."
-  },
-  {
-    step: "03",
-    title: "Select Mission Types",
-    desc: "Identify operational interests across perimeter security, surveying, or tactical trials."
-  },
-  {
-    step: "04",
-    title: "Access Platform Postings",
-    desc: "Browse institutional briefs, field missions, and testing consortium calls."
-  },
-  {
-    step: "05",
-    title: "Deploy & Collaborate",
-    desc: "Participate in multi-operator frameworks, specialized courses, and trials."
-  }
-];
-
 const PLATFORM_PILLARS = [
   {
     num: "01",
@@ -139,42 +111,6 @@ export default function LearnPage() {
                   <div className="text-2xl font-mono font-bold text-white mb-1">{stat.value}</div>
                   <div className="text-xs font-semibold text-[#d95325] uppercase tracking-wider mb-0.5">{stat.label}</div>
                   <div className="text-[11px] text-[#8e95a0]">{stat.detail}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 5-Step Process Section matching User Reference UI */}
-        <section className="bg-[#faf9f5] py-16 sm:py-20 border-b border-[#e5e3db]">
-          <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto">
-            <div className="mb-8">
-              <span className="text-[10px] font-mono uppercase tracking-widest text-[#d95325] font-semibold mb-2 block">
-                Platform Workflow
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-medium tracking-tight text-[#171b22]">
-                5 Simple Steps to Get Started
-              </h2>
-            </div>
-
-            {/* Horizontal 5-Column Process Strip */}
-            <div className="border border-[#e5e3db] bg-[#faf9f5] grid grid-cols-1 md:grid-cols-5 divide-y md:divide-y-0 md:divide-x divide-[#e5e3db] shadow-sm">
-              {ONBOARDING_STEPS.map((item) => (
-                <div 
-                  key={item.step} 
-                  className="p-8 flex flex-col justify-between min-h-[260px] bg-[#faf9f5] hover:bg-white transition-colors"
-                >
-                  <span className="text-sm font-mono font-bold text-[#d95325] block mb-12">
-                    {item.step}
-                  </span>
-                  <div>
-                    <h3 className="text-base sm:text-[17px] font-semibold tracking-tight text-[#171b22] mb-2 leading-snug">
-                      {item.title}
-                    </h3>
-                    <p className="text-xs sm:text-[13px] text-[#616872] leading-relaxed font-sans">
-                      {item.desc}
-                    </p>
-                  </div>
                 </div>
               ))}
             </div>
