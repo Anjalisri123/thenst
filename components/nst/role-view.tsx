@@ -97,21 +97,32 @@ export function RolePageView({ roleKey }: { roleKey: string }) {
               </p>
             </div>
 
-            {/* Timeline Row */}
-            <div className="border border-[#e5e3db] bg-[#faf9f5] grid grid-cols-1 md:grid-cols-5 divide-y md:divide-y-0 md:divide-x divide-[#e5e3db] my-8 shadow-sm">
-              {role.steps.map((step) => (
-                <div key={step.num} className="p-8 flex flex-col justify-between min-h-[260px] hover:bg-white transition-colors">
-                  <span className="text-sm font-mono font-bold text-[#d95325] block mb-12">
-                    {step.num}
-                  </span>
+            {/* Modern Milestone Stepper Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 my-8">
+              {role.steps.map((step, idx) => (
+                <div 
+                  key={step.num} 
+                  className="group relative bg-[#faf9f5] border border-[#e5e3db] p-7 flex flex-col justify-between min-h-[260px] hover:bg-white hover:border-[#171b22] hover:shadow-md transition-all duration-200"
+                >
                   <div>
-                    <h3 className="text-base sm:text-[17px] font-semibold tracking-tight text-[#171b22] mb-2 leading-snug">
+                    {/* Top Step Header with Pill Badge & Arrow */}
+                    <div className="flex items-center justify-between mb-8">
+                      <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-[#fdf2ee] border border-[#d95325]/30 text-[#d95325] font-mono text-xs font-bold">
+                        {step.num}
+                      </span>
+                      {idx < role.steps.length - 1 && (
+                        <ArrowRight className="hidden lg:block w-3.5 h-3.5 text-[#a4abb4] group-hover:text-[#d95325] group-hover:translate-x-0.5 transition-all" />
+                      )}
+                    </div>
+
+                    <h3 className="text-base font-semibold tracking-tight text-[#171b22] mb-2 leading-snug group-hover:text-[#d95325] transition-colors">
                       {step.title}
                     </h3>
-                    <p className="text-xs sm:text-[13px] text-[#616872] leading-relaxed font-sans">
-                      {step.desc}
-                    </p>
                   </div>
+
+                  <p className="text-xs sm:text-[13px] text-[#616872] leading-relaxed font-sans pt-3 border-t border-[#e5e3db]/60">
+                    {step.desc}
+                  </p>
                 </div>
               ))}
             </div>
