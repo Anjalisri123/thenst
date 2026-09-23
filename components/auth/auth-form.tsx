@@ -43,6 +43,7 @@ export function AuthForm({ mode, role }: AuthFormProps) {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [isResetMode, setIsResetMode] = useState(false);
     const [countryCode, setCountryCode] = useState("+91");
@@ -361,15 +362,25 @@ export function AuthForm({ mode, role }: AuthFormProps) {
                         {mode === "register" && !isResetMode && (
                             <div className="flex flex-col gap-2">
                                 <Label htmlFor="confirmPassword" className="text-ashoka-blue/70">Confirm Password</Label>
-                                <Input
-                                    id="confirmPassword"
-                                    type="password"
-                                    placeholder="Re-enter password"
-                                    value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                    required
-                                    className="bg-white border-ashoka-blue/10 text-ashoka-blue placeholder:text-ashoka-blue/30 focus-visible:ring-ashoka-blue h-12 rounded-xl"
-                                />
+                                <div className="relative">
+                                    <Input
+                                        id="confirmPassword"
+                                        type={showConfirmPassword ? "text" : "password"}
+                                        placeholder="Re-enter password"
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                        required
+                                        className="bg-white border-ashoka-blue/10 text-ashoka-blue placeholder:text-ashoka-blue/30 focus-visible:ring-ashoka-blue h-12 rounded-xl pr-10"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                                        aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                                    >
+                                        {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                    </button>
+                                </div>
                             </div>
                         )}
 

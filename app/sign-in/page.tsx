@@ -23,6 +23,7 @@ export default function SignInPage() {
   const [onboardingStep, setOnboardingStep] = useState(1);
   const [selectedRole, setSelectedRole] = useState("Security Professional");
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
+  const [otherInterestText, setOtherInterestText] = useState("");
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
 
@@ -46,7 +47,8 @@ export default function SignInPage() {
         "Access Control & Checkpoints",
         "Fire Safety & Evacuation Drills",
         "VIP & Event Protection",
-        "Incident Reporting & Patrols"
+        "Incident Reporting & Patrols",
+        "Other"
       ]
     },
     "Drone Pilot": {
@@ -59,7 +61,8 @@ export default function SignInPage() {
         "Drone Video & Data Tagging",
         "Long-Range Flight Operations",
         "Counter-Drone Detection Systems",
-        "Drone Maintenance & Battery Care"
+        "Drone Maintenance & Battery Care",
+        "Other"
       ]
     },
     "Educator": {
@@ -72,7 +75,8 @@ export default function SignInPage() {
         "Password & Online Threat Defense",
         "Workplace Safety & Fire Drills",
         "Curriculum & Lesson Planning",
-        "Student Mentoring & Certification"
+        "Student Mentoring & Certification",
+        "Other"
       ]
     },
     "Organisation": {
@@ -85,7 +89,8 @@ export default function SignInPage() {
         "Facility Safety & Risk Audits",
         "24/7 Emergency Response Setup",
         "Security Supervisor Placements",
-        "Safety Compliance Certification"
+        "Safety Compliance Certification",
+        "Other"
       ]
     },
     "Researcher": {
@@ -98,7 +103,8 @@ export default function SignInPage() {
         "AI & Automated Threat Detection",
         "Satellite & Communication Protection",
         "Defense Technology Case Studies",
-        "Safety Policy Briefs & Summaries"
+        "Safety Policy Briefs & Summaries",
+        "Other"
       ]
     },
     "Learner": {
@@ -111,7 +117,8 @@ export default function SignInPage() {
         "Safe Online Habits & Passwords",
         "CCTV Setup & Troubleshooting",
         "Building a Security Resume",
-        "Earning Skill Certificates"
+        "Earning Skill Certificates",
+        "Other"
       ]
     }
   };
@@ -245,12 +252,13 @@ export default function SignInPage() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="••••••••••••"
-                      className="w-full px-4 py-2.5 bg-[#f7f6f2] border border-[#e5e3db] text-xs text-[#171b22] focus:outline-none focus:border-[#d95325] focus:bg-white font-sans"
+                      className="w-full px-4 py-2.5 bg-[#f7f6f2] border border-[#e5e3db] text-xs text-[#171b22] focus:outline-none focus:border-[#d95325] focus:bg-white font-sans pr-10"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#737a83] hover:text-[#171b22]"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[#737a83] hover:text-[#171b22] transition-colors"
+                      aria-label={showPassword ? "Hide password" : "Show password"}
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -373,6 +381,22 @@ export default function SignInPage() {
                     })}
                   </div>
 
+                  {/* Custom interest input if Other is selected */}
+                  {selectedInterests.includes("Other") && (
+                    <div className="p-3.5 bg-[#faf9f5] border border-[#d95325]/30 rounded-none space-y-1.5 animate-in fade-in duration-200">
+                      <label className="text-[11px] font-mono uppercase tracking-wider text-[#d95325] font-semibold block">
+                        Specify Your Specific Interest Area
+                      </label>
+                      <input
+                        type="text"
+                        value={otherInterestText}
+                        onChange={(e) => setOtherInterestText(e.target.value)}
+                        placeholder="e.g. Agricultural Drone Mapping, Industrial Site Patrol..."
+                        className="w-full px-3 py-2 bg-white border border-[#e5e3db] text-xs text-[#171b22] focus:outline-none focus:border-[#d95325] font-sans"
+                      />
+                    </div>
+                  )}
+
                   <div className="flex gap-3 pt-2">
                     <button
                       type="button"
@@ -436,15 +460,25 @@ export default function SignInPage() {
                     <label className="text-xs font-mono uppercase tracking-wider text-[#737a83] block mb-1.5">
                       Password (min 8 characters) *
                     </label>
-                    <input
-                      type="password"
-                      required
-                      minLength={8}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="••••••••••••"
-                      className="w-full px-4 py-2.5 bg-[#f7f6f2] border border-[#e5e3db] text-xs text-[#171b22] focus:outline-none focus:border-[#d95325] focus:bg-white font-sans"
-                    />
+                    <div className="relative">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        required
+                        minLength={8}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="••••••••••••"
+                        className="w-full px-4 py-2.5 bg-[#f7f6f2] border border-[#e5e3db] text-xs text-[#171b22] focus:outline-none focus:border-[#d95325] focus:bg-white font-sans pr-10"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#737a83] hover:text-[#171b22] transition-colors"
+                        aria-label={showPassword ? "Hide password" : "Show password"}
+                      >
+                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                      </button>
+                    </div>
                   </div>
 
                   <div className="flex gap-3 pt-3">
