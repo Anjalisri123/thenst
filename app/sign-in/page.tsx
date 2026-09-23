@@ -47,8 +47,7 @@ export default function SignInPage() {
         "Access Control & Checkpoints",
         "Fire Safety & Evacuation Drills",
         "VIP & Event Protection",
-        "Incident Reporting & Patrols",
-        "Other"
+        "Incident Reporting & Patrols"
       ]
     },
     "Drone Pilot": {
@@ -61,8 +60,7 @@ export default function SignInPage() {
         "Drone Video & Data Tagging",
         "Long-Range Flight Operations",
         "Counter-Drone Detection Systems",
-        "Drone Maintenance & Battery Care",
-        "Other"
+        "Drone Maintenance & Battery Care"
       ]
     },
     "Educator": {
@@ -75,8 +73,7 @@ export default function SignInPage() {
         "Password & Online Threat Defense",
         "Workplace Safety & Fire Drills",
         "Curriculum & Lesson Planning",
-        "Student Mentoring & Certification",
-        "Other"
+        "Student Mentoring & Certification"
       ]
     },
     "Organisation": {
@@ -89,8 +86,7 @@ export default function SignInPage() {
         "Facility Safety & Risk Audits",
         "24/7 Emergency Response Setup",
         "Security Supervisor Placements",
-        "Safety Compliance Certification",
-        "Other"
+        "Safety Compliance Certification"
       ]
     },
     "Researcher": {
@@ -103,8 +99,7 @@ export default function SignInPage() {
         "AI & Automated Threat Detection",
         "Satellite & Communication Protection",
         "Defense Technology Case Studies",
-        "Safety Policy Briefs & Summaries",
-        "Other"
+        "Safety Policy Briefs & Summaries"
       ]
     },
     "Learner": {
@@ -117,8 +112,7 @@ export default function SignInPage() {
         "Safe Online Habits & Passwords",
         "CCTV Setup & Troubleshooting",
         "Building a Security Resume",
-        "Earning Skill Certificates",
-        "Other"
+        "Earning Skill Certificates"
       ]
     }
   };
@@ -361,41 +355,59 @@ export default function SignInPage() {
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                    {interestOptions.map((topic) => {
-                      const isSelected = selectedInterests.includes(topic);
-                      return (
-                        <div
-                          key={topic}
-                          onClick={() => toggleInterest(topic)}
-                          className={`p-3 border text-xs font-medium font-sans cursor-pointer transition-all flex items-center justify-between ${
-                            isSelected
-                              ? "border-[#d95325] bg-[#faf9f5] text-[#171b22]"
-                              : "border-[#e5e3db] text-[#616872] hover:border-[#171b22]/30"
-                          }`}
-                        >
-                          <span>{topic}</span>
-                          {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-[#d95325]" />}
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  {/* Custom interest input if Other is selected */}
-                  {selectedInterests.includes("Other") && (
-                    <div className="p-3.5 bg-[#faf9f5] border border-[#d95325]/30 rounded-none space-y-1.5 animate-in fade-in duration-200">
-                      <label className="text-[11px] font-mono uppercase tracking-wider text-[#d95325] font-semibold block">
-                        Specify Your Specific Interest Area
-                      </label>
-                      <input
-                        type="text"
-                        value={otherInterestText}
-                        onChange={(e) => setOtherInterestText(e.target.value)}
-                        placeholder="e.g. Agricultural Drone Mapping, Industrial Site Patrol..."
-                        className="w-full px-3 py-2 bg-white border border-[#e5e3db] text-xs text-[#171b22] focus:outline-none focus:border-[#d95325] font-sans"
-                      />
+                  <div className="space-y-2.5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                      {interestOptions.map((topic) => {
+                        const isSelected = selectedInterests.includes(topic);
+                        return (
+                          <div
+                            key={topic}
+                            onClick={() => toggleInterest(topic)}
+                            className={`p-3 border text-xs font-medium font-sans cursor-pointer transition-all flex items-center justify-between ${
+                              isSelected
+                                ? "border-[#d95325] bg-[#faf9f5] text-[#171b22]"
+                                : "border-[#e5e3db] text-[#616872] hover:border-[#171b22]/30"
+                            }`}
+                          >
+                            <span>{topic}</span>
+                            {isSelected && <CheckCircle2 className="w-3.5 h-3.5 text-[#d95325]" />}
+                          </div>
+                        );
+                      })}
                     </div>
-                  )}
+
+                    {/* Dedicated Other / Custom Focus Option */}
+                    <div
+                      onClick={() => toggleInterest("Other")}
+                      className={`p-3 border text-xs font-medium font-sans cursor-pointer transition-all flex items-center justify-between ${
+                        selectedInterests.includes("Other")
+                          ? "border-[#d95325] bg-[#faf9f5] text-[#171b22] font-semibold"
+                          : "border-[#e5e3db] text-[#616872] hover:border-[#171b22]/30 bg-white"
+                      }`}
+                    >
+                      <span className="flex items-center gap-1.5">
+                        <span className="text-[#d95325] font-bold">+</span> Other / Custom Focus Area
+                      </span>
+                      {selectedInterests.includes("Other") && <CheckCircle2 className="w-3.5 h-3.5 text-[#d95325]" />}
+                    </div>
+
+                    {/* Custom interest input if Other is selected */}
+                    {selectedInterests.includes("Other") && (
+                      <div className="p-3.5 bg-[#faf9f5] border border-[#d95325]/30 rounded-none space-y-1.5 animate-in fade-in duration-200">
+                        <label className="text-[11px] font-mono uppercase tracking-wider text-[#d95325] font-semibold block">
+                          Specify Your Specific Interest Area
+                        </label>
+                        <input
+                          type="text"
+                          value={otherInterestText}
+                          onChange={(e) => setOtherInterestText(e.target.value)}
+                          placeholder="e.g. Agricultural Drone Mapping, Industrial Site Patrol..."
+                          className="w-full px-3 py-2 bg-white border border-[#e5e3db] text-xs text-[#171b22] focus:outline-none focus:border-[#d95325] font-sans"
+                          autoFocus
+                        />
+                      </div>
+                    )}
+                  </div>
 
                   <div className="flex gap-3 pt-2">
                     <button
