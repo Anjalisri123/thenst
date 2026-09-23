@@ -1,13 +1,15 @@
 "use client";
 
-import { AuthForm } from "@/components/auth/auth-form";
-import { AuthRedirect } from "@/components/auth-redirect";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
-  return (
-    <>
-      <AuthRedirect />
-      <AuthForm mode="login" role="guard" />
-    </>
-  );
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace("/sign-in?mode=signin");
+  }, [router]);
+
+  return null;
 }
+

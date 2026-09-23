@@ -2,18 +2,20 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Shield, Lock, Mail, ArrowRight, CheckCircle2, User, Building2, Compass, BookOpen, ChevronRight, Eye, EyeOff } from "lucide-react";
 import { Navbar } from "@/components/nst/navbar";
 import { Footer } from "@/components/nst/footer";
 import { toast } from "sonner";
 import { useAuth } from "@/lib/auth-context";
 
-export default function SignInPage() {
+function SignInContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { signIn, signUp } = useAuth();
 
-  const [mode, setMode] = useState<"signin" | "onboarding">("signin");
+  const requestedMode = searchParams.get("mode") === "onboarding" || searchParams.get("mode") === "register" ? "onboarding" : "signin";
+  const [mode, setMode] = useState<"signin" | "onboarding">(requestedMode);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -517,5 +519,13 @@ export default function SignInPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function SignInPage() {
+  return (
+    <React.Suspense fallback={<div className="min-h-screen bg-[#f7f6f2]" />}>
+      <SignInContent />
+    </React.Suspense>
   );
 }
