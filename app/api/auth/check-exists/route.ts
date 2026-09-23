@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { dbAdmin } from "@/lib/firebase-admin";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: Request) {
   try {
     const { email, phone } = await req.json();

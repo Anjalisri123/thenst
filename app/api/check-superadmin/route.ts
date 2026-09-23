@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 const SUPER_ADMIN_EMAILS = Object.entries(process.env)
   .filter(([key]) => key.startsWith('SUPER_ADMIN_EMAIL_'))
   .map(([, value]) => value)

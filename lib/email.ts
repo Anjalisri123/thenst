@@ -37,7 +37,7 @@ export async function sendEmail(params: SendEmailParams) {
     const result = await response.json();
 
     if (!response.ok) {
-      console.error("Failed to send email via API:", result.error);
+      console.warn("Email delivery note (API):", result.error || "Email not dispatched");
       return false;
     }
 
@@ -55,7 +55,7 @@ export async function sendEmail(params: SendEmailParams) {
 
     return true;
   } catch (error) {
-    console.error("Failed to call email API:", error);
+    console.warn("Email delivery note (network):", error);
     return false;
   }
 }

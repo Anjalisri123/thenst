@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { dbAdmin } from "@/lib/firebase-admin";
 
+export const dynamic = "force-dynamic";
+
 // ---------- CONFIGURATION ----------
 const APP_ID = process.env.CASHFREE_APP_ID || process.env.NEXT_PUBLIC_CASHFREE_APP_ID || "";
 const SECRET_KEY = process.env.CASHFREE_SECRET_KEY || process.env.NEXT_PUBLIC_CASHFREE_SECRET_KEY || "";
