@@ -3,11 +3,12 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Shield, Eye, EyeOff, Building, Users, Lock, Compass, BookOpen, User, ArrowRight } from "lucide-react";
+import { Shield, Eye, EyeOff, Building, Users, Lock } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/lib/auth-context";
 import { UserRole } from "@/lib/types";
 import {
@@ -31,10 +32,10 @@ const countryCodes = [
 
 interface AuthFormProps {
     mode: "login" | "register";
-    role?: UserRole;
+    role: UserRole;
 }
 
-export function AuthForm({ mode, role = "guard" }: AuthFormProps) {
+export function AuthForm({ mode, role }: AuthFormProps) {
     const [currentRole, setCurrentRole] = useState<UserRole>(role);
     const [fullName, setFullName] = useState("");
     const [email, setEmail] = useState("");
@@ -47,17 +48,32 @@ export function AuthForm({ mode, role = "guard" }: AuthFormProps) {
     const [countryCode, setCountryCode] = useState("+91");
     const [loginMethod, setLoginMethod] = useState<"email" | "phone">("email");
 
+    const [companyName, setCompanyName] = useState("");
+    const [website, setWebsite] = useState("");
+    const [designation, setDesignation] = useState("");
+
     const { signIn, signUp, resetPassword } = useAuth();
     const router = useRouter();
 
-    const roleOptions = [
-        { value: "guard", label: "Security Professional" },
-        { value: "pilot", label: "Drone Pilot" },
-        { value: "educator", label: "Educator" },
-        { value: "hr", label: "Organisation" },
-        { value: "researcher", label: "Researcher" },
-        { value: "learner", label: "Learner" },
-    ];
+    const roleLabels = {
+        guard: "Security Professional",
+        hr: "Hiring Manager",
+        admin: "Admin",
+        superadmin: "Super Admin",
+        agency: "Security Agency",
+        intern: "Intern"
+    };
+
+    const roleIcons = {
+        guard: Shield,
+        hr: Users,
+        admin: Building,
+        superadmin: Lock,
+        agency: Building,
+        intern: Shield
+    };
+
+    const RoleIcon = roleIcons[currentRole] || Shield;
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -96,8 +112,8 @@ export function AuthForm({ mode, role = "guard" }: AuthFormProps) {
                 const fullPhone = countryCode + phoneDigits;
 
                 await signUp(email, password, fullName, fullPhone, currentRole);
-                toast.success("Registration successful! Welcome to TheNST.");
-                router.push(`/dashboard`);
+                toast.success("Registration successful! Please complete your profile.");
+                router.push(`/dashboard/${currentRole}`);
 
             } else {
                 // Login
@@ -119,12 +135,12 @@ export function AuthForm({ mode, role = "guard" }: AuthFormProps) {
                 }
 
                 const { role: userRole } = await signIn(identifier, password);
-                toast.success("Welcome back to TheNST!");
+                toast.success("Welcome back!");
 
                 if (userRole === "superadmin") {
                     router.push("/dashboard/superadmin");
                 } else {
-                    router.push(`/dashboard`);
+                    router.push(`/dashboard/${userRole}`);
                 }
             }
         } catch (err: unknown) {
@@ -136,273 +152,258 @@ export function AuthForm({ mode, role = "guard" }: AuthFormProps) {
     }
 
     return (
-        <main className="min-h-screen flex flex-col items-center justify-center bg-[#171b22] px-4 py-12 relative overflow-hidden">
-            {/* Background Ambient Glow */}
-            <div className="absolute top-[-10%] right-[-5%] w-[50vw] h-[50vw] rounded-full bg-[#d95325]/5 blur-[120px] pointer-events-none" />
+        <main className="flex min-h-screen items-center justify-center bg-slate-50 px-4 py-12 relative overflow-hidden">
+            {/* Background Gradients - Subtle Tricolour Atmosphere */}
+            {/* Background Atmosphere - Clean & Neutral */}
+            <div className="absolute inset-0 bg-slate-50/50 pointer-events-none" />
 
-            {/* Institutional Box */}
-            <div className="w-full max-w-md bg-[#f7f6f2] border border-[#e5e3db] p-8 sm:p-10 shadow-2xl relative z-10">
-                {/* Brand Logo Header */}
-                <div className="text-center mb-8">
-                    <Link href="/" className="inline-flex items-baseline gap-0 text-[24px] font-medium tracking-[-1.1px] text-[#171b22] mb-3">
-                        <span className="font-sans font-bold">The</span>
-                        <span className="font-serif italic font-normal text-[28px] tracking-[-0.5px]">NST</span>
-                    </Link>
-                    <h1 className="text-3xl font-medium tracking-tight text-[#171b22] mb-1">
-                        {isResetMode ? "Reset Password" : (mode === "login" ? "Institutional Sign In" : "Create Account")}
-                    </h1>
-                    <p className="text-xs text-[#737a83] font-sans">
+
+            <Card className="w-full max-w-md relative z-10 border-primary/10 bg-white/95 backdrop-blur-md text-primary shadow-2xl">
+                <CardHeader className="text-center">
+                    {/* Logo Removed */}
+                    <CardTitle className="text-2xl text-primary font-black tracking-[0.2em]">
+                        {isResetMode ? "Reset Password" : (mode === "login" ? "Account login" : "Create account")}
+                    </CardTitle>
+                    <CardDescription className="text-muted-foreground font-bold text-[10px] tracking-widest mt-2">
                         {isResetMode
-                            ? "Enter your verified email address to recover credentials."
+                            ? "Email Recovery Service"
                             : (mode === "login"
-                                ? "Access your command dashboard and sovereign enclave."
-                                : "Join the national security talent and research network.")}
-                    </p>
-                </div>
-
-                {/* Role View Selector */}
-                {!isResetMode && (
-                    <div className="mb-6 flex flex-col gap-1.5">
-                        <Label className="text-[10px] font-mono font-bold uppercase tracking-widest text-[#737a83]">
-                            SELECT ROLE VIEW
-                        </Label>
-                        <Select value={currentRole} onValueChange={(v) => setCurrentRole(v as UserRole)}>
-                            <SelectTrigger className="h-11 bg-white border-[#e5e3db] text-[#171b22] text-xs font-semibold rounded-none focus:ring-[#d95325]">
-                                <SelectValue placeholder="Select Role" />
-                            </SelectTrigger>
-                            <SelectContent className="bg-white border-[#e5e3db] rounded-none shadow-xl">
-                                <div className="px-3 py-1 text-[9px] font-mono uppercase tracking-widest text-[#737a83] border-b border-[#e5e3db]/60 mb-1">
-                                    SELECT ROLE VIEW
-                                </div>
-                                {roleOptions.map((opt) => (
-                                    <SelectItem
-                                        key={opt.value}
-                                        value={opt.value}
-                                        className="py-2.5 text-xs text-[#171b22] focus:bg-[#f7f6f2] focus:text-[#d95325] font-medium cursor-pointer"
-                                    >
-                                        {opt.label}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                    </div>
-                )}
-
-                <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-                    {mode === "register" && !isResetMode && (
-                        <>
-                            <div className="flex flex-col gap-1.5">
-                                <Label htmlFor="fullName" className="text-xs font-semibold text-[#171b22]">Full Name</Label>
-                                <Input
-                                    id="fullName"
-                                    placeholder="Col. Vikramaditya Sen / Jane Doe"
-                                    value={fullName}
-                                    onChange={(e) => setFullName(e.target.value)}
-                                    required
-                                    className="bg-white border-[#e5e3db] text-[#171b22] placeholder:text-[#737a83]/50 focus-visible:ring-[#d95325] h-11 rounded-none text-xs"
-                                />
-                            </div>
-
-                            <div className="flex flex-col gap-1.5">
-                                <Label htmlFor="email" className="text-xs font-semibold text-[#171b22]">Email Address</Label>
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    placeholder="analyst@institution.gov.in"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    required
-                                    className="bg-white border-[#e5e3db] text-[#171b22] placeholder:text-[#737a83]/50 focus-visible:ring-[#d95325] h-11 rounded-none text-xs"
-                                />
-                            </div>
-
-                            <div className="flex flex-col gap-1.5">
-                                <Label htmlFor="phone" className="text-xs font-semibold text-[#171b22]">Mobile Number</Label>
-                                <div className="flex gap-2">
-                                    <Select value={countryCode} onValueChange={setCountryCode}>
-                                        <SelectTrigger className="w-[100px] bg-white border-[#e5e3db] text-[#171b22] h-11 rounded-none text-xs">
-                                            <SelectValue placeholder="Code" />
-                                        </SelectTrigger>
-                                        <SelectContent className="bg-white border-[#e5e3db] rounded-none">
-                                            {countryCodes.map((c) => (
-                                                <SelectItem key={c.code} value={c.code} className="text-xs">
-                                                    {c.flag} {c.code}
-                                                </SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
+                                ? "Access Secure Dashboard"
+                                : `Register as ${roleLabels[currentRole]}`)}
+                    </CardDescription>
+                </CardHeader>
+                <CardContent>
+                    {!isResetMode && mode === "register" && (
+                        <div className="mb-6 flex flex-col gap-2">
+                            <Label className="text-zinc-400 text-xs font-bold uppercase tracking-widest pl-1">I am a/an</Label>
+                            <Select value={currentRole} onValueChange={(v) => setCurrentRole(v as UserRole)}>
+                                <SelectTrigger className="h-12 bg-white border-ashoka-blue/10 text-ashoka-blue font-medium rounded-xl focus:ring-ashoka-blue">
+                                    <SelectValue placeholder="Select Role" />
+                                </SelectTrigger>
+                                <SelectContent className="bg-white border-ashoka-blue/10 text-ashoka-blue rounded-xl">
+                                    <SelectItem value="guard" className="py-3 focus:bg-ashoka-blue/5 focus:text-ashoka-blue">Security Professional</SelectItem>
+                                    <SelectItem value="hr" className="py-3 focus:bg-ashoka-blue/5 focus:text-ashoka-blue">Hiring Manager</SelectItem>
+                                    <SelectItem value="agency" className="py-3 focus:bg-ashoka-blue/5 focus:text-ashoka-blue">Security Agency</SelectItem>
+                                    <SelectItem value="admin" className="py-3 focus:bg-ashoka-blue/5 focus:text-ashoka-blue">Admin</SelectItem>
+                                    <SelectItem value="intern" className="py-3 focus:bg-ashoka-blue/5 focus:text-ashoka-blue">Intern</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    )}
+                    
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+                        {mode === "register" && !isResetMode && (
+                            <>
+                                <div className="flex flex-col gap-2">
+                                    <Label htmlFor="fullName" className="text-ashoka-blue/70">Full Name</Label>
                                     <Input
-                                        id="phone"
-                                        type="tel"
-                                        placeholder="10-digit mobile"
-                                        value={phone}
-                                        onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
+                                        id="fullName"
+                                        placeholder="John Doe"
+                                        value={fullName}
+                                        onChange={(e) => setFullName(e.target.value)}
                                         required
-                                        className="flex-1 bg-white border-[#e5e3db] text-[#171b22] placeholder:text-[#737a83]/50 focus-visible:ring-[#d95325] h-11 rounded-none text-xs"
+                                        className="bg-white border-ashoka-blue/10 text-ashoka-blue placeholder:text-ashoka-blue/30 focus-visible:ring-ashoka-blue h-12 rounded-xl"
                                     />
                                 </div>
-                            </div>
-                        </>
-                    )}
 
-                    {mode === "login" && !isResetMode && (
-                        <Tabs value={loginMethod} onValueChange={(v) => setLoginMethod(v as "email" | "phone")} className="w-full">
-                            <TabsList className="grid w-full grid-cols-2 bg-[#eceae3] border border-[#e5e3db] mb-4 h-10 p-1 rounded-none">
-                                <TabsTrigger value="email" className="rounded-none data-[state=active]:bg-white data-[state=active]:text-[#171b22] data-[state=active]:shadow-sm text-xs font-semibold uppercase tracking-wider">Email</TabsTrigger>
-                                <TabsTrigger value="phone" className="rounded-none data-[state=active]:bg-white data-[state=active]:text-[#171b22] data-[state=active]:shadow-sm text-xs font-semibold uppercase tracking-wider">Mobile</TabsTrigger>
-                            </TabsList>
-
-                            <TabsContent value="email" className="mt-0">
-                                <div className="flex flex-col gap-1.5">
-                                    <Label htmlFor="loginEmail" className="text-xs font-semibold text-[#171b22]">Email Address</Label>
+                                <div className="flex flex-col gap-2">
+                                    <Label htmlFor="email" className="text-ashoka-blue/70">Email Address</Label>
                                     <Input
-                                        id="loginEmail"
+                                        id="email"
                                         type="email"
-                                        placeholder="officer@domain.com"
+                                        placeholder="you@example.com"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         required
-                                        className="bg-white border-[#e5e3db] text-[#171b22] placeholder:text-[#737a83]/50 focus-visible:ring-[#d95325] h-11 rounded-none text-xs"
+                                        className="bg-white border-ashoka-blue/10 text-ashoka-blue placeholder:text-ashoka-blue/30 focus-visible:ring-ashoka-blue h-12 rounded-xl"
                                     />
                                 </div>
-                            </TabsContent>
 
-                            <TabsContent value="phone" className="mt-0">
-                                <div className="flex flex-col gap-1.5">
-                                    <Label htmlFor="loginPhone" className="text-xs font-semibold text-[#171b22]">Mobile Number</Label>
+                                <div className="flex flex-col gap-2">
+                                    <Label htmlFor="phone" className="text-ashoka-blue/70">Mobile Number</Label>
                                     <div className="flex gap-2">
                                         <Select value={countryCode} onValueChange={setCountryCode}>
-                                            <SelectTrigger className="w-[100px] bg-white border-[#e5e3db] text-[#171b22] h-11 rounded-none text-xs">
+                                            <SelectTrigger className="w-[110px] bg-white border-ashoka-blue/10 text-ashoka-blue h-12 rounded-xl">
                                                 <SelectValue placeholder="Code" />
                                             </SelectTrigger>
-                                            <SelectContent className="bg-white border-[#e5e3db] rounded-none">
+                                            <SelectContent className="bg-white border-ashoka-blue/10 text-ashoka-blue rounded-xl">
                                                 {countryCodes.map((c) => (
-                                                    <SelectItem key={c.code} value={c.code} className="text-xs">
-                                                        {c.flag} {c.code}
+                                                    <SelectItem key={c.code} value={c.code}>
+                                                        <span className="flex items-center gap-2">
+                                                            <span>{c.flag}</span>
+                                                            <span>{c.code}</span>
+                                                        </span>
                                                     </SelectItem>
                                                 ))}
                                             </SelectContent>
                                         </Select>
                                         <Input
-                                            id="loginPhone"
+                                            id="phone"
                                             type="tel"
-                                            placeholder="10-digit mobile"
+                                            placeholder="10-digit number"
                                             value={phone}
                                             onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
                                             required
-                                            className="flex-1 bg-white border-[#e5e3db] text-[#171b22] placeholder:text-[#737a83]/50 focus-visible:ring-[#d95325] h-11 rounded-none text-xs"
+                                            className="flex-1 bg-white border-ashoka-blue/10 text-ashoka-blue placeholder:text-ashoka-blue/30 focus-visible:ring-ashoka-blue h-12 rounded-xl"
                                         />
                                     </div>
                                 </div>
-                            </TabsContent>
-                        </Tabs>
-                    )}
+                            </>
+                        )}
 
-                    {isResetMode && (
-                        <div className="flex flex-col gap-1.5">
-                            <Label htmlFor="resetEmail" className="text-xs font-semibold text-[#171b22]">Email Address</Label>
-                            <Input
-                                id="resetEmail"
-                                type="email"
-                                placeholder="you@example.com"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                                className="bg-white border-[#e5e3db] text-[#171b22] placeholder:text-[#737a83]/50 focus-visible:ring-[#d95325] h-11 rounded-none text-xs"
-                            />
-                        </div>
-                    )}
+                        {mode === "login" && !isResetMode && (
+                            <Tabs value={loginMethod} onValueChange={(v) => setLoginMethod(v as "email" | "phone")} className="w-full">
+                                <TabsList className="grid w-full grid-cols-2 bg-slate-100 border border-ashoka-blue/5 mb-4 h-11 p-1 rounded-xl">
+                                    <TabsTrigger value="email" className="rounded-lg data-[state=active]:bg-white data-[state=active]:text-ashoka-blue data-[state=active]:shadow-sm transition-all text-xs font-bold tracking-widest">Email</TabsTrigger>
+                                    <TabsTrigger value="phone" className="rounded-lg data-[state=active]:bg-white data-[state=active]:text-ashoka-blue data-[state=active]:shadow-sm transition-all text-xs font-bold tracking-widest">Mobile</TabsTrigger>
+                                </TabsList>
 
-                    {!isResetMode && (
-                        <div className="flex flex-col gap-1.5">
-                            <div className="flex items-center justify-between">
-                                <Label htmlFor="password" className="text-xs font-semibold text-[#171b22]">Password</Label>
-                                {mode === "login" && (
+                                <TabsContent value="email" className="mt-0">
+                                    <div className="flex flex-col gap-2">
+                                        <Label htmlFor="email" className="text-ashoka-blue/70">Email Address</Label>
+                                        <Input
+                                            id="email"
+                                            type="email"
+                                            placeholder="you@example.com"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            required={loginMethod === "email"}
+                                            className="bg-white border-ashoka-blue/10 text-ashoka-blue placeholder:text-ashoka-blue/30 focus-visible:ring-ashoka-blue h-12 rounded-xl"
+                                        />
+                                    </div>
+                                </TabsContent>
+
+                                <TabsContent value="phone" className="mt-0">
+                                    <div className="flex flex-col gap-2">
+                                        <Label htmlFor="phone" className="text-ashoka-blue/70">Mobile Number</Label>
+                                        <div className="flex gap-2">
+                                            <Select value={countryCode} onValueChange={setCountryCode}>
+                                                <SelectTrigger className="w-[110px] bg-white border-ashoka-blue/10 text-ashoka-blue h-12 rounded-xl">
+                                                    <SelectValue placeholder="Code" />
+                                                </SelectTrigger>
+                                                <SelectContent className="bg-white border-ashoka-blue/10 text-ashoka-blue rounded-xl">
+                                                    {countryCodes.map((c) => (
+                                                        <SelectItem key={c.code} value={c.code}>
+                                                            <span className="flex items-center gap-2">
+                                                                <span>{c.flag}</span>
+                                                                <span>{c.code}</span>
+                                                            </span>
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                            <Input
+                                                id="phone"
+                                                type="tel"
+                                                placeholder="10-digit number"
+                                                value={phone}
+                                                onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
+                                                required={loginMethod === "phone"}
+                                                className="flex-1 bg-white border-ashoka-blue/10 text-ashoka-blue placeholder:text-ashoka-blue/30 focus-visible:ring-ashoka-blue h-12 rounded-xl"
+                                            />
+                                        </div>
+                                    </div>
+                                </TabsContent>
+                            </Tabs>
+                        )}
+
+                        {isResetMode && (
+                            <div className="flex flex-col gap-2">
+                                <Label htmlFor="email" className="text-ashoka-blue/70">Email Address</Label>
+                                <Input
+                                    id="email"
+                                    type="email"
+                                    placeholder="you@example.com"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                    className="bg-white border-ashoka-blue/10 text-ashoka-blue placeholder:text-ashoka-blue/30 focus-visible:ring-ashoka-blue h-12 rounded-xl"
+                                />
+                            </div>
+                        )}
+
+                        {!isResetMode && (
+                            <div className="flex flex-col gap-2">
+                                <div className="flex items-center justify-between">
+                                    <Label htmlFor="password" className="text-ashoka-blue/70">Password</Label>
+                                    {mode === "login" && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setIsResetMode(true)}
+                                            className="text-xs text-black hover:underline font-bold"
+                                        >
+                                            Forgot password?
+                                        </button>
+                                    )}
+                                </div>
+                                <div className="relative">
+                                    <Input
+                                        id="password"
+                                        type={showPassword ? "text" : "password"}
+                                        placeholder={mode === "register" ? "Min 8 characters" : "Enter password"}
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        required
+                                        className="bg-white border-ashoka-blue/10 text-ashoka-blue placeholder:text-ashoka-blue/30 focus-visible:ring-ashoka-blue h-12 rounded-xl pr-10"
+                                    />
                                     <button
                                         type="button"
-                                        onClick={() => setIsResetMode(true)}
-                                        className="text-[11px] font-semibold text-[#d95325] hover:text-[#bc3f18]"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                                        aria-label={showPassword ? "Hide password" : "Show password"}
                                     >
-                                        Forgot Password?
+                                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                                     </button>
-                                )}
+                                </div>
                             </div>
-                            <div className="relative">
+                        )}
+
+                        {mode === "register" && !isResetMode && (
+                            <div className="flex flex-col gap-2">
+                                <Label htmlFor="confirmPassword" className="text-ashoka-blue/70">Confirm Password</Label>
                                 <Input
-                                    id="password"
-                                    type={showPassword ? "text" : "password"}
-                                    placeholder="••••••••"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    id="confirmPassword"
+                                    type="password"
+                                    placeholder="Re-enter password"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
                                     required
-                                    className="bg-white border-[#e5e3db] text-[#171b22] placeholder:text-[#737a83]/50 focus-visible:ring-[#d95325] h-11 pr-10 rounded-none text-xs"
+                                    className="bg-white border-ashoka-blue/10 text-ashoka-blue placeholder:text-ashoka-blue/30 focus-visible:ring-ashoka-blue h-12 rounded-xl"
                                 />
-                                <button
-                                    type="button"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#737a83] hover:text-[#171b22]"
-                                >
-                                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                                </button>
                             </div>
-                        </div>
-                    )}
+                        )}
 
-                    {mode === "register" && !isResetMode && (
-                        <div className="flex flex-col gap-1.5">
-                            <Label htmlFor="confirmPassword" className="text-xs font-semibold text-[#171b22]">Confirm Password</Label>
-                            <Input
-                                id="confirmPassword"
-                                type={showPassword ? "text" : "password"}
-                                placeholder="••••••••"
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                required
-                                className="bg-white border-[#e5e3db] text-[#171b22] placeholder:text-[#737a83]/50 focus-visible:ring-[#d95325] h-11 rounded-none text-xs"
-                            />
-                        </div>
-                    )}
+                        <Button type="submit" className="mt-4 h-12 w-full bg-ashoka-blue hover:bg-ashoka-blue/90 text-white font-black rounded-xl shadow-lg shadow-ashoka-blue/20 transition-all border-none tracking-widest" disabled={loading}>
+                            {loading
+                                ? (isResetMode ? "Processing..." : (mode === "login" ? "Verifying..." : "Registering..."))
+                                : (isResetMode ? "Send reset link" : (mode === "login" ? "Sign in" : "Create account"))}
+                        </Button>
+                    </form>
 
-                    <Button
-                        type="submit"
-                        disabled={loading}
-                        className="w-full h-11 bg-[#d95325] hover:bg-[#bc3f18] text-white text-xs font-semibold tracking-wider uppercase rounded-none mt-2 shadow-sm transition-all"
-                    >
-                        {loading
-                            ? "Processing..."
-                            : (isResetMode
-                                ? "Send Reset Link"
-                                : (mode === "login" ? "Sign In to Platform" : "Create Verified Account"))}
-                    </Button>
-                </form>
-
-                {/* Footer Switch */}
-                <div className="mt-6 pt-4 border-t border-[#e5e3db] text-center text-xs text-[#737a83] font-sans">
                     {isResetMode ? (
-                        <button
-                            type="button"
-                            onClick={() => setIsResetMode(false)}
-                            className="font-semibold text-[#d95325] hover:text-[#bc3f18]"
-                        >
-                            Back to Sign In
-                        </button>
-                    ) : mode === "login" ? (
-                        <p>
-                            Don't have an institutional profile?{" "}
-                            <Link href="/register" className="font-semibold text-[#d95325] hover:text-[#bc3f18]">
-                                Register here
-                            </Link>
-                        </p>
+                        <div className="mt-6 text-center text-sm">
+                            <button
+                                onClick={() => setIsResetMode(false)}
+                                className="text-ashoka-blue/40 hover:text-ashoka-blue transition-colors font-bold uppercase tracking-widest text-[10px]"
+                            >
+                                ← Back to Login
+                            </button>
+                        </div>
                     ) : (
-                        <p>
-                            Already registered?{" "}
-                            <Link href="/login" className="font-semibold text-[#d95325] hover:text-[#bc3f18]">
-                                Sign In
-                            </Link>
-                        </p>
+                        <>
+                            <p className="mt-6 text-center text-sm text-ashoka-blue/60 font-medium">
+                                {mode === "login" ? "Don't have an account? " : "Already have an account? "}
+                                <Link
+                                    href={mode === "login" ? "/register" : "/login"}
+                                    className="font-black text-black hover:underline decoration-black/30 underline-offset-4"
+                                >
+                                    {mode === "login" ? "Register here" : "Sign in"}
+                                </Link>
+                            </p>
+                        </>
                     )}
-                </div>
-            </div>
+                </CardContent>
+            </Card>
         </main>
     );
 }

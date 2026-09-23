@@ -10,35 +10,20 @@ import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { Loader2 } from "lucide-react";
 
-const PUBLIC_LEARN_ROUTES = [
-  "/learn",
-  "/learn/explore",
-];
-
 export function RouteGuard({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
-  // Check if current route is public
-  const isPublicRoute = 
-    PUBLIC_LEARN_ROUTES.includes(pathname) ||
-    (pathname.startsWith("/learn/courses/") && !pathname.endsWith("/learn")) ||
-    (pathname.startsWith("/learn/") && !pathname.includes("/admin") && !pathname.includes("/my-courses") && !pathname.includes("/bookmarks") && !pathname.includes("/certificates") && !pathname.includes("/analytics") && !pathname.includes("/settings") && !pathname.endsWith("/learn"));
-
   useEffect(() => {
-    if (loading || isPublicRoute) return;
+    if (loading) return;
     if (!user) {
-      // Private route and not authenticated — redirect to unified sign-in
-      router.replace(`/sign-in?redirect=${pathname}`);
+      // Not authenticated — redirect to main login with redirect param
+      router.replace(`/login?redirect=${pathname}`);
     }
-  }, [user, loading, router, pathname, isPublicRoute]);
+  }, [user, loading, router, pathname]);
 
-  if (isPublicRoute) {
-    return <>{children}</>;
-  }
-
-  // Show loading while checking auth for private routes
+  // Show loading while checking auth
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-[var(--bg)]">
@@ -47,11 +32,11 @@ export function RouteGuard({ children }: { children: React.ReactNode }) {
     );
   }
 
-  // Not authenticated on protected route — don't render anything
+  // Not authenticated — don't render anything (redirect in effect)
   if (!user) {
     return null;
   }
 
   // Authenticated — render the route
-  return <>{children}</>;
+  return children;
 }

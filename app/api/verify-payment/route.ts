@@ -1,8 +1,6 @@
 import { NextResponse } from "next/server";
 import { dbAdmin } from "@/lib/firebase-admin";
 
-export const dynamic = "force-dynamic";
-
 async function generateAccessToken() {
     const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
     const clientSecret = process.env.PAYPAL_SECRET;

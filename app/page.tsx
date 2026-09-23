@@ -1,782 +1,481 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"
 import Link from "next/link";
 import {
-  ShieldCheck,
-  BookOpen,
-  Compass,
-  ArrowUpRight,
+  Shield,
+  UserCheck,
+  ClipboardCheck,
+  Lock,
   ArrowRight,
-  Users,
-  Building2,
+  CheckCircle,
+  Cpu,
+  Radio,
+  Target,
+  Briefcase,
+  MessageSquare,
+  ShieldCheck,
   FileText,
-  GraduationCap,
-  Sparkles,
-  Layers,
-  ChevronRight,
-  UserCheck
+  Search,
+  ChevronDown,
+  User,
+  Settings
 } from "lucide-react";
-import { Navbar } from "@/components/nst/navbar";
-import { Footer } from "@/components/nst/footer";
-import { CapabilityGraph } from "@/components/nst/capability-graph";
-import { COURSES, ARTICLES, NETWORK_PEOPLE, OPPORTUNITIES } from "@/lib/nst-data";
-import { useAuth } from "@/lib/auth-context";
+import { Button } from "@/components/ui/button";
+import { AuthRedirect } from "@/components/auth-redirect";
+import { TacticalCanvas } from "@/components/3d/floating-shield";
+import { CyberHUD } from "@/components/ui/cyber-hud";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { motion } from "framer-motion";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+function FeatureCard({
+  icon: Icon,
+  title,
+  description,
+}: {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.4 }}
+      className="group relative flex flex-col items-start gap-4 rounded-xl border border-ashoka-blue/10 bg-slate-50 p-8 transition-all duration-500 hover:border-saffron/40 hover:bg-saffron/5"
+    >
+      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-saffron/10 text-saffron group-hover:text-saffron/80 transition-colors">
+        <Icon className="h-6 w-6" />
+      </div>
+      <h3 className="text-lg font-bold text-ashoka-blue tracking-widest uppercase">{title}</h3>
+      <p className="text-sm leading-relaxed text-ashoka-blue/70 font-medium">{description}</p>
+
+      {/* Tactical HUD Corner */}
+      <div className="absolute top-0 right-0 w-8 h-8 border-r-2 border-t-2 border-saffron/0 group-hover:border-saffron/40 transition-all duration-500" />
+      <div className="absolute bottom-0 left-0 w-8 h-8 border-l-2 border-b-2 border-saffron/0 group-hover:border-saffron/40 transition-all duration-500" />
+    </motion.div>
+  );
+}
+
+function ProcessStep({
+  number,
+  icon: Icon,
+  title,
+  description,
+  isLast = false
+}: {
+  number: string;
+  icon: React.ElementType;
+  title: string;
+  description: string;
+  isLast?: boolean;
+}) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="relative flex flex-col items-center text-center group"
+    >
+      <div className="relative mb-6">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-india-green/30 bg-india-green/5 text-india-green shadow-[0_0_15px_rgba(19,136,8,0.1)] group-hover:border-india-green group-hover:text-india-green/80 transition-all duration-500">
+          <Icon className="h-7 w-7" />
+        </div>
+        <div className="absolute -top-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-ashoka-blue text-[10px] font-bold text-white shadow-lg">
+          {number}
+        </div>
+      </div>
+      <h3 className="mb-3 text-base font-black tracking-widest text-ashoka-blue uppercase">{title}</h3>
+      <p className="text-xs text-ashoka-blue/60 font-medium leading-relaxed max-w-[200px]">{description}</p>
+
+      {!isLast && (
+        <div className="hidden lg:block absolute top-8 left-[calc(50%+40px)] w-[calc(100%-80px)] h-[1px] bg-gradient-to-r from-india-green/50 to-transparent" />
+      )}
+    </motion.div>
+  );
+}
+
+const galleryImages = [
+  "/gallery/conclave.png",
+  "/gallery/defense.png",
+  "/gallery/force-alpha.png",
+  "/gallery/forces.png",
+  "/gallery/tactical-gear.jpg",
+  "/gallery/training2.png",
+];
+
+// Double images for seamless loop
+const scrollImages = [...galleryImages, ...galleryImages];
+
+function EliteGallery() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    if (isHovered) return;
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % galleryImages.length);
+    }, 1800);
+    return () => clearInterval(interval);
+  }, [isHovered]);
+
+  return (
+    <section className="relative py-24 overflow-hidden bg-slate-50 border-y border-ashoka-blue/5 z-10">
+      <div className="container mx-auto px-6 max-w-7xl mb-12">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center"
+        >
+          <h2 className="text-2xl font-black text-ashoka-blue tracking-[0.3em] uppercase">Elite Personnel Showcase</h2>
+          <p className="mt-2 text-[10px] font-bold text-india-green/60 uppercase tracking-widest">Global Field Operations Portfolio</p>
+        </motion.div>
+      </div>
+
+      <div
+        className="relative max-w-4xl mx-auto px-6"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div className="overflow-hidden rounded-2xl border border-blue-500/20 shadow-[0_0_30px_rgba(37,99,235,0.08)] bg-black aspect-[16/10] relative group">
+          <motion.div
+            key={currentIndex}
+            initial={{ opacity: 0.3, scale: 1.01 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+            className="w-full h-full relative"
+          >
+            <img
+              src={galleryImages[currentIndex]}
+              alt={`Elite Personnel ${currentIndex + 1}`}
+              className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 transition-all duration-700"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-ashoka-blue/90 via-transparent to-transparent opacity-75 group-hover:opacity-50 transition-opacity duration-500" />
+
+            <div className="absolute bottom-6 left-6 font-bold text-[10px] text-white tracking-widest uppercase bg-ashoka-blue/50 backdrop-blur-md px-4 py-2 rounded-xl border border-white/10 shadow-lg">
+              OP_REF: {currentIndex % 2 === 0 ? "B-TAC" : "K-RECON"}-{currentIndex + 1042} // VERIFIED PERSONNEL
+            </div>
+
+            <div className="absolute top-4 left-4 w-6 h-6 border-l border-t border-saffron/60 animate-pulse" />
+            <div className="absolute bottom-4 right-4 w-6 h-6 border-r border-b border-india-green/60 animate-pulse" />
+          </motion.div>
+        </div>
+
+        <div className="flex justify-center gap-3 mt-8">
+          {galleryImages.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={`w-3.5 h-3.5 rounded-full transition-all duration-300 ${currentIndex === index
+                  ? "bg-ashoka-blue scale-125 ring-2 ring-saffron/40"
+                  : "bg-ashoka-blue/30 hover:bg-ashoka-blue/50"
+                }`}
+              title={`Go to slide ${index + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+const franchiseePartners = [
+  { name: "G4S Secure Solutions", domain: "g4s.com" },
+  { name: "SIS India Ltd.", domain: "sisindia.com" },
+  { name: "Peregrine Guarding", domain: "peregrine-security.com", logoUrl: "https://www.peregrine-security.com/wp-content/uploads/2025/12/mob-logo.svg" },
+  { name: "Securitas India", domain: "securitas.in" },
+  { name: "Checkmate Services", domain: "checkmateservices.com" },
+  { name: "M/S Raj Security", domain: "rajsecurityservices.com" },
+  { name: "BVG India Ltd.", domain: "bvgindia.com" },
+  { name: "Quess Security", domain: "quesscorp.com" },
+  { name: "Premier Shield", domain: "premiershield.com" },
+];
+
+function FranchiseeMarquee() {
+  return (
+    <section className="relative py-24 bg-white border-t border-ashoka-blue/5 overflow-hidden z-10">
+      <div className="container mx-auto px-6 max-w-7xl mb-12">
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="text-center"
+        >
+          <h2 className="text-3xl font-black text-ashoka-blue tracking-[0.3em] uppercase italic">Partnerships in Growth</h2>
+          <div className="h-1 w-24 bg-gradient-to-r from-saffron via-ashoka-blue to-india-green mx-auto mt-6" />
+        </motion.div>
+      </div>
+
+      <div className="relative flex overflow-hidden group">
+        <div className="absolute top-0 left-0 w-16 md:w-32 h-full bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
+        <div className="absolute top-0 right-0 w-16 md:w-32 h-full bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+        
+        <motion.div
+          className="flex whitespace-nowrap gap-8 md:gap-16 py-4 items-center pl-8 md:pl-16"
+          animate={{ x: ["0%", "-50%"] }}
+          transition={{
+            repeat: Infinity,
+            ease: "linear",
+            duration: 40,
+          }}
+        >
+          {[...franchiseePartners, ...franchiseePartners].map((partner, index) => (
+            <div key={index} className="flex items-center justify-center gap-4 min-w-[200px] md:min-w-[320px] h-24 px-8 transition-all duration-500 cursor-default border border-ashoka-blue/10 rounded-2xl bg-slate-50 hover:border-india-green/30 hover:bg-india-green/5 hover:shadow-lg hover:-translate-y-1">
+              <img 
+                src={(partner as any).logoUrl || `https://s2.googleusercontent.com/s2/favicons?domain=${partner.domain}&sz=128`} 
+                alt={`${partner.name} Logo`}
+                className="w-10 h-10 object-contain rounded-md"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  if (!target.src.includes('ui-avatars')) {
+                    target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(partner.name)}&background=0F172A&color=fff&bold=true&rounded=true`;
+                  } else {
+                    target.style.display = 'none';
+                  }
+                }}
+              />
+              <span className="text-sm md:text-base font-black text-ashoka-blue tracking-widest uppercase whitespace-normal leading-tight text-center max-w-[200px]">
+                {partner.name}
+              </span>
+            </div>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
 
 export default function HomePage() {
-  const { user, profile, loading } = useAuth();
-  const [activePillar, setActivePillar] = useState<"People" | "Knowledge" | "Organisations" | "Opportunities">("People");
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+      },
+    },
+  };
 
-  const pillarDetails = {
-    People: {
-      headline: "Discover security professionals, drone pilots, and certified instructors.",
-      description: "Connect with verified security guards, drone operators, researchers, and teachers ready to work and collaborate.",
-      actionText: "Browse Professionals",
-      href: "/network"
-    },
-    Knowledge: {
-      headline: "Take practical online courses and read expert security reports.",
-      description: "Access step-by-step video lessons, verified certificates, drone training, and plain-language security guides.",
-      actionText: "Explore Courses & Research",
-      href: "/learn"
-    },
-    Organisations: {
-      headline: "Connect companies, security agencies, and training partners.",
-      description: "Help employers, security firms, tech builders, and schools find pre-screened talent and train their teams.",
-      actionText: "Explore Organisations",
-      href: "/about"
-    },
-    Opportunities: {
-      headline: "Find jobs, flight missions, research projects, and training programs.",
-      description: "Browse verified job postings, field drone missions, paid research grants, and accredited internships.",
-      actionText: "Browse Opportunities",
-      href: "/opportunities"
-    }
+  const itemVariants = {
+    hidden: { opacity: 0, x: -30 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.8, ease: "easeOut" } },
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#f7f6f2] text-[#171b22] selection:bg-[#d95325]/20 selection:text-[#d95325]">
-      {/* Top Navigation */}
-      <Navbar />
+    <main className="min-h-screen flex flex-col bg-white relative font-sans selection:bg-saffron/30">
+      <AuthRedirect />
 
-      <main className="flex-1">
-        {/* ========================================================
-            1. HERO SECTION (DARK CHARCOAL #171b22)
-        ======================================================== */}
-        <section className="bg-[#171b22] text-white pt-20 pb-24 border-b border-[#3b414a] relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#d95325]/5 rounded-full blur-[140px] pointer-events-none" />
+      {/* Tactical Blueprint Layer */}
+      <CyberHUD />
 
-          <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-12 lg:gap-16 items-center">
-              {/* Left Column: Hero Text */}
-              <div className="flex flex-col items-start">
-                <span className="text-[11px] font-mono uppercase tracking-[2.5px] text-[#d95325] font-bold mb-4">
-                  THE NATIONAL SECURITY THINK TANK
-                </span>
+      {/* Corporate Atmosphere Orbs - Subtle Tricolour */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <div className="absolute top-[-10%] right-[-5%] w-[60vw] h-[60vw] rounded-full bg-saffron/5 blur-[120px]" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-india-green/5 blur-[100px]" />
+      </div>
 
-                <h1 className="text-4xl sm:text-6xl lg:text-[74px] font-medium leading-[0.95] tracking-[-2.5px] mb-6 text-white">
-                  Security is a <em className="font-serif italic font-normal text-[#e5e3db]">team</em> effort.
-                </h1>
-
-                <p className="text-base sm:text-lg text-[#c5c9ce] leading-relaxed max-w-[540px] mb-9 font-normal">
-                  The National Security Think Tank brings together security guards, drone pilots, researchers, educators, and companies to build real skills, share knowledge, and find careers.
-                </p>
-
-                {/* Hero Action Buttons */}
-                <div className="flex flex-wrap items-center gap-4">
-                  <Link
-                    href="/ecosystem"
-                    className="inline-flex items-center justify-center min-h-[46px] px-6 text-xs font-semibold tracking-wider text-white bg-[#d95325] hover:bg-[#bc3f18] transition-all duration-200 uppercase shadow-md"
-                  >
-                    Explore TheNST
-                  </Link>
-                  <a
-                    href="#where-do-you-fit"
-                    className="inline-flex items-center justify-center min-h-[46px] px-6 text-xs font-semibold tracking-wider text-white border border-[#525965] hover:bg-white hover:text-[#171b22] transition-all duration-200 uppercase"
-                  >
-                    Find Your Role
-                  </a>
-                </div>
-              </div>
-
-              {/* Right Column: Interactive 2D/3D Capability Graph */}
-              <div className="w-full flex justify-center lg:justify-end">
-                <CapabilityGraph />
-              </div>
-            </div>
+      {/* Navbar - Fixed for better static feel */}
+      <header className="fixed top-0 left-0 w-full z-50 border-b border-saffron/10 bg-white/90 backdrop-blur-xl">
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="flex items-center gap-2.5"
+          >
+            <Radio className="h-5 w-5 text-saffron animate-pulse" />
+            <span className="text-xl font-black tracking-[0.2em] text-ashoka-blue uppercase italic">TheNST</span>
+          </motion.div>
+          <div className="flex items-center gap-3">
+            <Link href="/login">
+              <Button variant="ghost" className="text-xs font-bold text-ashoka-blue hover:bg-ashoka-blue/5 rounded-none px-6 uppercase tracking-widest leading-none">
+                Login
+              </Button>
+            </Link>
+            <Link href="/register">
+              <Button className="text-xs font-black bg-saffron hover:bg-saffron/90 text-white rounded-none px-6 uppercase tracking-widest shadow-xl leading-none">
+                Sign Up
+              </Button>
+            </Link>
           </div>
-        </section>
+        </div>
+      </header>
 
-        {/* ========================================================
-            2. WHAT IS THE NST? (WARM WHITE / PAPER STATEMENT)
-        ======================================================== */}
-        <section className="bg-white py-24 sm:py-28 border-b border-[#e5e3db]">
-          <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-12 lg:gap-20 items-start">
-              <div>
-                <span className="text-[11px] font-mono uppercase tracking-[2px] text-[#737a83] font-semibold">
-                  WHAT IS THE NST
-                </span>
-              </div>
+      {/* Hero Section - Added pt-20 to account for fixed header */}
+      <section className="relative min-h-screen flex flex-col justify-center pt-20 py-20 lg:py-0">
+        <div className="container relative z-20 mx-auto px-6 max-w-7xl">
+          <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-8 items-center overflow-visible">
+            {/* Tactical Content */}
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="text-center lg:text-left order-2 lg:order-1 relative z-50 pr-0 lg:pr-12 overflow-visible"
+            >
+              <div className="max-w-2xl mx-auto lg:mx-0">
+                <motion.div variants={itemVariants} className="inline-flex items-center gap-2 border border-saffron/20 bg-saffron/5 px-4 py-1 text-[10px] font-bold text-saffron mb-8 tracking-[0.3em] uppercase">
+                  <Target className="h-3 w-3" />
+                  <span>Enterprise-Grade Security Staffing</span>
+                </motion.div>
 
-              <div className="flex flex-col items-start">
-                <h2 className="text-3xl sm:text-5xl font-medium leading-[1.06] tracking-[-2px] text-[#171b22] mb-6 max-w-[760px]">
-                  A complete platform for skills, training, research, and hiring.
-                </h2>
-
-                <p className="text-base sm:text-lg text-[#616872] leading-relaxed max-w-[650px] mb-8 font-sans">
-                  TheNST is an easy place to learn new skills, get your background verified, connect with employers, and discover career opportunities in security and defense.
-                </p>
-
-                <Link
-                  href="/ecosystem"
-                  className="inline-flex items-center gap-2 text-sm font-semibold text-[#d95325] hover:text-[#bc3f18] transition-colors border-b border-transparent hover:border-[#d95325] pb-0.5"
+                <motion.h1
+                  variants={itemVariants}
+                  className="text-4xl font-black tracking-widest text-ashoka-blue md:text-6xl lg:text-7xl leading-[1.1] mb-8 uppercase"
                 >
-                  Explore the platform
-                  <ArrowUpRight className="w-4 h-4" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ========================================================
-            3. ECOSYSTEM PILLARS (DARK BAND #171b22)
-        ======================================================== */}
-        <section className="bg-[#171b22] text-white py-24 sm:py-28 border-b border-[#3b414a]">
-          <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto">
-            {/* Section Header */}
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.25fr] gap-8 mb-14">
-              <div>
-                <span className="text-[11px] font-mono uppercase tracking-[2px] text-[#a7adb5] font-semibold">
-                  TheNST / Ecosystem
-                </span>
-                <h2 className="text-3xl sm:text-5xl font-medium leading-[1.05] tracking-[-2px] text-white mt-3">
-                  One institution. Many ways in.
-                </h2>
-              </div>
-              <p className="text-base text-[#a7adb5] leading-relaxed self-end font-sans">
-                Choose the part of TheNST that is most useful to you now. Your path can change as your work does.
-              </p>
-            </div>
-
-            {/* Interactive Pillar Tabs */}
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.45fr] border-t border-[#3d434c]">
-              {/* Left Pillar Selector */}
-              <div className="border-b lg:border-b-0 lg:border-r border-[#3d434c]">
-                {(["People", "Knowledge", "Organisations", "Opportunities"] as const).map((item) => (
-                  <button
-                    key={item}
-                    type="button"
-                    onClick={() => setActivePillar(item)}
-                    className={`w-full flex justify-between items-center text-left py-6 px-4 sm:px-0 sm:pr-8 text-xl font-medium border-b border-[#3d434c] transition-all duration-200 ${
-                      activePillar === item
-                        ? "text-white sm:pl-4 bg-white/5 sm:bg-transparent font-semibold"
-                        : "text-[#8d949e] hover:text-white"
-                    }`}
-                  >
-                    <span>{item}</span>
-                    <ArrowRight
-                      className={`w-4 h-4 transition-transform ${
-                        activePillar === item ? "text-[#d95325] translate-x-1" : "text-[#5b626d]"
-                      }`}
-                    />
-                  </button>
-                ))}
-              </div>
-
-              {/* Right Pillar Detail */}
-              <div className="py-10 lg:py-16 lg:pl-16 flex flex-col justify-center items-start">
-                <span className="text-[11px] font-mono uppercase tracking-[2px] text-[#d95325] font-semibold mb-3">
-                  {activePillar} Pillar
-                </span>
-
-                <h3 className="text-2xl sm:text-4xl font-medium leading-tight tracking-[-1.2px] text-white max-w-[560px] mb-4">
-                  {pillarDetails[activePillar].headline}
-                </h3>
-
-                <p className="text-sm sm:text-base text-[#a2a8b2] leading-relaxed max-w-[520px] mb-8 font-sans">
-                  {pillarDetails[activePillar].description}
-                </p>
-
-                <Link
-                  href={pillarDetails[activePillar].href}
-                  className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-white hover:text-[#d95325] transition-colors border-b border-white hover:border-[#d95325] pb-1"
-                >
-                  {pillarDetails[activePillar].actionText}
-                  <ArrowUpRight className="w-4 h-4 text-[#d95325]" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ========================================================
-            4. WHERE DO YOU FIT? (WHITE / PAPER TILES)
-        ======================================================== */}
-        <section id="where-do-you-fit" className="bg-white py-24 sm:py-28 border-b border-[#e5e3db]">
-          <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.25fr] gap-8 mb-14">
-              <div>
-                <span className="text-[11px] font-mono uppercase tracking-[2px] text-[#737a83] font-semibold">
-                  Choose your path
-                </span>
-                <h2 className="text-3xl sm:text-5xl font-medium leading-[1.05] tracking-[-2px] text-[#171b22] mt-3">
-                  Where do you fit?
-                </h2>
-              </div>
-              <p className="text-base text-[#616872] leading-relaxed self-end font-sans">
-                Start with the role or question that brings you here. TheNST is designed to meet you there.
-              </p>
-            </div>
-
-            {/* Path Grid: 3 Major Visual Journeys */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-[#e5e3db] border border-[#e5e3db] mb-8">
-              {/* Path 1: Security Professional */}
-              <div className="bg-white p-8 sm:p-10 flex flex-col justify-between min-h-[320px] hover:bg-[#faf9f5] transition-all duration-200 group">
-                <div>
-                  <div className="text-[#d95325] mb-8">
-                    <ShieldCheck className="w-8 h-8" />
-                  </div>
-                  <h3 className="text-2xl font-medium tracking-[-0.7px] text-[#171b22] mb-3 group-hover:text-[#d95325] transition-colors">
-                    Become a Security Professional
-                  </h3>
-                  <p className="text-sm text-[#616872] leading-relaxed mb-6 font-sans">
-                    Build your professional identity, discover opportunities and connect with the security community.
-                  </p>
-                </div>
-                <Link
-                  href="/security-professional"
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#d95325] uppercase tracking-wider group-hover:translate-x-1 transition-transform"
-                >
-                  Explore the Professional Path <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              </div>
-
-              {/* Path 2: Educator */}
-              <div className="bg-white p-8 sm:p-10 flex flex-col justify-between min-h-[320px] hover:bg-[#faf9f5] transition-all duration-200 group">
-                <div>
-                  <div className="text-[#d95325] mb-8">
-                    <BookOpen className="w-8 h-8" />
-                  </div>
-                  <h3 className="text-2xl font-medium tracking-[-0.7px] text-[#171b22] mb-3 group-hover:text-[#d95325] transition-colors">
-                    Become an Educator
-                  </h3>
-                  <p className="text-sm text-[#616872] leading-relaxed mb-6 font-sans">
-                    Share your expertise and create structured learning experiences for the next generation of security professionals.
-                  </p>
-                </div>
-                <Link
-                  href="/educator"
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#d95325] uppercase tracking-wider group-hover:translate-x-1 transition-transform"
-                >
-                  Become an Educator <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              </div>
-
-              {/* Path 3: Drone Pilot */}
-              <div className="bg-white p-8 sm:p-10 flex flex-col justify-between min-h-[320px] hover:bg-[#faf9f5] transition-all duration-200 group">
-                <div>
-                  <div className="text-[#d95325] mb-8">
-                    <Compass className="w-8 h-8" />
-                  </div>
-                  <h3 className="text-2xl font-medium tracking-[-0.7px] text-[#171b22] mb-3 group-hover:text-[#d95325] transition-colors">
-                    Become a Drone Pilot
-                  </h3>
-                  <p className="text-sm text-[#616872] leading-relaxed mb-6 font-sans">
-                    Bring operational drone capability, field experience and emerging technology into the wider security ecosystem.
-                  </p>
-                </div>
-                <Link
-                  href="/drone-pilot"
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#d95325] uppercase tracking-wider group-hover:translate-x-1 transition-transform"
-                >
-                  Explore Drone Pilot Path <ArrowRight className="w-3.5 h-3.5" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ========================================================
-            5. LARGE EDITORIAL CTA BANNER 1: BECOME AN EDUCATOR
-        ======================================================== */}
-        <section className="bg-[#eceae3] border-b border-[#e5e3db] py-10 sm:py-14">
-          <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto bg-white border border-[#e5e3db] shadow-sm overflow-hidden">
-            <div className="grid grid-cols-1 md:grid-cols-2 items-stretch min-h-[340px] lg:min-h-[380px]">
-              {/* Photography side - full height, zero gaps */}
-              <div className="relative w-full min-h-[260px] md:min-h-full overflow-hidden bg-[#171b22]">
-                <img
-                  src="/images/educator-classroom.jpg"
-                  alt="Institutional briefing and educator lecture"
-                  className="absolute inset-0 w-full h-full object-cover object-[center_35%] grayscale-[5%] contrast-[1.05]"
-                />
-                <div className="absolute inset-0 bg-[#171b22]/10" />
-              </div>
-
-              {/* Editorial Content side */}
-              <div className="p-8 sm:p-12 lg:p-14 flex flex-col justify-center items-start bg-white">
-                <span className="text-[11px] font-mono uppercase tracking-[2px] text-[#737a83] font-semibold mb-3">
-                  CONTRIBUTE KNOWLEDGE
-                </span>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-medium leading-[1.05] tracking-[-1.8px] text-[#171b22] mb-4">
-                  Become an Educator
-                </h2>
-                <p className="text-base text-[#616872] leading-relaxed max-w-[480px] mb-8 font-sans">
-                  Turn your expertise into structured learning and contribute knowledge to the next generation of security professionals.
-                </p>
-                <Link
-                  href="/educator"
-                  className="inline-flex items-center justify-center min-h-[44px] px-6 text-xs font-semibold tracking-wider text-white bg-[#d95325] hover:bg-[#bc3f18] transition-all uppercase shadow-sm"
-                >
-                  Become an Educator →
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ========================================================
-            6. THE NST LEARN (LIGHT SECTION)
-        ======================================================== */}
-        <section className="bg-[#f7f6f2] py-24 sm:py-28 border-b border-[#e5e3db]">
-          <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.25fr] gap-8 mb-14">
-              <div>
-                <span className="text-[11px] font-mono uppercase tracking-[2px] text-[#737a83] font-semibold">
-                  TheNST Learn
-                </span>
-                <h2 className="text-3xl sm:text-5xl font-medium leading-[1.05] tracking-[-2px] text-[#171b22] mt-3">
-                  Structured learning for the security profession.
-                </h2>
-              </div>
-              <p className="text-base text-[#616872] leading-relaxed self-end font-sans">
-                Curated courses across national security, cyber operations, defence systems, AI and strategic affairs.
-              </p>
-            </div>
-
-            {/* Featured Course + Category Rows */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 border-t border-[#e5e3db] pt-10">
-              {/* Left Featured Course */}
-              <div className="flex flex-col justify-between bg-white border border-[#e5e3db] p-8 sm:p-10 shadow-sm">
-                <div>
-                  <span className="text-[10px] font-mono uppercase tracking-widest text-[#d95325] font-semibold mb-3 block">
-                    Featured Course / Foundational
+                  ELITE SECURITY <br />
+                  <span className="inline-block text-ashoka-blue whitespace-nowrap overflow-visible">
+                    PROFESSIONALS
                   </span>
-                  <h3 className="text-2xl sm:text-3xl font-medium tracking-[-1px] text-[#171b22] mb-4">
-                    {COURSES[0].title}
-                  </h3>
-                  <p className="text-sm text-[#616872] leading-relaxed mb-6 font-sans">
-                    {COURSES[0].description}
-                  </p>
+                </motion.h1>
 
-                  <div className="flex flex-wrap items-center gap-6 text-xs font-mono text-[#737a83] mb-8 pb-6 border-b border-[#e5e3db]">
-                    <span>Duration: {COURSES[0].duration}</span>
-                    <span>Level: {COURSES[0].level}</span>
-                    <span>Desk: {COURSES[0].instructor}</span>
-                  </div>
-                </div>
+                <motion.p variants={itemVariants} className="max-w-lg text-lg md:text-xl text-ashoka-blue/60 mb-10 leading-relaxed font-bold mx-auto lg:mx-0 text-sm tracking-tight text-balance">
+                  Connecting certified, background-checked security personnel with top-tier organizations.
+                  Disciplined hiring, rigorous vetting, and instant deployment.
+                </motion.p>
 
-                <Link
-                  href={`/learn/${COURSES[0].id}`}
-                  className="inline-flex items-center justify-between w-full text-xs font-semibold text-[#d95325] uppercase tracking-wider hover:text-[#bc3f18]"
-                >
-                  <span>View Course Details & Syllabus</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
-
-              {/* Right Course Index Rows */}
-              <div className="flex flex-col justify-between">
-                <div className="flex flex-col divide-y divide-[#e5e3db] border-t border-b border-[#e5e3db]">
-                  {COURSES.slice(1, 5).map((c) => (
-                    <Link
-                      key={c.id}
-                      href={`/learn/${c.id}`}
-                      className="grid grid-cols-[1fr_auto] sm:grid-cols-[1.1fr_2fr_auto] gap-4 items-center py-4.5 group hover:pl-2 transition-all duration-200"
-                    >
-                      <span className="text-[10px] font-mono uppercase tracking-wider text-[#737a83]">
-                        {c.category}
-                      </span>
-                      <b className="text-sm sm:text-base font-medium text-[#171b22] group-hover:text-[#d95325] transition-colors">
-                        {c.title}
-                      </b>
-                      <span className="text-[11px] font-mono text-[#737a83] hidden sm:block">
-                        {c.duration}
-                      </span>
-                    </Link>
-                  ))}
-                </div>
-
-                <div className="mt-8">
-                  <Link
-                    href="/learn"
-                    className="inline-flex items-center gap-2 text-xs font-semibold text-[#d95325] uppercase tracking-wider hover:text-[#bc3f18]"
-                  >
-                    Explore all {COURSES.length} courses
-                    <ArrowUpRight className="w-4 h-4" />
+                <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                  <Link href="/solutions" className="w-full sm:w-auto">
+                    <Button size="lg" className="w-full sm:w-auto h-14 px-10 text-xs font-black rounded-none bg-ashoka-blue hover:bg-ashoka-blue/90 text-white shadow-xl transition-all duration-300 border-none uppercase tracking-[0.15em]">
+                      Discover Solutions
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
                   </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ========================================================
-            7. RESEARCH & INTELLIGENCE (DARK BAND #171b22)
-        ======================================================== */}
-        <section className="bg-[#171b22] text-white py-24 sm:py-28 border-b border-[#3b414a]">
-          <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.25fr] gap-8 mb-14">
-              <div>
-                <span className="text-[11px] font-mono uppercase tracking-[2px] text-[#a7adb5] font-semibold">
-                  Research & Intelligence
-                </span>
-                <h2 className="text-3xl sm:text-5xl font-medium leading-[1.05] tracking-[-2px] text-white mt-3">
-                  Independent analysis. Rigorous inquiry.
-                </h2>
-              </div>
-              <p className="text-base text-[#a7adb5] leading-relaxed self-end font-sans">
-                Intelligence monographs, doctrinal assessments and strategic research authored by defense analysts and sovereign researchers.
-              </p>
-            </div>
-
-            {/* Featured Monograph + Supporting Articles */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 bg-[#1b2028] border border-[#3b414a] p-8 sm:p-12 mb-10">
-              <div className="flex flex-col justify-center items-start">
-                <span className="text-[10px] font-mono uppercase tracking-widest text-[#d95325] font-semibold mb-3">
-                  Featured Intelligence Monograph
-                </span>
-                <h3 className="text-2xl sm:text-3xl font-medium leading-tight tracking-[-1px] text-white mb-4">
-                  {ARTICLES[0].title}
-                </h3>
-                <p className="text-sm text-[#b8bec5] leading-relaxed mb-6 font-sans">
-                  {ARTICLES[0].summary}
-                </p>
-                <div className="flex items-center gap-4 text-xs font-mono text-[#9299a2] mb-8">
-                  <span>{ARTICLES[0].date}</span>
-                  <span>•</span>
-                  <span>{ARTICLES[0].readTime}</span>
-                  <span>•</span>
-                  <span className="text-[#d95325]">{ARTICLES[0].category}</span>
-                </div>
-                <Link
-                  href={`/research/${ARTICLES[0].id}`}
-                  className="inline-flex items-center justify-center min-h-[42px] px-5 text-xs font-semibold tracking-wider text-white bg-[#d95325] hover:bg-[#bc3f18] uppercase transition-all"
-                >
-                  Read Monograph
-                </Link>
-              </div>
-
-              <div className="relative min-h-[260px] overflow-hidden border border-[#3b414a]">
-                <img
-                  src={ARTICLES[0].image}
-                  alt={ARTICLES[0].title}
-                  className="w-full h-full object-cover grayscale-[25%]"
-                />
-              </div>
-            </div>
-
-            {/* Supporting Articles Rows */}
-            <div className="divide-y divide-[#3b414a] border-t border-b border-[#3b414a]">
-              {ARTICLES.slice(1, 4).map((a) => (
-                <div
-                  key={a.id}
-                  className="flex flex-col sm:flex-row justify-between sm:items-center py-5 gap-4 group"
-                >
-                  <div>
-                    <div className="flex items-center gap-3 text-[10px] font-mono uppercase tracking-wider text-[#9299a2] mb-1.5">
-                      <span>{a.category}</span>
-                      <span>•</span>
-                      <span>{a.date}</span>
-                      <span>•</span>
-                      <span>{a.readTime}</span>
-                    </div>
-                    <Link
-                      href={`/research/${a.id}`}
-                      className="text-lg font-medium text-white group-hover:text-[#d95325] transition-colors"
-                    >
-                      {a.title}
-                    </Link>
-                  </div>
-                  <Link
-                    href={`/research/${a.id}`}
-                    className="inline-flex items-center gap-1 text-xs font-semibold text-[#9299a2] group-hover:text-[#d95325] whitespace-nowrap transition-colors uppercase tracking-wider self-start sm:self-auto"
-                  >
-                    <span>Read Brief</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  <Link href="/learn" className="w-full sm:w-auto">
+                    <Button size="lg" variant="outline" className="w-full sm:w-auto h-14 px-10 text-xs font-black rounded-none border-2 border-india-green text-india-green hover:bg-india-green hover:text-white shadow-lg transition-all duration-300 uppercase tracking-[0.15em]">
+                      NST Learn
+                      <Cpu className="ml-2 h-4 w-4" />
+                    </Button>
                   </Link>
-                </div>
-              ))}
-            </div>
+                </motion.div>
+              </div>
+            </motion.div>
 
-            <div className="mt-8">
-              <Link
-                href="/research"
-                className="inline-flex items-center gap-2 text-xs font-semibold text-[#d95325] uppercase tracking-wider hover:text-[#bc3f18]"
-              >
-                Explore Research Desk
-                <ArrowUpRight className="w-4 h-4" />
-              </Link>
-            </div>
+            {/* Drone Swarm / Cyber Canvas */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 2 }}
+              className="relative h-[400px] md:h-[600px] order-1 lg:order-2 flex items-center justify-center z-10"
+            >
+              <div className="absolute inset-0 bg-saffron/5 rounded-full blur-[120px] animate-pulse pointer-events-none" />
+              <div className="w-full h-full lg:translate-x-8">
+                <TacticalCanvas />
+              </div>
+            </motion.div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ========================================================
-            8. LARGE EDITORIAL CTA BANNER 2: BECOME A DRONE PILOT
-        ======================================================== */}
-        <section className="bg-[#eceae3] border-b border-[#e5e3db] py-10 sm:py-14">
-          <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto bg-white border border-[#e5e3db] shadow-sm overflow-hidden">
-            <div className="grid grid-cols-1 md:grid-cols-2 items-stretch min-h-[340px] lg:min-h-[380px]">
-              {/* Editorial Content side */}
-              <div className="p-8 sm:p-12 lg:p-14 flex flex-col justify-center items-start bg-white order-2 md:order-1">
-                <span className="text-[11px] font-mono uppercase tracking-[2px] text-[#737a83] font-semibold mb-3">
-                  OPERATIONAL EXCELLENCE
-                </span>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-medium leading-[1.05] tracking-[-1.8px] text-[#171b22] mb-4">
-                  For Drone Pilots &amp; UAV Operators
-                </h2>
-                <p className="text-base text-[#616872] leading-relaxed max-w-[480px] mb-8 font-sans">
-                  Access certified flight frameworks, live simulated scenarios, and verified operational briefs designed for modern defense and dual-use aerospace technologies.
-                </p>
-                <Link
-                  href="/drone-pilot"
-                  className="inline-flex items-center justify-center min-h-[44px] px-6 text-xs font-semibold tracking-wider text-white bg-[#d95325] hover:bg-[#bc3f18] transition-all uppercase shadow-sm"
-                >
-                  Explore the Drone Pilot Path →
-                </Link>
-              </div>
+      {/* Elite Personnel Gallery */}
+      <EliteGallery />
 
-              {/* Drone Photography side - full height, zero gaps */}
-              <div className="relative w-full min-h-[260px] md:min-h-full overflow-hidden bg-[#171b22] order-1 md:order-2">
-                <img
-                  src="/images/drone-operations.jpg"
-                  alt="UAV operational equipment, frames and telemetry setup"
-                  className="absolute inset-0 w-full h-full object-cover object-center grayscale-[5%] contrast-[1.05]"
-                />
-                <div className="absolute inset-0 bg-[#171b22]/10" />
-              </div>
-            </div>
+      {/* Hiring Process Section */}
+      <section className="relative py-32 z-10 border-t border-blue-500/10">
+        <div className="container mx-auto px-6 max-w-7xl">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mb-24"
+          >
+            <h2 className="text-3xl lg:text-4xl font-black text-ashoka-blue tracking-[0.3em] uppercase">Hiring Process</h2>
+            <p className="mt-4 text-sm font-bold text-india-green/60 uppercase tracking-widest">Five steps to connect with elite security professionals</p>
+            <div className="h-1 w-24 bg-gradient-to-r from-saffron via-ashoka-blue to-india-green mx-auto mt-6" />
+          </motion.div>
+
+          <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-5 relative">
+            <ProcessStep
+              number="01"
+              icon={Briefcase}
+              title="Post Jobs"
+              description="Define your requirements using professional job templates and specific criteria."
+            />
+            <ProcessStep
+              number="02"
+              icon={Search}
+              title="Smart Match"
+              description="Our system identifies top verified security professionals for your specific needs."
+            />
+            <ProcessStep
+              number="03"
+              icon={FileText}
+              title="Review Profiles"
+              description="Access detailed profiles with verified experience, certifications, and career objectives."
+            />
+            <ProcessStep
+              number="04"
+              icon={MessageSquare}
+              title="Direct Connect"
+              description="Reach out directly and schedule interviews within our secure environment."
+            />
+            <ProcessStep
+              number="05"
+              icon={ShieldCheck}
+              title="Finalize Hires"
+              description="Secure top talent and manage your hiring pipeline from a unified hub."
+              isLast
+            />
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ========================================================
-            9. PROFESSIONAL NETWORK (LIGHT SECTION)
-        ======================================================== */}
-        <section className="bg-white py-24 sm:py-28 border-b border-[#e5e3db]">
-          <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.25fr] gap-8 mb-14">
-              <div>
-                <span className="text-[11px] font-mono uppercase tracking-[2px] text-[#737a83] font-semibold">
-                  TheNST Network
-                </span>
-                <h2 className="text-3xl sm:text-5xl font-medium leading-[1.05] tracking-[-2px] text-[#171b22] mt-3">
-                  Discover professionals, experts and organisations.
-                </h2>
-              </div>
-              <p className="text-base text-[#616872] leading-relaxed self-end font-sans">
-                Connect with verified analysts, advisors, and institutional leaders collaborating across national security disciplines.
-              </p>
-            </div>
+      {/* Trust Section */}
+      <section className="bg-slate-50 pt-32 pb-20 border-y border-ashoka-blue/5 relative z-10">
+        <div className="container mx-auto px-6 max-w-7xl">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mb-24"
+          >
+            <h2 className="text-3xl font-black text-ashoka-blue tracking-[0.3em] uppercase italic">Rigorous Vetting Process</h2>
+            <div className="h-1 w-24 bg-saffron mx-auto mt-4" />
+          </motion.div>
 
-            {/* Network Cards Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-[#e5e3db] border border-[#e5e3db] mb-8">
-              {NETWORK_PEOPLE.slice(0, 3).map((person) => (
-                <div key={person.id} className="bg-white p-8 flex flex-col justify-between min-h-[260px]">
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="w-10 h-10 rounded-full bg-[#171b22] text-white flex items-center justify-center font-mono text-xs font-bold">
-                        {person.initials}
-                      </div>
-                      <span className="text-[10px] font-mono text-[#737a83] uppercase tracking-wider">
-                        {person.domain}
-                      </span>
-                    </div>
-                    <h3 className="text-lg font-medium text-[#171b22] mb-1">
-                      {person.name}
-                    </h3>
-                    <p className="text-xs text-[#737a83] font-sans mb-3">
-                      {person.role} · {person.affiliation}
-                    </p>
-                    <p className="text-xs text-[#616872] leading-relaxed font-sans">
-                      {person.bio}
-                    </p>
-                  </div>
-                  <div className="pt-4 border-t border-[#e5e3db] mt-4 flex items-center justify-between text-[11px] font-mono text-[#737a83]">
-                    <span>{person.location}</span>
-                    <Link href={`/network/${person.id}`} className="text-[#d95325] hover:underline">
-                      View Profile →
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div>
-              <Link
-                href="/network"
-                className="inline-flex items-center gap-2 text-xs font-semibold text-[#d95325] uppercase tracking-wider hover:text-[#bc3f18]"
-              >
-                Explore Full Network Directory
-                <ArrowUpRight className="w-4 h-4" />
-              </Link>
-            </div>
+          <div className="grid gap-8 md:grid-cols-3">
+            <FeatureCard
+              icon={Target}
+              title="Identity Verification"
+              description="Comprehensive background checks, government ID verification, and criminal record screening for every candidate."
+            />
+            <FeatureCard
+              icon={Shield}
+              title="Skill Intel"
+              description="Automated assessment of combat readiness and emergency response protocols."
+            />
+            <FeatureCard
+              icon={Lock}
+              title="Professional Ethics"
+              description="Behavioral interviews to ensure security professionals possess the discipline, integrity, and professionalism your business needs."
+            />
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* ========================================================
-            10. LARGE EDITORIAL CTA BANNER 3: BECOME A SECURITY PROFESSIONAL
-        ======================================================== */}
-        <section className="bg-[#eceae3] border-b border-[#e5e3db] py-10 sm:py-14">
-          <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto bg-white border border-[#e5e3db] shadow-sm overflow-hidden">
-            <div className="grid grid-cols-1 md:grid-cols-2 items-stretch min-h-[340px] lg:min-h-[380px]">
-              {/* Photography side - full height, zero gaps */}
-              <div className="relative w-full min-h-[260px] md:min-h-full overflow-hidden bg-[#171b22]">
-                <img
-                  src="/images/security-professional-field.jpg"
-                  alt="Tactical field training and operational capability briefing"
-                  className="absolute inset-0 w-full h-full object-cover object-[center_45%] grayscale-[5%] contrast-[1.05]"
-                />
-                <div className="absolute inset-0 bg-[#171b22]/10" />
-              </div>
+      {/* Partnerships in Growth Section */}
+      <FranchiseeMarquee />
 
-              {/* Editorial Content side */}
-              <div className="p-8 sm:p-12 lg:p-14 flex flex-col justify-center items-start bg-white">
-                <span className="text-[11px] font-mono uppercase tracking-[2px] text-[#737a83] font-semibold mb-3">
-                  PROFESSIONAL IDENTITY
-                </span>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-medium leading-[1.05] tracking-[-1.8px] text-[#171b22] mb-4">
-                  Become a Security Professional
-                </h2>
-                <p className="text-base text-[#616872] leading-relaxed max-w-[480px] mb-8 font-sans">
-                  Build your professional identity, discover operational opportunities, and connect with defense, intelligence, and security practitioners.
-                </p>
-                <Link
-                  href="/security-professional"
-                  className="inline-flex items-center justify-center min-h-[44px] px-6 text-xs font-semibold tracking-wider text-white bg-[#d95325] hover:bg-[#bc3f18] transition-all uppercase shadow-sm"
-                >
-                  Join the Network →
-                </Link>
-              </div>
-            </div>
+      {/* Footer */}
+      <footer className="mt-auto border-t border-ashoka-blue/5 bg-white pt-12 pb-0 relative z-10">
+        <div className="container mx-auto px-6 max-w-7xl flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="flex items-center gap-2">
+            <Radio className="h-4 w-4 text-saffron" />
+            <span className="text-lg font-black tracking-widest text-ashoka-blue uppercase italic">TheNST</span>
           </div>
-        </section>
-
-        {/* ========================================================
-            11. PLATFORM PREVIEW (DARK BAND #171b22)
-        ======================================================== */}
-        <section className="bg-[#171b22] text-white py-24 sm:py-28 border-b border-[#3b414a]">
-          <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-14 items-center">
-              {/* Left Info */}
-              <div>
-                <span className="text-[11px] font-mono uppercase tracking-[2px] text-[#d95325] font-semibold mb-3 block">
-                  The Platform
-                </span>
-                <h2 className="text-3xl sm:text-5xl font-medium leading-[1] tracking-[-2px] text-white mb-6">
-                  TheNST becomes personalized after you join.
-                </h2>
-                <p className="text-base text-[#b5bbc2] leading-relaxed max-w-[480px] mb-8 font-sans">
-                  Access a structured workspace aligned with your role. Manage active learning modules, browse verified opportunities, publish research insights, and connect directly with peers.
-                </p>
-
-                <div className="flex flex-wrap gap-4">
-                  <Link
-                    href="/platform"
-                    className="inline-flex items-center justify-center min-h-[44px] px-6 text-xs font-semibold tracking-wider text-white bg-[#d95325] hover:bg-[#bc3f18] transition-all uppercase shadow-md"
-                  >
-                    Enter Platform
-                  </Link>
-                  {!loading && !user && (
-                    <Link
-                      href="/sign-in"
-                      className="inline-flex items-center justify-center min-h-[44px] px-6 text-xs font-semibold tracking-wider text-white border border-[#3b414a] hover:bg-white hover:text-[#171b22] transition-all uppercase"
-                    >
-                      Sign In / Create Account
-                    </Link>
-                  )}
-                </div>
-              </div>
-
-              {/* Right Dashboard Task Preview */}
-              <div className="bg-[#1b2028] border border-[#3b414a] p-6 sm:p-8 shadow-2xl">
-                <div className="flex items-center justify-between pb-4 border-b border-[#3b414a] text-xs font-mono text-[#9299a2]">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                    <span className="text-white font-semibold">Personalized Hub Preview</span>
-                  </div>
-                  <span>Task-Oriented UX</span>
-                </div>
-
-                {/* 5 Core Personalized Pillars */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-6">
-                  <div className="p-4 bg-[#14171d] border border-[#3b414a]/60">
-                    <div className="text-xs font-mono text-[#d95325] mb-1">01 / Learning</div>
-                    <div className="text-sm font-medium text-white">My Active Courses</div>
-                    <div className="text-[11px] text-[#8e95a0] mt-1 font-sans">Track syllabus progress and assessment milestones.</div>
-                  </div>
-
-                  <div className="p-4 bg-[#14171d] border border-[#3b414a]/60">
-                    <div className="text-xs font-mono text-[#d95325] mb-1">02 / Opportunities</div>
-                    <div className="text-sm font-medium text-white">Applications & Briefs</div>
-                    <div className="text-[11px] text-[#8e95a0] mt-1 font-sans">Direct submissions for field missions & fellowships.</div>
-                  </div>
-
-                  <div className="p-4 bg-[#14171d] border border-[#3b414a]/60">
-                    <div className="text-xs font-mono text-[#d95325] mb-1">03 / Profile</div>
-                    <div className="text-sm font-medium text-white">Verified Capabilities</div>
-                    <div className="text-[11px] text-[#8e95a0] mt-1 font-sans">Institutional identity & domain certifications.</div>
-                  </div>
-
-                  <div className="p-4 bg-[#14171d] border border-[#3b414a]/60">
-                    <div className="text-xs font-mono text-[#d95325] mb-1">04 / Research</div>
-                    <div className="text-sm font-medium text-white">Desk Feeds & Library</div>
-                    <div className="text-[11px] text-[#8e95a0] mt-1 font-sans">Saved monographs and policy briefings.</div>
-                  </div>
-                </div>
-
-                <div className="pt-3 border-t border-[#3b414a] flex items-center justify-between text-xs text-[#a2a8b2]">
-                  <span>Supports Security Professionals, Drone Pilots, Educators & Organisations</span>
-                  <Link href="/platform" className="text-[#d95325] hover:underline font-semibold font-mono text-[11px]">
-                    Preview Hub →
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ========================================================
-            12. FINAL INSTITUTIONAL CALL TO ACTION
-        ======================================================== */}
-        <section className="bg-white py-20 sm:py-24 border-b border-[#e5e3db]">
-          <div className="w-min(1240px,calc(100%-48px)) max-w-[1240px] mx-auto text-center">
-            <h2 className="text-3xl sm:text-5xl font-medium tracking-tight text-[#171b22] mb-6 max-w-[700px] mx-auto">
-              Build knowledge, expertise and opportunity across national security.
-            </h2>
-            <p className="text-base text-[#616872] leading-relaxed max-w-[520px] mx-auto mb-8 font-sans">
-              Join vetted practitioners, educators, researchers and organisations on TheNST platform.
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-4">
-              <Link
-                href="/platform"
-                className="inline-flex items-center justify-center min-h-[46px] px-7 text-xs font-semibold tracking-wider text-white bg-[#171b22] hover:bg-[#d95325] transition-all uppercase"
-              >
-                Enter Platform
-              </Link>
-              <Link
-                href="/ecosystem"
-                className="inline-flex items-center justify-center min-h-[46px] px-7 text-xs font-semibold tracking-wider text-[#171b22] border border-[#e5e3db] hover:bg-[#f7f6f2] transition-all uppercase"
-              >
-                Explore The Ecosystem
-              </Link>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      {/* Institutional Footer */}
-      <Footer />
-    </div>
+          <p className="text-[10px] font-mono text-ashoka-blue/30 tracking-[0.2em] uppercase">
+            © {new Date().getFullYear()} TheNST. Dedicated to uncompromising safety.
+          </p>
+        </div>
+      </footer>
+    </main>
   );
 }

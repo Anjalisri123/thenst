@@ -15,32 +15,10 @@ const config: Config = {
         hover: '0 8px 16px rgba(10,37,64,.08), 0 20px 48px rgba(10,37,64,.12)',
       },
       fontFamily: {
-        serif: ['var(--font-serif)', 'Instrument Serif', 'Georgia', 'serif'],
-        display: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-sora)', 'system-ui', 'sans-serif'],
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
       },
       colors: {
-        'nst-orange': {
-          DEFAULT: '#d95325',
-          hover: '#bc3f18',
-        },
-        'nst-ink': {
-          DEFAULT: '#171b22',
-          dark: '#111419',
-          card: '#181c23',
-          border: '#3b414a',
-        },
-        'nst-paper': {
-          DEFAULT: '#f7f6f2',
-          card: '#eceae3',
-          hover: '#efede6',
-          border: '#e5e3db',
-        },
-        'nst-muted': {
-          DEFAULT: '#737a83',
-          light: '#9ba1a9',
-          dark: '#4f555d',
-        },
         // NST Learn palette
         navy: {
           50: '#EAF0F7', 100: '#D5E1EF', 200: '#A7BFD9',

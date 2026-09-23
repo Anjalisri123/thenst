@@ -2,146 +2,117 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
 @layer base {
   :root {
-    --orange: #d95325;
-    --orange-hover: #bc3f18;
-    --ink: #171b22;
-    --ink-dark: #111419;
-    --ink-card: #181c23;
-    --paper: #f7f6f2;
-    --paper-card: #eceae3;
-    --paper-hover: #efede6;
-    --muted: #737a83;
-    --muted-light: #9ba1a9;
-    --muted-dark: #4f555d;
-    --line: #e5e3db;
-    --line-dark: #3b414a;
+    /* Premium Light Theme */
+    --background: 220 33% 98%;
+    --foreground: 222 47% 11%;
 
-    --background: 45 20% 97%;
-    --foreground: 220 20% 11%;
     --card: 0 0% 100%;
-    --card-foreground: 220 20% 11%;
+    --card-foreground: 222 47% 11%;
+
     --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 11%;
-    --primary: 15 72% 50%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 45 15% 92%;
-    --secondary-foreground: 220 20% 11%;
-    --muted-bg: 45 15% 92%;
-    --muted-foreground: 220 10% 45%;
-    --accent: 15 72% 50%;
-    --accent-foreground: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 230 85% 60%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222 47% 11%;
+
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --border: 45 12% 88%;
-    --input: 45 12% 88%;
-    --ring: 15 72% 50%;
-    --radius: 0.25rem;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 230 85% 60%;
+
+    --radius: 1rem;
+
+    /* Sidebar - Deep Midnight Navy */
+    --sidebar-background: 224 71% 10%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 230 85% 60%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 224 71% 15%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 224 71% 18%;
+    --sidebar-ring: 230 85% 60%;
+
+    /* Indian Tricolour Palette */
+    --saffron: 38 100% 50%;
+    --india-green: 115 89% 28%;
+    --ashoka-blue: 226 100% 12%;
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+
+    --card: 217 33% 17%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 217 33% 17%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 222 47% 11%;
+
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217 33% 17%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 224.3 76.3% 48%;
+
+    /* Sidebar - simplified for dark mode consistency */
+    --sidebar-background: 222 47% 10%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 221 83% 53%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 217 33% 17%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217 33% 17%;
+    --sidebar-ring: 221 83% 53%;
   }
 }
 
-/* Institutional Typography & Elements */
-.font-serif {
-  font-family: var(--font-serif), 'Instrument Serif', Georgia, serif;
-}
-
-.font-sans {
-  font-family: var(--font-inter), Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-}
-
-/* Container & Grid utilities matching TheNST Institutional */
-.nst-container {
-  width: min(1220px, calc(100% - 48px));
-  margin: 0 auto;
-}
-
-/* Institutional Eyebrow */
-.eyebrow {
-  display: block;
-  font-size: 10.5px;
-  letter-spacing: 1.8px;
-  text-transform: uppercase;
-  color: var(--muted);
-  font-weight: 600;
-}
-
-.eyebrow-orange {
-  color: var(--orange);
-}
-
-.dark-band .eyebrow {
-  color: #a7adb5;
-}
-
-/* Editorial Headings */
-.editorial-title {
-  font-size: clamp(48px, 6.5vw, 88px);
-  line-height: 0.94;
-  letter-spacing: -3.5px;
-  font-weight: 500;
-}
-
-.editorial-title em, .serif-italic {
-  font-family: var(--font-serif), 'Instrument Serif', Georgia, serif;
-  font-style: italic;
-  font-weight: 400;
-  letter-spacing: -1.5px;
-}
-
-/* Capability Radar Grid Texture */
-.network-grid-bg {
-  background-image: 
-    linear-gradient(#2a3038 1px, transparent 1px),
-    linear-gradient(90deg, #2a3038 1px, transparent 1px);
-  background-size: 38px 38px;
-  opacity: 0.35;
-}
-
-/* Tactical Pulse Dot */
-@keyframes nst-pulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 1;
-    box-shadow: 0 0 0 0 rgba(217, 83, 37, 0.7);
+@layer base {
+  * {
+    @apply border-border;
   }
-  50% {
-    transform: scale(1.18);
-    opacity: 0.9;
-    box-shadow: 0 0 16px 4px rgba(217, 83, 37, 0.4);
+
+  body {
+    @apply bg-background text-foreground;
+    height: 100%;
   }
-}
 
-.animate-nst-pulse {
-  animation: nst-pulse 2.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-/* Seamless Marquee & Transitions */
-@keyframes marquee-scroll {
-  from {
-    transform: translateX(0);
+  html {
+    height: 100%;
   }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-.animate-marquee {
-  animation: marquee-scroll 45s linear infinite;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-::-webkit-scrollbar-track {
-  background: #111419;
-}
-::-webkit-scrollbar-thumb {
-  background: #3b414a;
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #d95325;
 }

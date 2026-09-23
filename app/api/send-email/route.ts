@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
 
-export const dynamic = "force-dynamic";
-
 export async function POST(req: Request) {
   let toEmail = "unknown";
   let templateName = "unknown";
@@ -308,11 +306,11 @@ export async function POST(req: Request) {
     }
 
     // Brevo API Payload - Dynamic Sender Routing
-    let senderEmail = process.env.BREVO_SENDER_EMAIL || "noreply@thenst.co";
+    let senderEmail = "hiring@thenst.co"; // Default to hiring
     const administrativeTemplates = ["welcome", "approval", "rejection"];
     
     if (administrativeTemplates.includes(template)) {
-      senderEmail = process.env.BREVO_SENDER_EMAIL || "noreply@thenst.co";
+      senderEmail = "noreply@thenst.co";
     }
 
     const payload = {
@@ -338,10 +336,10 @@ export async function POST(req: Request) {
     });
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      console.warn("Brevo API note:", errorData);
+      const errorData = await response.json();
+      console.error("Brevo API error:", errorData);
       return NextResponse.json(
-        { success: false, error: errorData?.message || "Failed to send email via Brevo" },
+        { success: false, error: "Failed to send email via Brevo" },
         { status: response.status }
       );
     }
@@ -349,7 +347,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ success: true, message: "Email sent successfully" });
 
   } catch (error: any) {
-    console.warn(`[Email Service Note] Template: ${templateName}, To: ${toEmail}, Details:`, error?.message || error);
+    console.error(`[Email Service Error] Template: ${templateName}, To: ${toEmail}, Error:`, error);
     return NextResponse.json(
       { success: false, error: error.message || "Internal server error" },
       { status: 500 }
